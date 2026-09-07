@@ -70,6 +70,12 @@
     return DIE_STEPS[newIdx];
   }
 
+    function formatTraitBoost(traitCode, steps) {
+    if (steps > 0) return `${traitCode}${'+'.repeat(steps)}`;
+    if (steps < 0) return `${traitCode}${'-'.repeat(Math.abs(steps))}`;
+    return '';
+  }
+
   function getDefaultCharacter() {
     return {
       "id": "char_rick_kageyama",
@@ -438,15 +444,15 @@
     };
 
     const b = currentCharacter.activeBuffs || {};
-    syncTriGroup('hesSuit', b.hesSuit ? 'active' : 'off', 'label-hes-suit', { off: 'Off', active: '+1 Str (d6→d8), +8 Armor' });
+    syncTriGroup('hesSuit', b.hesSuit ? 'active' : 'off', 'label-hes-suit', { off: 'Off', active: 'Str+, +8 Armor' });
     syncTriGroup('digitalUplink', b.digitalUplink ? 'active' : 'off', 'label-digital-uplink', { off: 'Off', active: '+1 to 8 Skills' });
     const muscVal = b.muscularEnhancement ? (b.muscularEnhancementRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('muscularEnhancement', muscVal, 'label-muscular-enh', { off: 'Off', success: '+1 Str Step, +1 Ath/Stl', raise: '+2 Str Steps (★), +2 Ath/Stl' });
+    syncTriGroup('muscularEnhancement', muscVal, 'label-muscular-enh', { off: 'Off', success: 'Str+, +1 Ath/Stl', raise: 'Str++, +2 Ath/Stl (★)' });
     const rushVal = b.rush ? (b.rushRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('rush', rushVal, 'label-rush', { off: 'Off', success: '+5 Speed, +1 Agi Step', raise: '+5 Speed, +2 Agi Steps (★)' });
+    syncTriGroup('rush', rushVal, 'label-rush', { off: 'Off', success: '+5 Speed, Free Move', raise: '+5 Speed, Agi++, Free Move (★)' });
     const tbVal = b.thoughtBlock ? (b.thoughtBlockRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('thoughtBlock', tbVal, 'label-thought-block', { off: 'Off', success: '+1 Disp & +1 Res', raise: '+3 Disp & +3 Res (★)' });
-    syncTriGroup('stimpack', b.stimpack ? 'active' : 'off', 'label-stimpack', { off: 'Off', active: '+2 Speed, +2 Agi Tests' });
+    syncTriGroup('thoughtBlock', tbVal, 'label-thought-block', { off: 'Off', success: '+1 Disp & Res', raise: '+3 Disp & Res (★)' });
+    syncTriGroup('stimpack', b.stimpack ? 'active' : 'off', 'label-stimpack', { off: 'Off', active: '+2 Speed, Agi+, 1 Fatigue' });
 
     // Points Badges
     const attrBadge = document.getElementById('attr-points-badge');
@@ -465,6 +471,15 @@
     const attrContainer = document.getElementById('attributes-grid');
     if (attrContainer) {
       attrContainer.innerHTML = '';
+      const shortCodes = {
+        agility: 'Agi',
+        strength: 'Str',
+        vigor: 'Vig',
+        instinct: 'Inst',
+        intelligence: 'Int',
+        spirit: 'Spi'
+      };
+
       const attrNames = [
         { id: 'agility', name: 'Agility' },
         { id: 'strength', name: 'Strength' },
@@ -488,7 +503,7 @@
           <div class="attr-die-display" title="Base: ${dieLabel(baseVal)} | Effective: ${dieLabel(effVal)}">
             ${isBoosted ? `${dieLabel(baseVal)}<span style="font-size:1.1rem; color:var(--emerald);"> (${dieLabel(effVal)})</span>` : dieLabel(baseVal)}
           </div>
-          ${isBoosted ? `<span class="eff-badge">+${stepOffset} Step Boosted</span>` : ''}
+          ${isBoosted ? `<span class="eff-badge">${formatTraitBoost(shortCodes[attr.id], stepOffset)}</span>` : (stepOffset < 0 ? `<span class="eff-badge penalty">${formatTraitBoost(shortCodes[attr.id], stepOffset)}</span>` : '')}
           <div class="attr-controls">
             <button class="attr-btn" data-attr="${attr.id}" data-action="dec" ${baseVal <= 4 ? 'disabled' : ''} title="Lower Base Die">-</button>
             <button class="attr-btn" data-attr="${attr.id}" data-action="inc" ${baseVal >= 14 ? 'disabled' : ''} title="Raise Base Die">+</button>

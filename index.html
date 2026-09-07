@@ -224,11 +224,11 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">🪖 Hostile Environment Suit</span>
-                <span id="label-hes-suit" class="buff-effect">+1 Str (d6→d8), +8 Armor</span>
+                <span id="label-hes-suit" class="buff-effect">Str+, +8 Armor</span>
               </div>
               <div class="tri-state-group" data-buff-group="hesSuit">
                 <button class="tri-btn" data-val="off">Off</button>
-                <button class="tri-btn active" data-val="active">Equipped (+8)</button>
+                <button class="tri-btn active" data-val="active">Equipped (Str+)</button>
               </div>
             </div>
 
@@ -248,12 +248,12 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">💪 Muscular Enhancement</span>
-                <span id="label-muscular-enh" class="buff-effect">+1 Str Step, +1 Ath/Stl</span>
+                <span id="label-muscular-enh" class="buff-effect">Str+, +1 Ath/Stl</span>
               </div>
               <div class="tri-state-group" data-buff-group="muscularEnhancement">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success (+1)</button>
-                <button class="tri-btn" data-val="raise">Raise (+2)</button>
+                <button class="tri-btn" data-val="success">Success (Str+)</button>
+                <button class="tri-btn" data-val="raise">Raise (Str++)</button>
               </div>
             </div>
 
@@ -266,7 +266,7 @@
               <div class="tri-state-group" data-buff-group="rush">
                 <button class="tri-btn active" data-val="off">Off</button>
                 <button class="tri-btn" data-val="success">Success (+PL)</button>
-                <button class="tri-btn" data-val="raise">Raise (PL+Agil)</button>
+                <button class="tri-btn" data-val="raise">Raise (PL + Agi++)</button>
               </div>
             </div>
 
@@ -274,12 +274,12 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">🧠 Thought Blocking</span>
-                <span id="label-thought-block" class="buff-effect">+2 Disc & Resolve</span>
+                <span id="label-thought-block" class="buff-effect">+1 Disp & Res</span>
               </div>
               <div class="tri-state-group" data-buff-group="thoughtBlock">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">+1 (+1 Res)</button>
-                <button class="tri-btn" data-val="raise">+3 Raise (★)</button>
+                <button class="tri-btn" data-val="success">Success (+1)</button>
+                <button class="tri-btn" data-val="raise">Raise (+3 ★)</button>
               </div>
             </div>
 
@@ -287,11 +287,11 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">💉 Military Stimpack</span>
-                <span id="label-stimpack" class="buff-effect">+2 Speed, +1 Agi, 1 Fatigue</span>
+                <span id="label-stimpack" class="buff-effect">+2 Speed, Agi+, 1 Fatigue</span>
               </div>
               <div class="tri-state-group" data-buff-group="stimpack">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="active">Injected</button>
+                <button class="tri-btn" data-val="active">Injected (Agi+)</button>
               </div>
             </div>
 
@@ -663,7 +663,7 @@
                 <li><strong>Absorption Field:</strong> Increase Armor equal to half his Psi Rating. Must be wearing Hostile Environment Suit (HES).</li>
                 <li><strong>Covert Ops Training:</strong> Gain +1 to Stealth, Perception, and Ranged or Melee rolls.</li>
                 <li><strong>Critical Strikes:</strong> Gain +2 AP (or +4 AP when using a C-10 Canister Rifle).</li>
-                <li><strong>Psionic Reflexes:</strong> While wearing Hostile Environment Suit (HES), increases Agility by one die step.</li>
+                <li><strong>Psionic Reflexes:</strong> While wearing Hostile Environment Suit (HES), grants <code>Agi+</code>.</li>
               </ul>
             </div>
           </div>
@@ -3553,7 +3553,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>Shadowguard Field Armor</strong> <span class="tag tag-amber">Light Armor</span></td>
                   <td><span class="tag tag-emerald">+4</span></td>
                   <td>Light</td>
-                  <td><code style="color:var(--cyan);">AGI +1</code></td>
+                  <td><code style="color:var(--cyan);">Agi+</code></td>
                   <td>0</td>
                   <td>8,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Umojan Networking, Personal Cloaking, Armor Decay, Umojan Exclusive, Concealable</td>
@@ -3575,7 +3575,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>Combat Body Suit</strong> <span class="tag tag-amber">Heavy Armor</span></td>
                   <td><span class="tag tag-emerald">+6</span></td>
                   <td>Heavy</td>
-                  <td><code style="color:var(--cyan);">STR +1</code></td>
+                  <td><code style="color:var(--cyan);">Str+</code></td>
                   <td>0</td>
                   <td>3,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Elemental Protection, Radiation Shielding, Oxygen Supply</td>
@@ -3619,7 +3619,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>Hostile Environment Suit</strong> <span class="tag tag-amber">Heavy Armor</span></td>
                   <td><span class="tag tag-emerald">+8</span></td>
                   <td>Heavy</td>
-                  <td><code style="color:var(--cyan);">STR +1</code></td>
+                  <td><code style="color:var(--cyan);">Str+</code></td>
                   <td>0</td>
                   <td>10,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Elemental Protection, Radiation Shielding, Oxygen Supply, Personal Cloaking, Armor Decay</td>
@@ -3641,7 +3641,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>5-4 Armored Infantry Suit</strong> <span class="tag tag-amber">Powered Armor</span></td>
                   <td><span class="tag tag-emerald">+20</span></td>
                   <td>Powered</td>
-                  <td><code style="color:var(--cyan);">STR +4</code></td>
+                  <td><code style="color:var(--cyan);">Str++++</code></td>
                   <td>-4</td>
                   <td>25,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Powered Armor, Extremely Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2), Bulky, Marauder Grenade Launchers*</td>
@@ -3652,7 +3652,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>CMC-200 Powered Combat Armor</strong> <span class="tag tag-amber">Powered Armor</span></td>
                   <td><span class="tag tag-emerald">+13</span></td>
                   <td>Powered</td>
-                  <td><code style="color:var(--cyan);">STR +3</code></td>
+                  <td><code style="color:var(--cyan);">Str+++</code></td>
                   <td>-3</td>
                   <td>2,500</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply</td>
@@ -3663,7 +3663,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>CMC-300 Powered Combat Armor</strong> <span class="tag tag-amber">Powered Armor</span></td>
                   <td><span class="tag tag-emerald">+15</span></td>
                   <td>Powered</td>
-                  <td><code style="color:var(--cyan);">STR +4</code></td>
+                  <td><code style="color:var(--cyan);">Str++++</code></td>
                   <td>-3</td>
                   <td>5,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2)</td>
@@ -3674,7 +3674,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>CMC-400 Powered Combat Armor</strong> <span class="tag tag-amber">Powered Armor</span></td>
                   <td><span class="tag tag-emerald">+16</span></td>
                   <td>Powered</td>
-                  <td><code style="color:var(--cyan);">STR +4</code></td>
+                  <td><code style="color:var(--cyan);">Str++++</code></td>
                   <td>-3</td>
                   <td>10,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (4)</td>
@@ -3685,7 +3685,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>CMC-405 Powered Light Combat Armor</strong> <span class="tag tag-amber">Powered Armor</span></td>
                   <td><span class="tag tag-emerald">+12</span></td>
                   <td>Powered</td>
-                  <td><code style="color:var(--cyan);">STR +3</code></td>
+                  <td><code style="color:var(--cyan);">Str+++</code></td>
                   <td>-2</td>
                   <td>9,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Powered Armor, Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (4)</td>
@@ -3696,7 +3696,7 @@ Battle-Hardened Commander" style="margin-top:auto; padding-top:0.5rem;">+ Add to
                   <td><strong>CMC-660 Powered Combat Armor (Firebat)</strong> <span class="tag tag-amber">Powered Armor</span></td>
                   <td><span class="tag tag-emerald">+20</span></td>
                   <td>Powered</td>
-                  <td><code style="color:var(--cyan);">STR +4</code></td>
+                  <td><code style="color:var(--cyan);">Str++++</code></td>
                   <td>-4</td>
                   <td>21,000</td>
                   <td style="font-size:0.8rem; color:var(--text-muted);">Powered Armor, Extremely Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2), Bulky, Firebat Flamethrowers*</td>
