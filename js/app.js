@@ -223,7 +223,7 @@
         "attributes": 1,
         "edges": 2
       },
-      "credits": 3325,
+      "credits": 11325,
       "attributes": {
         "agility": 8,
         "strength": 6,
@@ -660,11 +660,16 @@
       saveCharacters();
     }
 
-    // Ensure activeBoosts array exists on all characters
+    // Ensure activeBoosts array and wounds/fatigue exist on all characters
     characters.forEach(char => {
       if (!char.activeBoosts || !Array.isArray(char.activeBoosts)) {
         char.activeBoosts = getDefaultActiveBoosts();
       }
+      if (char.credits === 3325) {
+        char.credits = 11325;
+      }
+      if (char.currentWounds === undefined) char.currentWounds = 0;
+      if (char.currentFatigue === undefined) char.currentFatigue = 0;
     });
 
     const activeId = localStorage.getItem('sc_rpg_active_char_id');
@@ -724,7 +729,7 @@
     const advEdgesEl = document.getElementById('char-adv-edges-input');
     if (advEdgesEl) advEdgesEl.value = alloc.edges !== undefined ? alloc.edges : 2;
 
-    document.getElementById('char-credits-input').value = currentCharacter.credits || 3325;
+    document.getElementById('char-credits-input').value = currentCharacter.credits !== undefined ? currentCharacter.credits : 11325;
     document.getElementById('char-concept-input').value = currentCharacter.concept || '';
   }
 
@@ -988,18 +993,6 @@
     if (vulnerableBox) vulnerableBox.checked = !!currentCharacter.isVulnerable;
     const psiEnergy = document.getElementById('tracker-psi-energy');
     if (psiEnergy) psiEnergy.value = currentCharacter.currentEnergy || 15;
-
-    // Derived Stats
-    setElText('stat-defense', state.defense);
-    setElText('stat-discipline', state.discipline);
-    setElText('stat-toughness', `${state.baseToughness} (${state.totalToughness})`);
-    setElText('stat-armor-val', state.armor);
-    setElText('stat-resolve', state.resolve);
-    setElText('stat-speed', state.speed);
-
-    // Trackers
-    setElText('wound-max-badge', `Max: ${state.maxWounds}`);
-    setElText('fatigue-max-badge', `Max: ${state.maxFatigue}`);
   }
 
   function renderSkillsList() {
