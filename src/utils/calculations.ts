@@ -69,8 +69,10 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
 
   const attrSteps = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
   const attrRollMods = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
+  const skillSteps: Record<string, number> = {};
   const skillRollMods: Record<string, number> = {};
   const linkedAttrSkillMods = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
+  const linkedAttrSkillSteps = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
 
   let totalArmor = 0;
   let totalDefMod = 0;
@@ -113,9 +115,17 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
       }
     }
 
+    if (m.skillSteps) {
+      for (const k in m.skillSteps) {
+        const key = k.toLowerCase().trim();
+        skillSteps[key] = (skillSteps[key] || 0) + m.skillSteps[k];
+      }
+    }
+
     if (m.skillRollMods) {
       for (const k in m.skillRollMods) {
-        skillRollMods[k] = (skillRollMods[k] || 0) + m.skillRollMods[k];
+        const key = k.toLowerCase().trim();
+        skillRollMods[key] = (skillRollMods[key] || 0) + m.skillRollMods[k];
       }
     }
 
@@ -124,6 +134,15 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
         const key = k as AttributeKey;
         if (linkedAttrSkillMods[key] !== undefined && m.linkedAttrSkillMods[key]) {
           linkedAttrSkillMods[key] += m.linkedAttrSkillMods[key]!;
+        }
+      }
+    }
+
+    if (m.linkedAttrSkillSteps) {
+      for (const k in m.linkedAttrSkillSteps) {
+        const key = k as AttributeKey;
+        if (linkedAttrSkillSteps[key] !== undefined && m.linkedAttrSkillSteps[key]) {
+          linkedAttrSkillSteps[key] += m.linkedAttrSkillSteps[key]!;
         }
       }
     }
@@ -140,10 +159,6 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
   const plInfo = computeEffectivePsiRating(char);
   const psiRating = plInfo.effectivePL;
   const trainingPath = char.trainingPath || 'ghost';
-  const isWearingHES = activeBoosts.some(b => 
-    (b.type === 'hes-suit' || b.id === 'boost_hes_suit' || (b.name && b.name.toLowerCase().includes('environment suit'))) && 
-    b.state !== 'off'
-  );
 
   if (trainingPath === 'ghost') {
     // Covert Ops Training: Gain +1 to Stealth, Perception, and Ranged or Melee rolls
@@ -168,16 +183,22 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
     spirit: getSteppedDie(baseAttr.spirit, attrSteps.spirit)
   };
 
-  // 4. Effective Skill Bonuses
+  // 4. Effective Skills (Steps, Dice, and Flat Roll Bonuses)
   const effectiveSkillBonuses: Record<string, number> = {};
+  const effectiveSkillSteps: Record<string, number> = {};
+  const effectiveSkillDice: Record<string, number> = {};
+
   for (const sk in char.skills) {
     const skillId = sk.toLowerCase().trim();
+    const baseDie = char.skills[sk] || 0;
     const linkedAttr = (SKILL_ATTR_MAP[skillId] || 'agility') as AttributeKey;
-    let b = skillRollMods[skillId] || 0;
-    if (linkedAttrSkillMods[linkedAttr]) {
-      b += linkedAttrSkillMods[linkedAttr];
-    }
-    effectiveSkillBonuses[skillId] = b;
+
+    const totalStep = (skillSteps[skillId] || 0) + (linkedAttrSkillSteps[linkedAttr] || 0);
+    const totalBonus = (skillRollMods[skillId] || 0) + (linkedAttrSkillMods[linkedAttr] || 0);
+
+    effectiveSkillSteps[skillId] = totalStep;
+    effectiveSkillDice[skillId] = baseDie > 0 ? getSteppedDie(baseDie, totalStep) : (totalStep > 0 ? getSteppedDie(4, totalStep - 1) : 0);
+    effectiveSkillBonuses[skillId] = totalBonus;
   }
 
   // 5. Derived Stats
@@ -197,6 +218,8 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
     attributeRollMods: attrRollMods,
     effectiveAttributes: effectiveAttr,
     effectiveSkillBonuses,
+    effectiveSkillSteps,
+    effectiveSkillDice,
     armor: totalArmor,
     defMod: totalDefMod,
     defense,

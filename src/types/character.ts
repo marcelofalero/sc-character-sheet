@@ -127,7 +127,9 @@ export interface BoostMutations {
   attrSteps?: Partial<CharacterAttributes>;
   attrRollMods?: Partial<CharacterAttributes>;
   skillRollMods?: Record<string, number>;
+  skillSteps?: Record<string, number>;
   linkedAttrSkillMods?: Partial<CharacterAttributes>;
+  linkedAttrSkillSteps?: Partial<CharacterAttributes>;
   armor?: number;
   defMod?: number;
   toughnessMod?: number;
@@ -142,6 +144,7 @@ export interface ActiveBoost {
   category?: string;
   type?: string;
   targetAttr?: AttributeKey;
+  targetSkill?: string;
   state: 'off' | 'active' | 'success' | 'raise';
   hasRaise?: boolean;
   desc?: string;
@@ -155,6 +158,8 @@ export interface EffectiveCharacterState {
   attributeRollMods: CharacterAttributes;
   effectiveAttributes: CharacterAttributes;
   effectiveSkillBonuses: Record<string, number>;
+  effectiveSkillSteps: Record<string, number>;
+  effectiveSkillDice: Record<string, number>;
   armor: number;
   defMod: number;
   defense: number;

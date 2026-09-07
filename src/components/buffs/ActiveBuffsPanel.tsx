@@ -69,6 +69,8 @@ export const ActiveBuffsPanel: React.FC = () => {
               else targetNotation = sc;
             } else if (b.targetAttr) {
               targetNotation = shortCodes[b.targetAttr] || b.targetAttr;
+            } else if (b.targetSkill) {
+              targetNotation = b.targetSkill.charAt(0).toUpperCase() + b.targetSkill.slice(1);
             }
 
             return (

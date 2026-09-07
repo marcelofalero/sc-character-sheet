@@ -75,18 +75,20 @@ export const SkillsGrid: React.FC = () => {
         {skillsData.map((sk: any) => {
           const skillId = (sk.id || sk.name.toLowerCase().replace(/[^a-z0-9]/g, '')).trim();
           const baseDie = activeCharacter.skills[skillId] || 0;
+          const effDie = effectiveState.effectiveSkillDice?.[skillId] ?? baseDie;
+          const skillStep = effectiveState.effectiveSkillSteps?.[skillId] || 0;
+          const bonus = effectiveState.effectiveSkillBonuses?.[skillId] || 0;
           const linkedAttr = (sk.attr || SKILL_ATTR_MAP[skillId] || 'Agility').toLowerCase() as AttributeKey;
-          const linkedAttrStep = effectiveState.attributeSteps[linkedAttr] || 0;
-          const bonus = effectiveState.effectiveSkillBonuses[skillId] || 0;
           const isCore = sk.core || ['athletics', 'lore', 'perception', 'influence', 'stealth'].includes(skillId);
-          const boostTag = linkedAttrStep !== 0 ? formatTraitBoost(shortCodes[linkedAttr] || linkedAttr, linkedAttrStep) : '';
 
           return (
             <div
               key={skillId}
               style={{
-                background: 'rgba(10, 18, 32, 0.85)',
-                border: baseDie > 0 ? '1px solid var(--border-subtle)' : '1px solid rgba(255,255,255,0.06)',
+                background: skillStep > 0 || bonus > 0 ? 'rgba(0, 229, 255, 0.05)' : 'rgba(10, 18, 32, 0.85)',
+                border: skillStep > 0 || bonus > 0 
+                  ? '1px solid var(--border-cyan)' 
+                  : (baseDie > 0 ? '1px solid var(--border-subtle)' : '1px solid rgba(255,255,255,0.06)'),
                 borderRadius: 'var(--radius-sm)',
                 padding: '0.45rem 0.65rem',
                 display: 'flex',
@@ -101,8 +103,8 @@ export const SkillsGrid: React.FC = () => {
                 </span>
                 {isCore && <span className="tag tag-cyan" style={{ fontSize: '0.62rem', padding: '1px 3px' }}>CORE</span>}
                 <span className="tag tag-outline" style={{ fontSize: '0.62rem', padding: '1px 3px' }}>{shortCodes[linkedAttr] || linkedAttr}</span>
-                {bonus > 0 && <span className="tag tag-emerald" style={{ fontSize: '0.62rem', padding: '1px 3px' }}>+{bonus}</span>}
-                {boostTag && <span className="tag tag-violet" style={{ fontSize: '0.62rem', padding: '1px 3px' }}>{boostTag}</span>}
+                {skillStep > 0 && <span className="tag tag-cyan" style={{ fontSize: '0.62rem', padding: '1px 3px' }}>d{effDie}</span>}
+                {bonus !== 0 && <span className="tag tag-emerald" style={{ fontSize: '0.62rem', padding: '1px 3px' }}>{bonus > 0 ? `+${bonus}` : bonus}</span>}
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -119,13 +121,13 @@ export const SkillsGrid: React.FC = () => {
                 </select>
 
                 <button
-                  onClick={() => handleRoll(sk.name, baseDie, bonus)}
-                  className="btn btn-sm btn-outline"
-                  title={`Roll ${sk.name} (${baseDie > 0 ? `d${baseDie}` : 'Unskilled d4-2'}${bonus > 0 ? ` +${bonus}` : ''})`}
+                  onClick={() => handleRoll(sk.name, effDie, bonus)}
+                  className={`btn btn-sm ${effDie > 0 ? (bonus !== 0 || skillStep > 0 ? 'btn-cyan' : 'btn-outline') : 'btn-outline'}`}
+                  title={`Roll ${sk.name} (${effDie > 0 ? `d${effDie}` : 'Unskilled d4-2'}${bonus !== 0 ? (bonus > 0 ? ` +${bonus}` : ` ${bonus}`) : ''})`}
                   style={{ padding: '3px 7px', fontSize: '0.75rem' }}
                 >
                   <Dices size={12} />
-                  <span>{baseDie > 0 ? `d${baseDie}${bonus > 0 ? `+${bonus}` : ''}` : 'Unsk'}</span>
+                  <span>{effDie > 0 ? `d${effDie}${bonus > 0 ? `+${bonus}` : (bonus < 0 ? bonus : '')}` : 'Unsk'}</span>
                 </button>
               </div>
             </div>
