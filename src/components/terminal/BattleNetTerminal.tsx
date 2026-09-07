@@ -8,10 +8,12 @@ export const BattleNetTerminal: React.FC = () => {
   const { terminalLogs, addTerminalLog, clearTerminalLogs } = useCharacter();
   const [useWildDie, setUseWildDie] = useState(true);
   const [modifier, setModifier] = useState(0);
-  const logsEndRef = useRef<HTMLDivElement>(null);
+  const logsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (logsContainerRef.current) {
+      logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+    }
   }, [terminalLogs]);
 
   const handleQuickDie = (sides: number) => {
@@ -111,20 +113,23 @@ export const BattleNetTerminal: React.FC = () => {
       </div>
 
       {/* Terminal Screen Logs */}
-      <div style={{
-        background: 'rgba(3, 7, 15, 0.95)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-sm)',
-        padding: '0.75rem',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.82rem',
-        minHeight: '160px',
-        maxHeight: '220px',
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.3rem'
-      }}>
+      <div
+        ref={logsContainerRef}
+        style={{
+          background: 'rgba(3, 7, 15, 0.95)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--radius-sm)',
+          padding: '0.75rem',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.82rem',
+          minHeight: '160px',
+          maxHeight: '220px',
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.3rem'
+        }}
+      >
         {terminalLogs.map(log => {
           let color = '#fff';
           if (log.type === 'crit') color = 'var(--crimson)';
@@ -139,7 +144,6 @@ export const BattleNetTerminal: React.FC = () => {
             </div>
           );
         })}
-        <div ref={logsEndRef} />
       </div>
 
     </div>
