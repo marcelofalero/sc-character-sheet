@@ -171,6 +171,12 @@
       "armor": {
         "name": "Hostile Environment Suit",
         "value": 8,
+        "class": "Heavy",
+        "boost": "Str+",
+        "defMod": 0,
+        "weight": "15 lbs.",
+        "traits": "Elemental Protection, Radiation Shielding, Oxygen Supply, Personal Cloaking, Armor Decay",
+        "mounted": "Communicator, Tactical Mask I",
         "notes": "Hermetic full-body pressure suit (+8 Armor, life-support, +1 Strength die step, Cloaking integration)"
       },
       "gear": [
@@ -185,8 +191,7 @@
       "cybernetics": [],
       "currentWounds": 0,
       "currentFatigue": 0,
-      "currentEnergy": 15,
-      "maxEnergy": 15,
+      "stressPoints": 6,
       "isShaken": false,
       "isDistracted": false,
       "isVulnerable": false,
@@ -197,17 +202,49 @@
   let characters = [];
   let currentCharacter = null;
 
+  function getArmorStatModifiers(char) {
+    const buffs = char.activeBuffs || {};
+    const armor = char.armor;
+    if (!armor || !armor.name || armor.name === 'Unarmored' || armor.name === 'None') {
+      return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: false, active: false };
+    }
+
+    const isHES = (armor.name === 'Hostile Environment Suit' || armor.name === 'HES');
+    // If HES is equipped, it respects the hesSuit buff toggle
+    if (isHES && buffs.hesSuit === false) {
+      return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: true, active: false };
+    }
+
+    const armorVal = parseInt(armor.value ?? armor.armor, 10) || 0;
+    const defMod = parseInt(armor.defMod, 10) || 0;
+
+    let strStep = 0;
+    let agiStep = 0;
+
+    const boost = (armor.boost || (isHES ? 'Str+' : '')).toUpperCase();
+    if (boost.includes('STR +4') || boost.includes('STR++++')) strStep += 4;
+    else if (boost.includes('STR +3') || boost.includes('STR+++')) strStep += 3;
+    else if (boost.includes('STR +2') || boost.includes('STR++')) strStep += 2;
+    else if (boost.includes('STR +1') || boost.includes('STR+')) strStep += 1;
+
+    if (boost.includes('AGI +2') || boost.includes('AGI++')) agiStep += 2;
+    else if (boost.includes('AGI +1') || boost.includes('AGI+')) agiStep += 1;
+
+    return { armorVal, strStep, agiStep, defMod, isHES, active: true };
+  }
+
   function getEffectiveAttributes(char) {
     const buffs = char.activeBuffs || {};
     const tempMods = char.tempAttributeMods || {};
+    const armorMods = getArmorStatModifiers(char);
 
     let agiRushStep = 0;
     if (buffs.rush) {
       agiRushStep = buffs.rushRaise ? 2 : 1;
     }
 
-    let strStep = (buffs.hesSuit ? 1 : 0) + (tempMods.strength || 0);
-    let agiStep = agiRushStep + (tempMods.agility || 0);
+    let strStep = armorMods.strStep + (tempMods.strength || 0);
+    let agiStep = armorMods.agiStep + agiRushStep + (tempMods.agility || 0);
     let vigStep = (tempMods.vigor || 0);
     let instStep = (tempMods.instinct || 0);
     let intStep = (tempMods.intelligence || 0);
@@ -262,14 +299,20 @@
     const eff = attrData.effective;
     const psi = parseInt(char.psiRating, 10) || 5;
     const buffs = char.activeBuffs || {};
+    const armorMods = getArmorStatModifiers(char);
 
-    const armorVal = char.armor ? (parseInt(char.armor.value, 10) || 0) : 0;
+    const armorVal = armorMods.armorVal;
+    const defMod = armorMods.defMod;
 
-    const defense = Math.floor(eff.agility / 2) + Math.floor(eff.instinct / 2);
+    const rawDefense = Math.floor(eff.agility / 2) + Math.floor(eff.instinct / 2) + defMod;
+    const defense = Math.max(1, rawDefense);
+
     const tbBonus = buffs.thoughtBlock ? (buffs.thoughtBlockRaise ? 3 : 1) : 0;
     const discipline = Math.floor(eff.spirit / 2) + Math.floor(eff.intelligence / 2) + tbBonus;
+
     const baseToughness = Math.floor(eff.vigor / 2) + Math.floor(eff.strength / 2);
     const totalToughness = baseToughness + armorVal;
+
     const resolve = Math.floor(eff.spirit / 2) + Math.floor(eff.instinct / 2) + psi + tbBonus;
     const maxWounds = Math.floor(eff.strength / 3) + 1;
     const maxFatigue = Math.floor(eff.vigor / 3);
@@ -284,6 +327,7 @@
       baseToughness,
       totalToughness,
       armorVal,
+      defMod,
       resolve,
       maxWounds: Math.max(2, maxWounds),
       maxFatigue: Math.max(1, maxFatigue),
@@ -523,8 +567,18 @@
 
     // Derived Stats Update
     document.getElementById('stat-defense').textContent = stats.defense;
+    const defFormula = document.getElementById('stat-defense-formula');
+    if (defFormula) {
+      defFormula.textContent = `½ Agi (${Math.floor(stats.attrData.effective.agility/2)}) + ½ Inst (${Math.floor(stats.attrData.effective.instinct/2)})${stats.defMod !== 0 ? ` + Armor (${stats.defMod})` : ''}`;
+    }
+
     document.getElementById('stat-discipline').textContent = stats.discipline;
     document.getElementById('stat-toughness').textContent = `${stats.totalToughness} (${stats.armorVal})`;
+    const toughFormula = document.getElementById('stat-toughness-formula');
+    if (toughFormula) {
+      toughFormula.textContent = `½ Vigor (${Math.floor(stats.attrData.effective.vigor/2)}) + ½ Str (${Math.floor(stats.attrData.effective.strength/2)}) + Armor (${stats.armorVal})`;
+    }
+
     document.getElementById('stat-resolve').textContent = stats.resolve;
     document.getElementById('stat-speed').textContent = `${stats.speed}"`;
 
@@ -663,14 +717,38 @@
 
   function renderCharacterArmorGear() {
     const armorWrap = document.getElementById('char-armor-display');
-    if (armorWrap && currentCharacter.armor) {
-      armorWrap.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <strong style="color:#fff;">${currentCharacter.armor.name}</strong>
-          <span class="tag tag-emerald">+${currentCharacter.armor.value} Armor</span>
-        </div>
-        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">${currentCharacter.armor.notes || ''}</div>
-      `;
+    if (armorWrap) {
+      const arm = currentCharacter.armor;
+      const armorMods = getArmorStatModifiers(currentCharacter);
+      if (arm && arm.value && arm.name !== 'Unarmored' && arm.name !== 'None') {
+        armorWrap.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <strong style="color:#fff; font-size:0.95rem;">${arm.name}</strong>
+              <span class="tag tag-amber" style="margin-left:6px;">${arm.class || 'Armor'}</span>
+              <span class="tag tag-emerald" style="margin-left:4px;">+${arm.value} Armor</span>
+              ${arm.boost ? `<span class="tag tag-cyan" style="margin-left:4px;">${arm.boost}</span>` : ''}
+              ${arm.defMod ? `<span class="tag tag-crimson" style="margin-left:4px;">Def ${arm.defMod}</span>` : ''}
+              ${!armorMods.active ? `<span class="tag tag-crimson" style="margin-left:4px;">(Deactivated / Off)</span>` : ''}
+            </div>
+            <div style="display:flex; gap:0.4rem; align-items:center;">
+              <button id="unequip-armor-btn" class="btn btn-sm btn-crimson" style="padding:2px 8px;">Unequip</button>
+            </div>
+          </div>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.35rem;">
+            ${arm.traits ? `<strong>Traits:</strong> ${arm.traits}<br>` : ''}
+            ${arm.mounted ? `<strong>Mounted:</strong> ${arm.mounted}<br>` : ''}
+            ${arm.notes || ''}
+          </div>
+        `;
+      } else {
+        armorWrap.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:var(--text-dim); font-size:0.85rem;">No armor currently equipped (Unarmored: 0 Armor).</span>
+            <a href="#sec-armors" class="btn btn-sm btn-cyan" style="padding:2px 8px; text-decoration:none;">Open Armory</a>
+          </div>
+        `;
+      }
     }
 
     const gearList = document.getElementById('char-gear-list');
@@ -1108,7 +1186,24 @@
         if (!currentCharacter.activeBuffs) currentCharacter.activeBuffs = {};
 
         if (groupName === 'hesSuit') {
-          currentCharacter.activeBuffs.hesSuit = (val === 'active');
+          const isActive = (val === 'active');
+          currentCharacter.activeBuffs.hesSuit = isActive;
+          if (isActive && (!currentCharacter.armor || currentCharacter.armor.name !== 'Hostile Environment Suit')) {
+            const hesData = window.SC_DATA?.armors?.find(a => a.name === 'Hostile Environment Suit');
+            if (hesData) {
+              currentCharacter.armor = {
+                name: hesData.name,
+                value: hesData.armor,
+                class: hesData.class,
+                boost: hesData.boost,
+                defMod: hesData.defMod || 0,
+                weight: hesData.weight,
+                traits: hesData.traits,
+                mounted: hesData.mounted,
+                notes: hesData.desc
+              };
+            }
+          }
         } else if (groupName === 'digitalUplink') {
           currentCharacter.activeBuffs.digitalUplink = (val === 'active');
         } else if (groupName === 'muscularEnhancement') {
@@ -1229,14 +1324,38 @@
         const name = equipArmor.getAttribute('data-armory-equip-armor');
         const data = window.SC_DATA?.armors?.find(a => a.name === name);
         if (data) {
-          currentCharacter.armor = { name: data.name, value: data.armor, notes: data.notes };
+          currentCharacter.armor = {
+            name: data.name,
+            value: data.armor,
+            class: data.class,
+            boost: data.boost,
+            defMod: data.defMod || 0,
+            weight: data.weight,
+            traits: data.traits,
+            mounted: data.mounted,
+            notes: data.desc
+          };
+          if (!currentCharacter.activeBuffs) currentCharacter.activeBuffs = {};
+          currentCharacter.activeBuffs.hesSuit = (data.name === 'Hostile Environment Suit');
           SoundFX.success();
           saveCharacters();
           renderAttributesAndStats();
           renderCharacterArmorGear();
           updateQuickTelemetry();
-          alert(`Equipped "${data.name}".`);
+          alert(`Equipped "${data.name}". Armor (+${data.armor}) and trait modifiers applied to Toughness and Attributes.`);
         }
+        return;
+      }
+
+      const unequipArmorBtn = e.target.closest('#unequip-armor-btn');
+      if (unequipArmorBtn) {
+        currentCharacter.armor = { name: 'Unarmored', value: 0, boost: '', defMod: 0 };
+        if (currentCharacter.activeBuffs) currentCharacter.activeBuffs.hesSuit = false;
+        SoundFX.toggle();
+        saveCharacters();
+        renderAttributesAndStats();
+        renderCharacterArmorGear();
+        updateQuickTelemetry();
         return;
       }
 

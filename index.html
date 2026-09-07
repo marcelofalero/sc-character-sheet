@@ -342,7 +342,7 @@
           <div class="stat-card">
             <span class="stat-card-title">DEFENSE</span>
             <span id="stat-defense" class="stat-card-val cyan">7</span>
-            <span class="stat-formula">½ Agility + ½ Instinct</span>
+            <span id="stat-defense-formula" class="stat-formula">½ Agility + ½ Instinct</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">DISCIPLINE</span>
@@ -352,7 +352,7 @@
           <div class="stat-card">
             <span class="stat-card-title">TOUGHNESS</span>
             <span id="stat-toughness" class="stat-card-val amber">15 (8)</span>
-            <span class="stat-formula">½ Vigor + ½ Str + Armor (8)</span>
+            <span id="stat-toughness-formula" class="stat-formula">½ Vigor + ½ Str + Armor (8)</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">RESOLVE</span>
@@ -376,9 +376,8 @@
           </div>
         </div>
 
-        <!-- ATTRIBUTES & SKILLS TWO-COLUMN EDIT/ROLL GRID -->
+        <!-- ATTRIBUTES & SKILLS PANELS -->
         <div class="sheet-two-col" style="margin-top:1.25rem;">
-          
           <!-- ATTRIBUTES PANEL -->
           <div class="hud-inner-card">
             <div class="hud-card-header">
@@ -398,23 +397,21 @@
           </div>
         </div>
 
-        <!-- WEAPONS & ARMORY SHEET SECTION -->
+        <!-- WEAPONS ON SHEET -->
         <div class="hud-inner-card" style="margin-top:1.25rem;">
           <div class="hud-card-header">
-            <span class="hud-card-title">⚔️ EQUIPPED WEAPONS & TACTICAL LOADOUT</span>
-            <button id="add-custom-weapon-btn" class="btn btn-sm btn-primary">+ Add Weapon</button>
+            <span class="hud-card-title">⚔️ EQUIPPED WEAPONS & COMBAT ARSENAL</span>
           </div>
-          <div class="table-responsive">
-            <table class="doc-table">
+          <div class="table-responsive" style="margin-top:0.75rem;">
+            <table class="data-table">
               <thead>
                 <tr>
-                  <th>Weapon</th>
+                  <th>Weapon Name</th>
                   <th>Range</th>
                   <th>Damage</th>
                   <th>AP</th>
                   <th>Special Notes</th>
                   <th>Attack Roll</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="char-weapons-table-body">
@@ -424,7 +421,7 @@
           </div>
         </div>
 
-        <!-- ACTIVE POWERS ON SHEET -->
+        <!-- POWERS ON SHEET -->
         <div class="hud-inner-card" style="margin-top:1.25rem;">
           <div class="hud-card-header">
             <span class="hud-card-title">🔮 KNOWN PSIONIC POWERS & SPECIAL ABILITIES</span>
@@ -432,6 +429,17 @@
           </div>
           <div id="char-powers-list" class="compendium-grid" style="margin-top:0.75rem;">
             <!-- Dynamically populated powers -->
+          </div>
+        </div>
+
+        <!-- EQUIPPED ARMOR & PROTECTION ON SHEET -->
+        <div class="hud-inner-card" style="margin-top:1.25rem;">
+          <div class="hud-card-header">
+            <span class="hud-card-title">🛡️ EQUIPPED COMBAT ARMOR & PROTECTION</span>
+            <span class="tag tag-amber">Toughness & Trait Modifiers Active</span>
+          </div>
+          <div id="char-armor-display" style="margin-top:0.6rem;">
+            <!-- Dynamically populated equipped armor -->
           </div>
         </div>
 
