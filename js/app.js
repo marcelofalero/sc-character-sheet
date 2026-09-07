@@ -275,17 +275,20 @@
 
   function getArmorStatModifiers(char) {
     const armor = char.armor;
-    const activeBoosts = char.activeBoosts || [];
-    const hesBoost = activeBoosts.find(b => b.type === 'hes-suit');
-    const hesIsActive = hesBoost ? (hesBoost.state !== 'off') : false;
-
     if (!armor || !armor.name || armor.name === 'Unarmored' || armor.name === 'None') {
       return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: false, active: false };
     }
 
-    const isHES = (armor.name === 'Hostile Environment Suit' || armor.name === 'HES');
-    if (isHES && !hesIsActive) {
-      return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: true, active: false };
+    const activeBoosts = char.activeBoosts || [];
+    const isHES = (armor.name === 'Hostile Environment Suit' || armor.name === 'HES' || armor.name.toLowerCase().includes('hostile environment'));
+    
+    // Find matching boost in activeBoosts
+    const boostEntry = activeBoosts.find(b => b.type === 'hes-suit' || b.id === 'boost_hes_suit' || b.name === armor.name || (b.category === 'Gear' && b.name && b.name.toLowerCase().includes('armor')));
+
+    const isActive = boostEntry ? (boostEntry.state !== 'off') : false;
+
+    if (!isActive) {
+      return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES, active: false };
     }
 
     const armorVal = parseInt(armor.value ?? armor.armor, 10) || 0;
@@ -1721,9 +1724,24 @@
             notes: data.desc
           };
           
-          // Ensure HES boost card state reflects equipped suit
-          const hesBoost = currentCharacter.activeBoosts?.find(b => b.type === 'hes-suit');
-          if (hesBoost) hesBoost.state = 'active';
+          // Ensure activeBoosts has an active entry for this armor
+          if (!currentCharacter.activeBoosts) currentCharacter.activeBoosts = [];
+          const exIdx = currentCharacter.activeBoosts.findIndex(b => b.type === 'hes-suit' || b.id === 'boost_hes_suit' || b.name === data.name);
+          if (exIdx >= 0) {
+            currentCharacter.activeBoosts[exIdx].state = 'active';
+            currentCharacter.activeBoosts[exIdx].name = data.name;
+          } else {
+            currentCharacter.activeBoosts.unshift({
+              id: 'boost_hes_suit',
+              name: data.name,
+              category: 'Gear',
+              type: 'hes-suit',
+              targetAttr: 'strength',
+              state: 'active',
+              hasRaise: false,
+              desc: `${data.name} (+${data.armor} Armor${data.boost ? `, ${data.boost}` : ''}).`
+            });
+          }
 
           SoundFX.success();
           saveCharacters();
@@ -1738,8 +1756,10 @@
       const unequipArmorBtn = e.target.closest('#unequip-armor-btn');
       if (unequipArmorBtn) {
         currentCharacter.armor = { name: 'Unarmored', value: 0, boost: '', defMod: 0 };
-        const hesBoost = currentCharacter.activeBoosts?.find(b => b.type === 'hes-suit');
-        if (hesBoost) hesBoost.state = 'off';
+        if (currentCharacter.activeBoosts) {
+          const exIdx = currentCharacter.activeBoosts.findIndex(b => b.type === 'hes-suit' || b.id === 'boost_hes_suit');
+          if (exIdx >= 0) currentCharacter.activeBoosts.splice(exIdx, 1);
+        }
         SoundFX.toggle();
         saveCharacters();
         renderAttributesAndStats();
