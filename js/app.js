@@ -1,5 +1,6 @@
 /**
  * StarCraft Ghost Living Document & Interactive Compendium Engine (High-Performance)
+ * Core Data-Driven Mutation Architecture
  */
 
 (function () {
@@ -96,6 +97,9 @@
     psionics: 'spirit'
   };
 
+  /**
+   * Data-Driven Boost Definitions with Declarative Mutation Models
+   */
   function getDefaultActiveBoosts() {
     return [
       {
@@ -103,10 +107,14 @@
         name: "Hostile Environment Suit",
         category: "Gear",
         type: "hes-suit",
-        state: "active",
         targetAttr: "strength",
+        state: "active",
         hasRaise: false,
-        desc: "Hermetic Ghost suit granting Str+ and +8 Armor to Toughness."
+        desc: "Hermetic Ghost suit granting Str+ and +8 Armor to Toughness.",
+        mutations: {
+          attrSteps: { strength: 1 },
+          armor: 8
+        }
       },
       {
         id: "boost_digital_uplink",
@@ -115,7 +123,20 @@
         type: "digital-uplink",
         state: "active",
         hasRaise: false,
-        desc: "Tactical cyber-link granting +1 trait bonus to tech & tactical rolls (Tactics, Computers, Engineering, Lore, Medicine, Science, Ranged, Perception)."
+        desc: "Tactical cyber-link granting +1 trait bonus to tech & tactical skills.",
+        mutations: {
+          skillRollMods: {
+            computers: 1,
+            engineering: 1,
+            lore: 1,
+            medicine: 1,
+            science: 1,
+            tactics: 1,
+            perception: 1,
+            pilot: 1,
+            ranged: 1
+          }
+        }
       },
       {
         id: "boost_muscular_enh",
@@ -124,7 +145,15 @@
         type: "muscular-enh",
         state: "off",
         hasRaise: true,
-        desc: "+1 (+2 on Raise) to physical rolls (Strength rolls, Athletics, Stealth, and Vigor tests vs extreme environments/fatigue/disease/poison)."
+        desc: "+1 (+2 on Raise) to Strength rolls, Athletics, Stealth, and Vigor tests vs extreme environments/fatigue/disease/poison.",
+        mutations: {
+          attrRollMods: { strength: 1 },
+          skillRollMods: { athletics: 1, stealth: 1 }
+        },
+        raiseMutations: {
+          attrRollMods: { strength: 2 },
+          skillRollMods: { athletics: 2, stealth: 2 }
+        }
       },
       {
         id: "boost_enhance_abilities_agi",
@@ -134,7 +163,15 @@
         targetAttr: "agility",
         state: "off",
         hasRaise: true,
-        desc: "+1 die step (Agi+) on Success, +2 die steps (Agi++) on Raise to Agility and its linked skills (Athletics, Melee, Stealth)."
+        desc: "+1 die step (Agi+) on Success, +2 die steps (Agi++) on Raise to Agility and its linked skills (Athletics, Melee, Stealth).",
+        mutations: {
+          attrSteps: { agility: 1 },
+          linkedAttrSkillMods: { agility: 1 }
+        },
+        raiseMutations: {
+          attrSteps: { agility: 2 },
+          linkedAttrSkillMods: { agility: 2 }
+        }
       },
       {
         id: "boost_thought_block",
@@ -143,7 +180,15 @@
         type: "thought-block",
         state: "off",
         hasRaise: true,
-        desc: "+1 (+3 on Raise) to Discipline and Resolve."
+        desc: "+1 (+3 on Raise) to Discipline and Resolve.",
+        mutations: {
+          disciplineMod: 1,
+          resolveMod: 1
+        },
+        raiseMutations: {
+          disciplineMod: 3,
+          resolveMod: 3
+        }
       },
       {
         id: "boost_stimpack",
@@ -152,7 +197,11 @@
         type: "stimpack",
         state: "off",
         hasRaise: false,
-        desc: "+2 Speed and Agi+ for the combat encounter."
+        desc: "+2 Speed and Agi+ for the combat encounter.",
+        mutations: {
+          attrSteps: { agility: 1 },
+          speedMod: 2
+        }
       }
     ];
   }
@@ -273,218 +322,162 @@
   let characters = [];
   let currentCharacter = null;
 
-  function getArmorStatModifiers(char) {
-    const armor = char.armor;
-    if (!armor || !armor.name || armor.name === 'Unarmored' || armor.name === 'None') {
-      return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: false, active: false };
-    }
+  /**
+   * PURE FUNCTIONAL STATE PIPELINE
+   * Applies all temporary adjustments and active boost mutations to base data.
+   */
+  function computeEffectiveCharacterState(char) {
+    if (!char) return null;
 
-    const activeBoosts = char.activeBoosts || [];
-    const isHES = (armor.name === 'Hostile Environment Suit' || armor.name === 'HES' || armor.name.toLowerCase().includes('hostile environment'));
-    
-    // Find matching boost in activeBoosts
-    const boostEntry = activeBoosts.find(b => b.type === 'hes-suit' || b.id === 'boost_hes_suit' || b.name === armor.name || (b.category === 'Gear' && b.name && b.name.toLowerCase().includes('armor')));
-
-    const isActive = boostEntry ? (boostEntry.state !== 'off') : false;
-
-    if (!isActive) {
-      return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES, active: false };
-    }
-
-    const armorVal = parseInt(armor.value ?? armor.armor, 10) || 0;
-    const defMod = parseInt(armor.defMod, 10) || 0;
-
-    let strStep = 0;
-    let agiStep = 0;
-
-    const boost = (armor.boost || (isHES ? 'Str+' : '')).toUpperCase();
-    if (boost.includes('STR +4') || boost.includes('STR++++')) strStep += 4;
-    else if (boost.includes('STR +3') || boost.includes('STR+++')) strStep += 3;
-    else if (boost.includes('STR +2') || boost.includes('STR++')) strStep += 2;
-    else if (boost.includes('STR +1') || boost.includes('STR+')) strStep += 1;
-
-    if (boost.includes('AGI +2') || boost.includes('AGI++')) agiStep += 2;
-    else if (boost.includes('AGI +1') || boost.includes('AGI+')) agiStep += 1;
-
-    return { armorVal, strStep, agiStep, defMod, isHES, active: true };
-  }
-
-  function getEffectiveAttributes(char) {
-    const tempMods = char.tempAttributeMods || {};
-    const armorMods = getArmorStatModifiers(char);
-    const activeBoosts = char.activeBoosts || [];
-
-    let steps = {
-      agility: (armorMods.active ? armorMods.agiStep : 0) + (tempMods.agility || 0),
-      strength: (armorMods.active ? armorMods.strStep : 0) + (tempMods.strength || 0),
-      vigor: (tempMods.vigor || 0),
-      instinct: (tempMods.instinct || 0),
-      intelligence: (tempMods.intelligence || 0),
-      spirit: (tempMods.spirit || 0)
+    const baseAttr = {
+      agility: char.attributes?.agility || 4,
+      strength: char.attributes?.strength || 4,
+      vigor: char.attributes?.vigor || 4,
+      instinct: char.attributes?.instinct || 4,
+      intelligence: char.attributes?.intelligence || 4,
+      spirit: char.attributes?.spirit || 4
     };
 
+    const attrSteps = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
+    const attrRollMods = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
+    const skillRollMods = {};
+    const linkedAttrSkillMods = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
+
+    let totalArmor = 0;
+    let totalDefMod = 0;
+    let totalToughnessMod = 0;
+    let totalDisciplineMod = 0;
+    let totalResolveMod = 0;
+    let totalSpeedMod = 0;
+
+    // 1. Temporary Manual Attribute & Skill Modifiers
+    const tempAttr = char.tempAttributeMods || {};
+    for (let k in tempAttr) {
+      if (attrSteps[k] !== undefined) attrSteps[k] += (tempAttr[k] || 0);
+    }
+
+    const tempSkill = char.tempSkillMods || {};
+    for (let k in tempSkill) {
+      skillRollMods[k] = (skillRollMods[k] || 0) + (tempSkill[k] || 0);
+    }
+
+    // 2. Active Boost Data Mutations
+    const activeBoosts = Array.isArray(char.activeBoosts) ? char.activeBoosts : [];
     activeBoosts.forEach(b => {
       if (!b.state || b.state === 'off') return;
 
-      if (b.type === 'stimpack') {
-        steps.agility += 1;
-      } else if (b.type === 'enhance-abilities' && b.targetAttr) {
-        const stepVal = (b.state === 'raise' ? 2 : 1);
-        if (steps[b.targetAttr] !== undefined) {
-          steps[b.targetAttr] += stepVal;
-        }
-      } else if (b.type === 'custom' && b.customType && b.targetAttr) {
-        if (b.customType === 'attr-step' || b.customType === 'custom-attr-1') {
-          steps[b.targetAttr] += 1;
-        } else if (b.customType === 'attr-step-2' || b.customType === 'custom-attr-2') {
-          steps[b.targetAttr] += 2;
+      const m = (b.state === 'raise' && b.raiseMutations) ? b.raiseMutations : b.mutations;
+      if (!m) return;
+
+      if (m.attrSteps) {
+        for (let k in m.attrSteps) {
+          if (attrSteps[k] !== undefined) attrSteps[k] += m.attrSteps[k];
         }
       }
+
+      if (m.attrRollMods) {
+        for (let k in m.attrRollMods) {
+          if (attrRollMods[k] !== undefined) attrRollMods[k] += m.attrRollMods[k];
+        }
+      }
+
+      if (m.skillRollMods) {
+        for (let k in m.skillRollMods) {
+          skillRollMods[k] = (skillRollMods[k] || 0) + m.skillRollMods[k];
+        }
+      }
+
+      if (m.linkedAttrSkillMods) {
+        for (let k in m.linkedAttrSkillMods) {
+          if (linkedAttrSkillMods[k] !== undefined) linkedAttrSkillMods[k] += m.linkedAttrSkillMods[k];
+        }
+      }
+
+      if (m.armor) totalArmor += m.armor;
+      if (m.defMod) totalDefMod += m.defMod;
+      if (m.toughnessMod) totalToughnessMod += m.toughnessMod;
+      if (m.disciplineMod) totalDisciplineMod += m.disciplineMod;
+      if (m.resolveMod) totalResolveMod += m.resolveMod;
+      if (m.speedMod) totalSpeedMod += m.speedMod;
     });
 
-    const baseAgi = char.attributes.agility || 4;
-    const baseStr = char.attributes.strength || 4;
-    const baseVig = char.attributes.vigor || 4;
-    const baseInst = char.attributes.instinct || 4;
-    const baseIntel = char.attributes.intelligence || 4;
-    const baseSpi = char.attributes.spirit || 4;
+    // 3. Stepped Effective Attributes
+    const effectiveAttr = {
+      agility: getSteppedDie(baseAttr.agility, attrSteps.agility),
+      strength: getSteppedDie(baseAttr.strength, attrSteps.strength),
+      vigor: getSteppedDie(baseAttr.vigor, attrSteps.vigor),
+      instinct: getSteppedDie(baseAttr.instinct, attrSteps.instinct),
+      intelligence: getSteppedDie(baseAttr.intelligence, attrSteps.intelligence),
+      spirit: getSteppedDie(baseAttr.spirit, attrSteps.spirit)
+    };
+
+    // 4. Effective Skill Bonuses
+    const effectiveSkillBonuses = {};
+    if (window.SC_DATA && window.SC_DATA.skills) {
+      window.SC_DATA.skills.forEach(sk => {
+        const skillId = (sk.id || sk.name.toLowerCase().replace(/[^a-z0-9]/g, '')).trim();
+        const linkedAttr = (sk.attr || SKILL_ATTR_MAP[skillId] || 'Agility').toLowerCase();
+        effectiveSkillBonuses[skillId] = (skillRollMods[skillId] || 0) + (linkedAttrSkillMods[linkedAttr] || 0);
+      });
+    }
+
+    // 5. Derived Stats
+    const psiRating = parseInt(char.psiRating, 10) || 5;
+
+    const rawDefense = Math.floor(effectiveAttr.agility / 2) + Math.floor(effectiveAttr.instinct / 2) + totalDefMod;
+    const defense = Math.max(1, rawDefense);
+
+    const discipline = Math.floor(effectiveAttr.spirit / 2) + Math.floor(effectiveAttr.intelligence / 2) + totalDisciplineMod;
+
+    const baseToughness = Math.floor(effectiveAttr.vigor / 2) + Math.floor(effectiveAttr.strength / 2);
+    const totalToughness = baseToughness + totalArmor + totalToughnessMod;
+
+    const resolve = Math.floor(effectiveAttr.spirit / 2) + Math.floor(effectiveAttr.instinct / 2) + psiRating + totalResolveMod;
+    const maxWounds = Math.floor(effectiveAttr.strength / 3) + 1;
+    const maxFatigue = Math.floor(effectiveAttr.vigor / 3);
+
+    const speed = 6 + totalSpeedMod;
 
     return {
-      base: { agility: baseAgi, strength: baseStr, vigor: baseVig, instinct: baseInst, intelligence: baseIntel, spirit: baseSpi },
-      steps: steps,
-      effective: {
-        agility: getSteppedDie(baseAgi, steps.agility),
-        strength: getSteppedDie(baseStr, steps.strength),
-        vigor: getSteppedDie(baseVig, steps.vigor),
-        instinct: getSteppedDie(baseInst, steps.instinct),
-        intelligence: getSteppedDie(baseIntel, steps.intelligence),
-        spirit: getSteppedDie(baseSpi, steps.spirit)
-      }
+      baseAttributes: baseAttr,
+      attributeSteps: attrSteps,
+      attributeRollMods: attrRollMods,
+      effectiveAttributes: effectiveAttr,
+      effectiveSkillBonuses,
+      armor: totalArmor,
+      defMod: totalDefMod,
+      defense,
+      discipline,
+      baseToughness,
+      totalToughness,
+      resolve,
+      maxWounds,
+      maxFatigue,
+      speed
+    };
+  }
+
+  function getEffectiveAttributes(char) {
+    const s = computeEffectiveCharacterState(char);
+    return {
+      base: s.baseAttributes,
+      steps: s.attributeSteps,
+      effective: s.effectiveAttributes
     };
   }
 
   function getEffectiveAttributeRollBonus(char, attrId) {
-    let bonus = 0;
-    const activeBoosts = char.activeBoosts || [];
-    activeBoosts.forEach(b => {
-      if (!b.state || b.state === 'off') return;
-      if (b.type === 'muscular-enh' && attrId === 'strength') {
-        bonus += (b.state === 'raise' ? 2 : 1);
-      }
-      if (b.type === 'custom' && b.targetAttr === attrId) {
-        if (b.customType === 'roll-1') bonus += 1;
-        if (b.customType === 'roll-2') bonus += 2;
-      }
-    });
-    return bonus;
+    const s = computeEffectiveCharacterState(char);
+    return s.attributeRollMods[attrId] || 0;
   }
 
   function getEffectiveSkillBonus(char, skillId) {
-    const tempMods = char.tempSkillMods || {};
-    let bonus = tempMods[skillId] || 0;
-    const activeBoosts = char.activeBoosts || [];
-    const skillNorm = skillId.toLowerCase().trim();
-    const linkedAttr = SKILL_ATTR_MAP[skillNorm] || 'agility';
-
-    activeBoosts.forEach(b => {
-      if (!b.state || b.state === 'off') return;
-
-      // Digital Uplink: +1 to tech & tactical skills
-      if (b.type === 'digital-uplink') {
-        const uplinkSkills = ['computers', 'engineering', 'lore', 'medicine', 'science', 'tactics', 'perception', 'pilot', 'ranged'];
-        if (uplinkSkills.includes(skillNorm)) {
-          bonus += 1;
-        }
-      }
-
-      // Muscular Enhancement: +1 (+2 on Raise) to Athletics, Stealth
-      if (b.type === 'muscular-enh') {
-        if (['athletics', 'stealth'].includes(skillNorm)) {
-          bonus += (b.state === 'raise' ? 2 : 1);
-        }
-      }
-
-      // Enhance Abilities: ONLY boosts skills linked to the targeted attribute
-      if (b.type === 'enhance-abilities') {
-        if (b.targetAttr && b.targetAttr.toLowerCase() === linkedAttr) {
-          bonus += (b.state === 'raise' ? 2 : 1);
-        }
-      }
-
-      // Custom Boosts
-      if (b.type === 'custom') {
-        if (b.targetAttr && b.targetAttr.toLowerCase() === linkedAttr) {
-          if (b.customType === 'roll-1') bonus += 1;
-          if (b.customType === 'roll-2') bonus += 2;
-        }
-        if (b.targetSkill && b.targetSkill.toLowerCase() === skillNorm) {
-          if (b.customType === 'roll-1') bonus += 1;
-          if (b.customType === 'roll-2') bonus += 2;
-        }
-      }
-    });
-
-    return bonus;
+    const s = computeEffectiveCharacterState(char);
+    return s.effectiveSkillBonuses[skillId.toLowerCase().trim()] || 0;
   }
 
   function calculateDerivedStats(char) {
-    const attrData = getEffectiveAttributes(char);
-    const eff = attrData.effective;
-    const psi = parseInt(char.psiRating, 10) || 5;
-    const armorMods = getArmorStatModifiers(char);
-    const activeBoosts = char.activeBoosts || [];
-
-    let customDef = 0;
-    let customToughness = 0;
-    let customSpeed = 0;
-    let thoughtBlockBonus = 0;
-    let stimpackActive = false;
-
-    activeBoosts.forEach(b => {
-      if (!b.state || b.state === 'off') return;
-      if (b.type === 'thought-block') {
-        thoughtBlockBonus += (b.state === 'raise' ? 3 : 1);
-      }
-      if (b.type === 'stimpack') {
-        stimpackActive = true;
-      }
-      if (b.type === 'custom') {
-        if (b.customType === 'def-2') customDef += 2;
-        if (b.customType === 'armor-4') customToughness += 4;
-        if (b.customType === 'speed-2') customSpeed += 2;
-      }
-    });
-
-    const armorVal = armorMods.active ? armorMods.armorVal : 0;
-    const defMod = armorMods.active ? armorMods.defMod : 0;
-
-    const rawDefense = Math.floor(eff.agility / 2) + Math.floor(eff.instinct / 2) + defMod + customDef;
-    const defense = Math.max(1, rawDefense);
-
-    const discipline = Math.floor(eff.spirit / 2) + Math.floor(eff.intelligence / 2) + thoughtBlockBonus;
-
-    const baseToughness = Math.floor(eff.vigor / 2) + Math.floor(eff.strength / 2);
-    const totalToughness = baseToughness + armorVal + customToughness;
-
-    const resolve = Math.floor(eff.spirit / 2) + Math.floor(eff.instinct / 2) + psi + thoughtBlockBonus;
-    const maxWounds = Math.floor(eff.strength / 3) + 1;
-    const maxFatigue = Math.floor(eff.vigor / 3);
-
-    let speed = 6 + (stimpackActive ? 2 : 0) + customSpeed;
-
-    return {
-      defense,
-      defMod,
-      discipline,
-      baseToughness,
-      totalToughness,
-      armorVal: armorVal + customToughness,
-      resolve,
-      maxWounds,
-      maxFatigue,
-      speed,
-      attrData
-    };
+    return computeEffectiveCharacterState(char);
   }
 
   function calculatePoints(char) {
@@ -656,7 +649,7 @@
         if (b.state === 'raise') targetNotation = `<span class="tag tag-emerald" style="margin-left:4px; font-weight:bold;">${sc}++</span>`;
         else if (b.state === 'success' || b.state === 'active') targetNotation = `<span class="tag tag-cyan" style="margin-left:4px; font-weight:bold;">${sc}+</span>`;
         else targetNotation = `<span class="tag tag-outline" style="margin-left:4px;">${sc}</span>`;
-      } else if (b.type === 'custom' && b.targetAttr) {
+      } else if (b.targetAttr) {
         const sc = shortCodes[b.targetAttr] || b.targetAttr;
         targetNotation = `<span class="tag tag-outline" style="margin-left:4px;">${sc}</span>`;
       }
@@ -723,9 +716,8 @@
 
     renderActiveBoosts();
 
-    const stats = calculateDerivedStats(currentCharacter);
+    const state = computeEffectiveCharacterState(currentCharacter);
     const points = calculatePoints(currentCharacter);
-    const attrData = stats.attrData;
 
     // Points Badges
     const attrBadge = document.getElementById('attr-points-badge');
@@ -763,12 +755,12 @@
       ];
 
       attrNames.forEach(attr => {
-        const baseVal = attrData.base[attr.id];
-        const effVal = attrData.effective[attr.id];
-        const stepOffset = attrData.steps[attr.id];
+        const baseVal = state.baseAttributes[attr.id];
+        const effVal = state.effectiveAttributes[attr.id];
+        const stepOffset = state.attributeSteps[attr.id];
         const isBoosted = stepOffset > 0;
         const customTemp = currentCharacter.tempAttributeMods[attr.id] || 0;
-        const rollBonus = getEffectiveAttributeRollBonus(currentCharacter, attr.id);
+        const rollBonus = state.attributeRollMods[attr.id] || 0;
 
         const card = document.createElement('div');
         card.className = `attribute-card ${isBoosted ? 'boosted' : ''}`;
@@ -796,33 +788,35 @@
 
     // Derived Stats Update
     const defEl = document.getElementById('stat-defense');
-    if (defEl) defEl.textContent = stats.defense;
+    if (defEl) defEl.textContent = state.defense;
     const defFormula = document.getElementById('stat-defense-formula');
     if (defFormula) {
-      defFormula.textContent = `½ Agi (${Math.floor(stats.attrData.effective.agility/2)}) + ½ Inst (${Math.floor(stats.attrData.effective.instinct/2)})${stats.defMod !== 0 ? ` + Armor (${stats.defMod})` : ''}`;
+      defFormula.textContent = `½ Agi (${Math.floor(state.effectiveAttributes.agility/2)}) + ½ Inst (${Math.floor(state.effectiveAttributes.instinct/2)})${state.defMod !== 0 ? ` + Mod (${state.defMod})` : ''}`;
     }
 
     const discEl = document.getElementById('stat-discipline');
-    if (discEl) discEl.textContent = stats.discipline;
+    if (discEl) discEl.textContent = state.discipline;
 
     const toughEl = document.getElementById('stat-toughness');
-    if (toughEl) toughEl.textContent = stats.armorVal > 0 ? `${stats.totalToughness} (${stats.armorVal})` : `${stats.totalToughness}`;
+    if (toughEl) toughEl.textContent = state.armor > 0 ? `${state.totalToughness} (${state.armor})` : `${state.totalToughness}`;
     const toughFormula = document.getElementById('stat-toughness-formula');
     if (toughFormula) {
-      toughFormula.textContent = `½ Vigor (${Math.floor(stats.attrData.effective.vigor/2)}) + ½ Str (${Math.floor(stats.attrData.effective.strength/2)})${stats.armorVal > 0 ? ` + Armor (${stats.armorVal})` : ''}`;
+      toughFormula.textContent = state.armor > 0
+        ? `½ Vigor (${Math.floor(state.effectiveAttributes.vigor/2)}) + ½ Str (${Math.floor(state.effectiveAttributes.strength/2)}) + Armor (${state.armor})`
+        : `½ Vigor (${Math.floor(state.effectiveAttributes.vigor/2)}) + ½ Str (${Math.floor(state.effectiveAttributes.strength/2)})`;
     }
 
     const resEl = document.getElementById('stat-resolve');
-    if (resEl) resEl.textContent = stats.resolve;
+    if (resEl) resEl.textContent = state.resolve;
 
     const speedEl = document.getElementById('stat-speed');
-    if (speedEl) speedEl.textContent = `${stats.speed}″`;
+    if (speedEl) speedEl.textContent = `${state.speed}″`;
 
     // Damage Pips
     const woundsWrap = document.getElementById('wounds-pips-wrap');
     if (woundsWrap) {
       woundsWrap.innerHTML = '';
-      for (let i = 1; i <= stats.maxWounds; i++) {
+      for (let i = 1; i <= state.maxWounds; i++) {
         const pip = document.createElement('div');
         pip.className = `pip-box ${i <= (currentCharacter.currentWounds || 0) ? 'checked-wound' : ''}`;
         pip.textContent = i;
@@ -840,7 +834,7 @@
     const fatigueWrap = document.getElementById('fatigue-pips-wrap');
     if (fatigueWrap) {
       fatigueWrap.innerHTML = '';
-      for (let i = 1; i <= stats.maxFatigue; i++) {
+      for (let i = 1; i <= state.maxFatigue; i++) {
         const pip = document.createElement('div');
         pip.className = `pip-box ${i <= (currentCharacter.currentFatigue || 0) ? 'checked-fatigue' : ''}`;
         pip.textContent = i;
@@ -866,19 +860,19 @@
 
   function renderSkillsList() {
     const container = document.getElementById('skills-container');
-    if (!container || !window.SC_DATA || !window.SC_DATA.skills) return;
+    if (!container || !window.SC_DATA || !window.SC_DATA.skills || !currentCharacter) return;
 
     container.innerHTML = '';
-    const attrData = getEffectiveAttributes(currentCharacter);
+    const state = computeEffectiveCharacterState(currentCharacter);
     const shortCodes = { agility: 'Agi', strength: 'Str', vigor: 'Vig', instinct: 'Inst', intelligence: 'Int', spirit: 'Spi' };
 
     window.SC_DATA.skills.forEach(sk => {
       const skillId = (sk.id || sk.name.toLowerCase().replace(/[^a-z0-9]/g, '')).trim();
       const baseVal = currentCharacter.skills[skillId] || 0;
       const linkedAttr = (sk.attr || SKILL_ATTR_MAP[skillId] || 'Agility').toLowerCase();
-      const linkedAttrEff = attrData.effective[linkedAttr] || 4;
-      const linkedAttrStep = attrData.steps[linkedAttr] || 0;
-      const bonus = getEffectiveSkillBonus(currentCharacter, skillId);
+      const linkedAttrEff = state.effectiveAttributes[linkedAttr] || 4;
+      const linkedAttrStep = state.attributeSteps[linkedAttr] || 0;
+      const bonus = state.effectiveSkillBonuses[skillId] || 0;
 
       const boostTag = linkedAttrStep !== 0 ? formatTraitBoost(shortCodes[linkedAttr] || linkedAttr, linkedAttrStep) : '';
 
@@ -907,7 +901,7 @@
 
   function renderCharacterPowers() {
     const list = document.getElementById('char-powers-list');
-    if (!list) return;
+    if (!list || !currentCharacter) return;
     list.innerHTML = '';
     (currentCharacter.powers || []).forEach((p, idx) => {
       const div = document.createElement('div');
@@ -930,14 +924,16 @@
 
   function renderCharacterWeapons() {
     const container = document.getElementById('char-weapons-table-body');
-    if (!container) return;
+    if (!container || !currentCharacter) return;
     container.innerHTML = '';
+    const state = computeEffectiveCharacterState(currentCharacter);
+
     (currentCharacter.weapons || []).forEach((w, idx) => {
       const tr = document.createElement('tr');
       const isRanged = w.range && w.range !== 'Melee';
       const attackSkillDie = isRanged ? (currentCharacter.skills.ranged || 6) : (currentCharacter.skills.melee || 8);
       const skillName = isRanged ? 'Ranged' : 'Melee';
-      const skillBonus = getEffectiveSkillBonus(currentCharacter, isRanged ? 'ranged' : 'melee');
+      const skillBonus = state.effectiveSkillBonuses[isRanged ? 'ranged' : 'melee'] || 0;
 
       tr.innerHTML = `
         <td style="font-weight:bold; color:#fff;">${w.name}</td>
@@ -959,9 +955,11 @@
 
   function renderCharacterArmorGear() {
     const armorWrap = document.getElementById('char-armor-display');
-    if (armorWrap) {
+    if (armorWrap && currentCharacter) {
       const arm = currentCharacter.armor;
-      const armorMods = getArmorStatModifiers(currentCharacter);
+      const state = computeEffectiveCharacterState(currentCharacter);
+      const hasActiveArmorBoost = state.armor > 0;
+
       if (arm && arm.value && arm.name !== 'Unarmored' && arm.name !== 'None') {
         armorWrap.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
@@ -971,7 +969,7 @@
               <span class="tag tag-emerald" style="margin-left:4px;">+${arm.value} Armor</span>
               ${arm.boost ? `<span class="tag tag-cyan" style="margin-left:4px; font-weight:bold;">${arm.boost}</span>` : ''}
               ${arm.defMod ? `<span class="tag tag-crimson" style="margin-left:4px;">Def ${arm.defMod}</span>` : ''}
-              ${!armorMods.active ? `<span class="tag tag-crimson" style="margin-left:4px;">(Deactivated / Off)</span>` : ''}
+              ${!hasActiveArmorBoost ? `<span class="tag tag-crimson" style="margin-left:4px;">(Boost Deactivated / Removed)</span>` : ''}
             </div>
             <div style="display:flex; gap:0.4rem; align-items:center;">
               <button id="unequip-armor-btn" class="btn btn-sm btn-crimson" style="padding:2px 8px;">Unequip</button>
@@ -994,7 +992,7 @@
     }
 
     const gearList = document.getElementById('char-gear-list');
-    if (gearList) {
+    if (gearList && currentCharacter) {
       gearList.innerHTML = '';
       (currentCharacter.gear || []).forEach((g, idx) => {
         const div = document.createElement('div');
@@ -1016,7 +1014,7 @@
 
   function renderCharacterCybernetics() {
     const list = document.getElementById('char-cybernetics-list');
-    if (!list) return;
+    if (!list || !currentCharacter) return;
     list.innerHTML = '';
     let totalPoints = 0;
     (currentCharacter.cybernetics || []).forEach((c, idx) => {
@@ -1039,13 +1037,15 @@
 
     const ptsBadge = document.getElementById('cyber-points-badge');
     if (ptsBadge) {
-      const maxPts = Math.floor((currentCharacter.attributes.vigor || 6) / 2);
+      const state = computeEffectiveCharacterState(currentCharacter);
+      const maxPts = Math.floor(state.effectiveAttributes.vigor / 2);
       ptsBadge.textContent = `${totalPoints} / ${maxPts} Points Used`;
       ptsBadge.className = totalPoints > maxPts ? 'point-tracker-badge warning' : 'point-tracker-badge';
     }
   }
 
   function updateQuickTelemetry() {
+    if (!currentCharacter) return;
     const dName = document.getElementById('dossier-name');
     if (dName) dName.textContent = currentCharacter.name || 'Operative';
     const dCode = document.getElementById('dossier-codename');
@@ -1053,17 +1053,16 @@
     const dConcept = document.getElementById('dossier-concept');
     if (dConcept) dConcept.textContent = currentCharacter.concept || '';
 
-    const stats = calculateDerivedStats(currentCharacter);
-    const attrData = stats.attrData;
+    const state = computeEffectiveCharacterState(currentCharacter);
 
     const tDef = document.getElementById('telemetry-defense');
-    if (tDef) tDef.textContent = stats.defense;
+    if (tDef) tDef.textContent = state.defense;
     const tTough = document.getElementById('telemetry-toughness');
-    if (tTough) tTough.textContent = `${stats.totalToughness} (${stats.armorVal})`;
+    if (tTough) tTough.textContent = state.armor > 0 ? `${state.totalToughness} (${state.armor})` : `${state.totalToughness}`;
     const tDisc = document.getElementById('telemetry-discipline');
-    if (tDisc) tDisc.textContent = stats.discipline;
+    if (tDisc) tDisc.textContent = state.discipline;
     const tRes = document.getElementById('telemetry-resolve');
-    if (tRes) tRes.textContent = stats.resolve;
+    if (tRes) tRes.textContent = state.resolve;
   }
 
   function updateCharacterSelector() {
@@ -1150,7 +1149,8 @@
     const parts = damageExpr.toLowerCase().replace(/\s+/g, '').split('+');
     parts.forEach(part => {
       if (part === 'str') {
-        const strEff = getEffectiveAttributes(currentCharacter).effective.strength || 6;
+        const state = computeEffectiveCharacterState(currentCharacter);
+        const strEff = state.effectiveAttributes.strength || 6;
         const res = rollExplodingDie(strEff);
         total += res.total;
         breakdown.push(`Str(d${strEff}): [${res.rolls.join(',')}]`);
@@ -1497,7 +1497,15 @@
           targetAttr: targetAttr,
           state: stance,
           hasRaise: true,
-          desc: `+1 die step (${sc}+) on Success, +2 die steps (${sc}++) on Raise to ${attrCap} and its linked skills.`
+          desc: `+1 die step (${sc}+) on Success, +2 die steps (${sc}++) on Raise to ${attrCap} and its linked skills.`,
+          mutations: {
+            attrSteps: { [targetAttr]: 1 },
+            linkedAttrSkillMods: { [targetAttr]: 1 }
+          },
+          raiseMutations: {
+            attrSteps: { [targetAttr]: 2 },
+            linkedAttrSkillMods: { [targetAttr]: 2 }
+          }
         };
       } else if (template === 'muscular-enh') {
         newBoost = {
@@ -1507,7 +1515,15 @@
           type: 'muscular-enh',
           state: stance,
           hasRaise: true,
-          desc: '+1 (+2 on Raise) to Strength rolls, Athletics, Stealth, and Vigor tests vs extreme environments/fatigue/disease/poison.'
+          desc: '+1 (+2 on Raise) to Strength rolls, Athletics, Stealth, and Vigor tests vs extreme environments/fatigue/disease/poison.',
+          mutations: {
+            attrRollMods: { strength: 1 },
+            skillRollMods: { athletics: 1, stealth: 1 }
+          },
+          raiseMutations: {
+            attrRollMods: { strength: 2 },
+            skillRollMods: { athletics: 2, stealth: 2 }
+          }
         };
       } else if (template === 'thought-block') {
         newBoost = {
@@ -1517,7 +1533,15 @@
           type: 'thought-block',
           state: stance,
           hasRaise: true,
-          desc: '+1 (+3 on Raise) to Discipline and Resolve.'
+          desc: '+1 (+3 on Raise) to Discipline and Resolve.',
+          mutations: {
+            disciplineMod: 1,
+            resolveMod: 1
+          },
+          raiseMutations: {
+            disciplineMod: 3,
+            resolveMod: 3
+          }
         };
       } else if (template === 'stimpack') {
         newBoost = {
@@ -1527,7 +1551,11 @@
           type: 'stimpack',
           state: 'active',
           hasRaise: false,
-          desc: '+2 Speed and Agi+ for the combat encounter.'
+          desc: '+2 Speed and Agi+ for the combat encounter.',
+          mutations: {
+            attrSteps: { agility: 1 },
+            speedMod: 2
+          }
         };
       } else if (template === 'digital-uplink') {
         newBoost = {
@@ -1537,7 +1565,12 @@
           type: 'digital-uplink',
           state: 'active',
           hasRaise: false,
-          desc: '+1 trait bonus to tech & tactical skills.'
+          desc: '+1 trait bonus to tech & tactical skills.',
+          mutations: {
+            skillRollMods: {
+              computers: 1, engineering: 1, lore: 1, medicine: 1, science: 1, tactics: 1, perception: 1, pilot: 1, ranged: 1
+            }
+          }
         };
       } else if (template === 'hes-suit') {
         newBoost = {
@@ -1548,11 +1581,25 @@
           targetAttr: 'strength',
           state: 'active',
           hasRaise: false,
-          desc: 'Hermetic Ghost suit granting Str+ and +8 Armor to Toughness.'
+          desc: 'Hermetic Ghost suit granting Str+ and +8 Armor to Toughness.',
+          mutations: {
+            attrSteps: { strength: 1 },
+            armor: 8
+          }
         };
       } else if (template === 'custom') {
         const customName = document.getElementById('new-boost-custom-name')?.value.trim() || 'Custom Trait Boost';
         const customType = document.getElementById('new-boost-custom-type')?.value || 'attr-step';
+        
+        const mut = {};
+        if (customType === 'attr-step') mut.attrSteps = { [targetAttr]: 1 };
+        else if (customType === 'attr-step-2') mut.attrSteps = { [targetAttr]: 2 };
+        else if (customType === 'roll-1') { mut.attrRollMods = { [targetAttr]: 1 }; mut.linkedAttrSkillMods = { [targetAttr]: 1 }; }
+        else if (customType === 'roll-2') { mut.attrRollMods = { [targetAttr]: 2 }; mut.linkedAttrSkillMods = { [targetAttr]: 2 }; }
+        else if (customType === 'armor-4') mut.armor = 4;
+        else if (customType === 'def-2') mut.defMod = 2;
+        else if (customType === 'speed-2') mut.speedMod = 2;
+
         newBoost = {
           id: 'boost_' + Date.now(),
           name: customName,
@@ -1562,7 +1609,8 @@
           targetAttr: targetAttr,
           state: 'active',
           hasRaise: false,
-          desc: `Custom modifier targeting ${attrCap} (${customType}).`
+          desc: `Custom modifier targeting ${attrCap} (${customType}).`,
+          mutations: mut
         };
       }
 
@@ -1604,7 +1652,7 @@
       const delBoostBtn = e.target.closest('button[data-delete-boost-idx]');
       if (delBoostBtn) {
         const idx = parseInt(delBoostBtn.getAttribute('data-delete-boost-idx'), 10);
-        if (currentCharacter && currentCharacter.activeBoosts) {
+        if (currentCharacter && currentCharacter.activeBoosts && currentCharacter.activeBoosts[idx] !== undefined) {
           currentCharacter.activeBoosts.splice(idx, 1);
           SoundFX.toggle();
           saveCharacters();
@@ -1724,22 +1772,44 @@
             notes: data.desc
           };
           
-          // Ensure activeBoosts has an active entry for this armor
+          let strStep = 0;
+          let agiStep = 0;
+          const boostStr = (data.boost || '').toUpperCase();
+          if (boostStr.includes('STR +4') || boostStr.includes('STR++++')) strStep = 4;
+          else if (boostStr.includes('STR +3') || boostStr.includes('STR+++')) strStep = 3;
+          else if (boostStr.includes('STR +2') || boostStr.includes('STR++')) strStep = 2;
+          else if (boostStr.includes('STR +1') || boostStr.includes('STR+')) strStep = 1;
+
+          if (boostStr.includes('AGI +2') || boostStr.includes('AGI++')) agiStep = 2;
+          else if (boostStr.includes('AGI +1') || boostStr.includes('AGI+')) agiStep = 1;
+
+          const armorMutations = {
+            armor: parseInt(data.armor, 10) || 0,
+            defMod: parseInt(data.defMod, 10) || 0
+          };
+          if (strStep > 0 || agiStep > 0) {
+            armorMutations.attrSteps = {};
+            if (strStep > 0) armorMutations.attrSteps.strength = strStep;
+            if (agiStep > 0) armorMutations.attrSteps.agility = agiStep;
+          }
+
           if (!currentCharacter.activeBoosts) currentCharacter.activeBoosts = [];
           const exIdx = currentCharacter.activeBoosts.findIndex(b => b.type === 'hes-suit' || b.id === 'boost_hes_suit' || b.name === data.name);
           if (exIdx >= 0) {
             currentCharacter.activeBoosts[exIdx].state = 'active';
             currentCharacter.activeBoosts[exIdx].name = data.name;
+            currentCharacter.activeBoosts[exIdx].mutations = armorMutations;
           } else {
             currentCharacter.activeBoosts.unshift({
               id: 'boost_hes_suit',
               name: data.name,
               category: 'Gear',
               type: 'hes-suit',
-              targetAttr: 'strength',
+              targetAttr: strStep > 0 ? 'strength' : (agiStep > 0 ? 'agility' : undefined),
               state: 'active',
               hasRaise: false,
-              desc: `${data.name} (+${data.armor} Armor${data.boost ? `, ${data.boost}` : ''}).`
+              desc: `${data.name} (+${data.armor} Armor${data.boost ? `, ${data.boost}` : ''}).`,
+              mutations: armorMutations
             });
           }
 
@@ -1748,7 +1818,7 @@
           renderAttributesAndStats();
           renderCharacterArmorGear();
           updateQuickTelemetry();
-          alert(`Equipped "${data.name}". Armor (+${data.armor}) and trait modifiers applied to Toughness and Attributes.`);
+          alert(`Equipped "${data.name}". Armor (+${data.armor}) and trait modifiers applied.`);
         }
         return;
       }
@@ -1856,7 +1926,7 @@
     loadCharacters();
     setupEventListeners();
     renderAll();
-    console.log('StarCraft High-Performance Living Document Initialized.');
+    console.log('StarCraft High-Performance Living Document Initialized with Data-Driven Mutation Model.');
   });
 
 })();
