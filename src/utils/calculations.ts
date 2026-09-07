@@ -273,7 +273,7 @@ export function calculatePoints(char: Character): PointPools {
   else if (intel === 10) intBonus = 3;
   else if (intel === 12) intBonus = 4;
 
-  const baseSkillPoints = 13;
+  const baseSkillPoints = 15;
   const advSkillBonus = advSkillCount * 3;
   const hindranceSkillBonus = (char.hindranceConversions && char.hindranceConversions.skillPoints) || 0;
   const totalSkillPointsPool = baseSkillPoints + intBonus + advSkillBonus + hindranceSkillBonus;

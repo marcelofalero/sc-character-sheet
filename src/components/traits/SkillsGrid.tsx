@@ -53,7 +53,7 @@ export const SkillsGrid: React.FC = () => {
     );
   };
 
-  const poolParts = ['Base 13'];
+  const poolParts = [`Base ${pointPools.baseSkillPoints || 15}`];
   if (pointPools.intBonus > 0) poolParts.push(`Int +${pointPools.intBonus}`);
   if (pointPools.advSkillBonus > 0) poolParts.push(`AdvSkills (${pointPools.advSkillCount}x3) +${pointPools.advSkillBonus}`);
   if (pointPools.hindranceSkillBonus > 0) poolParts.push(`Hind +${pointPools.hindranceSkillBonus}`);
