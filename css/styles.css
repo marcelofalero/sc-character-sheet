@@ -846,6 +846,33 @@ body.theme-light .buff-name { color: #0f172a; }
   background: rgba(255, 179, 0, 0.06);
 }
 
+/* Add Boost Panel & Dynamic Boost Manager */
+.boost-panel-form {
+  background: rgba(14, 23, 42, 0.96);
+  border: 1px solid var(--cyan);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 229, 255, 0.15);
+  display: none;
+}
+
+.boost-panel-form.open {
+  display: block;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.boost-tag-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+}
+
 .raise-badge-btn {
   background: rgba(148, 163, 184, 0.1);
   border: 1px solid var(--border-subtle);

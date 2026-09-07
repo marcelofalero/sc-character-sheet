@@ -208,141 +208,84 @@
           </div>
         </div>
 
-        <!-- ACTIVE COMBAT BUFFS & POWER STANCES (TEMP SCORES) -->
+        <!-- ACTIVE COMBAT BUFFS & MODIFIERS (DYNAMIC ADD BOOST UI) -->
         <div class="hud-inner-card" style="margin-bottom:1.25rem; border:1px solid var(--border-amber); background:rgba(18, 28, 48, 0.95);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem;">
             <div style="display:flex; align-items:center; gap:0.5rem;">
-              <span class="hud-card-title amber-text">⚡ ACTIVE COMBAT BUFFS & TEMPORARY POWER STANCES</span>
-              <span class="tag tag-amber">Real-Time Stat Modifiers</span>
+              <span class="hud-card-title amber-text">⚡ ACTIVE COMBAT BUFFS & MODIFIERS</span>
+              <span id="active-boosts-counter" class="tag tag-amber">0 Active</span>
             </div>
-            <div style="font-size:0.75rem; color:var(--text-muted);">Toggle active gear & power enhancements to instantly modify attributes, skills, and derived stats</div>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <button id="btn-toggle-add-boost" class="btn btn-sm btn-cyan" style="font-size:0.8rem; padding:3px 10px;">+ Add Boost / Modifier</button>
+            </div>
           </div>
 
-          <div class="buffs-toolbar-grid">
+          <!-- Add Boost Form Panel (Collapsible) -->
+          <div id="add-boost-panel" class="boost-panel-form">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+              <strong style="color:var(--cyan); font-size:0.88rem;">✨ Apply New Boost or Stance</strong>
+              <button id="btn-close-add-boost" class="btn btn-sm btn-outline" style="padding:1px 6px;">✕</button>
+            </div>
             
-            <!-- HES Suit -->
-            <div class="buff-card-item">
-              <div class="buff-header-row">
-                <span class="buff-name">🪖 Hostile Environment Suit</span>
-                <div class="info-icon" tabindex="0">ⓘ
-                  <div class="tooltip-box">
-                    <strong>Hostile Environment Suit:</strong><br>
-                    • <code>Str+</code> (+1 die step to Strength)<br>
-                    • <code>+8 Armor</code> (Heavy Body Protection)<br>
-                    • Unlocks Personal Cloaking & Tactical Mask zoom
-                  </div>
-                </div>
-              </div>
-              <div class="tri-state-group" data-buff-group="hesSuit">
-                <button class="tri-btn" data-val="off">Off</button>
-                <button class="tri-btn active" data-val="active">Equipped</button>
-              </div>
-            </div>
-
-            <!-- Digital Uplink II -->
-            <div class="buff-card-item">
-              <div class="buff-header-row">
-                <span class="buff-name">📡 Digital Uplink II</span>
-                <div class="info-icon" tabindex="0">ⓘ
-                  <div class="tooltip-box">
-                    <strong>Digital Uplink II:</strong><br>
-                    • <code>+1 trait bonus</code> to 8 skills:<br>
-                    Academics, Athletics, Driving, Engineering, Piloting, Research, Science, Shooting
-                  </div>
-                </div>
-              </div>
-              <div class="tri-state-group" data-buff-group="digitalUplink">
-                <button class="tri-btn" data-val="off">Off</button>
-                <button class="tri-btn active" data-val="active">Active</button>
-              </div>
-            </div>
-
-            <!-- Muscular Enhancement (3-STATE: Off / Success / Raise) -->
-            <div class="buff-card-item">
-              <div class="buff-header-row">
-                <span class="buff-name">💪 Muscular Enhancement</span>
-                <div class="info-icon" tabindex="0">ⓘ
-                  <div class="tooltip-box">
-                    <strong>Muscular Enhancement (Psi Power, PL 4):</strong><br>
-                    • <strong>Success:</strong> +1 bonus to Strength rolls, Athletics & Stealth checks, and Vigor tests vs extreme temp/fatigue/disease/poison<br>
-                    • <strong>Raise:</strong> +2 bonus to Strength rolls, Athletics & Stealth checks, and Vigor tests<br>
-                    <em>Note: Applies to rolls only. Does not increase Strength attribute die, melee damage dice, or derived stats.</em>
-                  </div>
-                </div>
-              </div>
-              <div class="tri-state-group" data-buff-group="muscularEnhancement">
-                <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success</button>
-                <button class="tri-btn" data-val="raise">Raise</button>
-              </div>
-            </div>
-
-            <!-- Enhance Abilities (3-STATE: Off / Success / Raise) -->
-            <div class="buff-card-item">
-              <div class="buff-header-row">
-                <span class="buff-name">✨ Enhance Abilities</span>
-                <div class="info-icon" tabindex="0">ⓘ
-                  <div class="tooltip-box">
-                    <strong>Enhance Abilities (Augmentation, PL 4, SP 3):</strong><br>
-                    Increases a chosen physical attribute and all linked skills by +1 die step (+2 on a Raise).<br>
-                    • <strong>Success:</strong> +1 die step to target Attribute & linked skills.<br>
-                    • <strong>Raise:</strong> +2 die steps to target Attribute & linked skills.<br>
-                    <em>Lasts 1 min/PL (5 min at PL 5). (At PL 6 affects 2 attributes, at PL 8 affects all 3).</em>
-                  </div>
-                </div>
-              </div>
-              <div style="display:flex; align-items:center; gap:0.35rem; margin-top:0.25rem; margin-bottom:0.35rem;">
-                <select id="enhance-abilities-target" class="form-select" style="padding:2px 6px; font-size:0.75rem; height:24px; flex:1; background:rgba(10,18,32,0.9); border:1px solid rgba(0,229,255,0.4); color:var(--cyan); border-radius:4px;">
-                  <option value="agility" selected>Target: Agility</option>
-                  <option value="instinct">Target: Instinct</option>
-                  <option value="strength">Target: Strength</option>
+            <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:0.6rem;">
+              <div class="form-group">
+                <label class="form-label">Boost Template / Type</label>
+                <select id="new-boost-template" class="form-select">
+                  <option value="enhance-abilities">✨ Enhance Abilities (Augmentation Power)</option>
+                  <option value="muscular-enh">💪 Muscular Enhancement (Augmentation Power)</option>
+                  <option value="thought-block">🧠 Thought Blocking (Telepathy Power)</option>
+                  <option value="stimpack">💉 Military Stimpack (Chemical)</option>
+                  <option value="digital-uplink">📡 Digital Uplink II (Tactical Gear)</option>
+                  <option value="custom">⚙️ Custom Trait Boost / Ally Buff</option>
                 </select>
               </div>
-              <div class="tri-state-group" data-buff-group="enhanceAbilities">
-                <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success</button>
-                <button class="tri-btn" data-val="raise">Raise</button>
-              </div>
-            </div>
 
-            <!-- Thought Blocking -->
-            <div class="buff-card-item">
-              <div class="buff-header-row">
-                <span class="buff-name">🧠 Thought Blocking</span>
-                <div class="info-icon" tabindex="0">ⓘ
-                  <div class="tooltip-box">
-                    <strong>Thought Blocking (Psi Power):</strong><br>
-                    • <strong>Success:</strong> +1 to Discipline & Resolve defense scores<br>
-                    • <strong>Raise:</strong> +3 to Discipline & Resolve defense scores, immune to telepathic intrusion
-                  </div>
+              <div id="grp-boost-target-attr" class="form-group">
+                <label class="form-label">Target Physical Attribute</label>
+                <select id="new-boost-target-attr" class="form-select">
+                  <option value="agility">Agility (Boosts Athletics, Melee, Stealth)</option>
+                  <option value="instinct">Instinct (Boosts Perception, Pilot, Ranged, Survival, Tactics, Insight)</option>
+                  <option value="strength">Strength (Boosts Strength checks)</option>
+                  <option value="vigor">Vigor (Endurance & Toughness)</option>
+                  <option value="intelligence">Intelligence (Academics, Tech & Sci)</option>
+                  <option value="spirit">Spirit (Influence, Leadership, Psi)</option>
+                </select>
+              </div>
+
+              <div id="grp-boost-level" class="form-group">
+                <label class="form-label">Activation Stance / Roll Result</label>
+                <select id="new-boost-level" class="form-select">
+                  <option value="success">Success (+1 Die Step / +1 Bonus)</option>
+                  <option value="raise">Raise (+2 Die Steps / +2 Bonus)</option>
+                </select>
+              </div>
+
+              <div id="grp-custom-fields" class="form-group" style="display:none; grid-column:span 2;">
+                <label class="form-label">Custom Boost Name & Category</label>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                  <input type="text" id="new-boost-custom-name" class="form-input" placeholder="e.g. Commander Inspire / Biotic Shield" style="flex:2; min-width:180px;">
+                  <select id="new-boost-custom-type" class="form-select" style="flex:1; min-width:150px;">
+                    <option value="attr-step">+1 Die Step to Target</option>
+                    <option value="attr-step-2">+2 Die Steps to Target</option>
+                    <option value="roll-1">+1 Flat Roll Bonus</option>
+                    <option value="roll-2">+2 Flat Roll Bonus</option>
+                    <option value="armor-4">+4 Toughness / Armor</option>
+                    <option value="def-2">+2 Defense</option>
+                    <option value="speed-2">+2 Speed</option>
+                  </select>
                 </div>
               </div>
-              <div class="tri-state-group" data-buff-group="thoughtBlock">
-                <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success</button>
-                <button class="tri-btn" data-val="raise">Raise</button>
-              </div>
             </div>
 
-            <!-- Stimpack -->
-            <div class="buff-card-item">
-              <div class="buff-header-row">
-                <span class="buff-name">💉 Military Stimpack</span>
-                <div class="info-icon" tabindex="0">ⓘ
-                  <div class="tooltip-box">
-                    <strong>Military Stimpack (Chemical):</strong><br>
-                    • <code>+2″ Speed</code>, <code>Agi+</code> (+1 die step)<br>
-                    • +2 on Vigor checks to resist knockout<br>
-                    • Inflicts 1 Fatigue level when duration expires
-                  </div>
-                </div>
-              </div>
-              <div class="tri-state-group" data-buff-group="stimpack">
-                <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="active">Injected</button>
-              </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.6rem;">
+              <button id="btn-cancel-add-boost" class="btn btn-sm btn-outline">Cancel</button>
+              <button id="btn-confirm-add-boost" class="btn btn-sm btn-emerald">✓ Apply Boost to Sheet</button>
             </div>
+          </div>
 
+          <!-- Dynamic Active Boosts Grid Container -->
+          <div id="active-boosts-container" class="buffs-toolbar-grid">
+            <!-- Dynamically populated from character profile activeBoosts -->
           </div>
         </div>
 

@@ -70,10 +70,91 @@
     return DIE_STEPS[newIdx];
   }
 
-    function formatTraitBoost(traitCode, steps) {
+  function formatTraitBoost(traitCode, steps) {
     if (steps > 0) return `${traitCode}${'+'.repeat(steps)}`;
     if (steps < 0) return `${traitCode}${'-'.repeat(Math.abs(steps))}`;
     return '';
+  }
+
+  const SKILL_ATTR_MAP = {
+    athletics: 'agility',
+    melee: 'agility',
+    stealth: 'agility',
+    insight: 'instinct',
+    perception: 'instinct',
+    pilot: 'instinct',
+    ranged: 'instinct',
+    survival: 'instinct',
+    tactics: 'intelligence',
+    computers: 'intelligence',
+    engineering: 'intelligence',
+    lore: 'intelligence',
+    medicine: 'intelligence',
+    science: 'intelligence',
+    influence: 'spirit',
+    leadership: 'spirit',
+    psionics: 'spirit'
+  };
+
+  function getDefaultActiveBoosts() {
+    return [
+      {
+        id: "boost_hes_suit",
+        name: "Hostile Environment Suit",
+        category: "Gear",
+        type: "hes-suit",
+        state: "active",
+        targetAttr: "strength",
+        hasRaise: false,
+        desc: "Hermetic Ghost suit granting Str+ and +8 Armor to Toughness."
+      },
+      {
+        id: "boost_digital_uplink",
+        name: "Digital Uplink II",
+        category: "Gear",
+        type: "digital-uplink",
+        state: "active",
+        hasRaise: false,
+        desc: "Tactical cyber-link granting +1 trait bonus to tech & tactical rolls (Tactics, Computers, Engineering, Lore, Medicine, Science, Ranged, Perception)."
+      },
+      {
+        id: "boost_muscular_enh",
+        name: "Muscular Enhancement",
+        category: "Psionics (PL 4)",
+        type: "muscular-enh",
+        state: "off",
+        hasRaise: true,
+        desc: "+1 (+2 on Raise) to physical rolls (Strength rolls, Athletics, Stealth, and Vigor tests vs extreme environments/fatigue/disease/poison)."
+      },
+      {
+        id: "boost_enhance_abilities_agi",
+        name: "Enhance Abilities (Agility)",
+        category: "Psionics (PL 3)",
+        type: "enhance-abilities",
+        targetAttr: "agility",
+        state: "off",
+        hasRaise: true,
+        desc: "+1 die step (Agi+) on Success, +2 die steps (Agi++) on Raise to Agility and its linked skills (Athletics, Melee, Stealth)."
+      },
+      {
+        id: "boost_thought_block",
+        name: "Thought Blocking",
+        category: "Psionics",
+        type: "thought-block",
+        state: "off",
+        hasRaise: true,
+        desc: "+1 (+3 on Raise) to Discipline and Resolve."
+      },
+      {
+        id: "boost_stimpack",
+        name: "Military Stimpack",
+        category: "Chemical",
+        type: "stimpack",
+        state: "off",
+        hasRaise: false,
+        desc: "+2 Speed and Agi+ for the combat encounter."
+      }
+    ];
   }
 
   function getDefaultCharacter() {
@@ -116,18 +197,7 @@
         "survival": 0,
         "tactics": 0
       },
-      "activeBuffs": {
-        "hesSuit": true,
-        "digitalUplink": true,
-        "muscularEnhancement": false,
-        "muscularEnhancementRaise": false,
-        "enhanceAbilities": false,
-        "enhanceAbilitiesRaise": false,
-        "enhanceAbilitiesTarget": "agility",
-        "thoughtBlock": false,
-        "thoughtBlockRaise": false,
-        "stimpack": false
-      },
+      "activeBoosts": getDefaultActiveBoosts(),
       "tempAttributeMods": {
         "agility": 0, "strength": 0, "vigor": 0, "instinct": 0, "intelligence": 0, "spirit": 0
       },
@@ -204,15 +274,17 @@
   let currentCharacter = null;
 
   function getArmorStatModifiers(char) {
-    const buffs = char.activeBuffs || {};
     const armor = char.armor;
+    const activeBoosts = char.activeBoosts || [];
+    const hesBoost = activeBoosts.find(b => b.type === 'hes-suit');
+    const hesIsActive = hesBoost ? (hesBoost.state !== 'off') : true;
+
     if (!armor || !armor.name || armor.name === 'Unarmored' || armor.name === 'None') {
       return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: false, active: false };
     }
 
     const isHES = (armor.name === 'Hostile Environment Suit' || armor.name === 'HES');
-    // If HES is equipped, it respects the hesSuit buff toggle
-    if (isHES && buffs.hesSuit === false) {
+    if (isHES && !hesIsActive) {
       return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: true, active: false };
     }
 
@@ -235,27 +307,37 @@
   }
 
   function getEffectiveAttributes(char) {
-    const buffs = char.activeBuffs || {};
     const tempMods = char.tempAttributeMods || {};
     const armorMods = getArmorStatModifiers(char);
+    const activeBoosts = char.activeBoosts || [];
 
-    let enhanceAgi = 0;
-    let enhanceStr = 0;
-    let enhanceInst = 0;
-    if (buffs.enhanceAbilities) {
-      const step = buffs.enhanceAbilitiesRaise ? 2 : 1;
-      const target = buffs.enhanceAbilitiesTarget || 'agility';
-      if (target === 'agility') enhanceAgi = step;
-      else if (target === 'strength') enhanceStr = step;
-      else if (target === 'instinct') enhanceInst = step;
-    }
+    let steps = {
+      agility: armorMods.agiStep + (tempMods.agility || 0),
+      strength: armorMods.strStep + (tempMods.strength || 0),
+      vigor: (tempMods.vigor || 0),
+      instinct: (tempMods.instinct || 0),
+      intelligence: (tempMods.intelligence || 0),
+      spirit: (tempMods.spirit || 0)
+    };
 
-    let strStep = armorMods.strStep + enhanceStr + (tempMods.strength || 0);
-    let agiStep = armorMods.agiStep + enhanceAgi + (tempMods.agility || 0);
-    let vigStep = (tempMods.vigor || 0);
-    let instStep = enhanceInst + (tempMods.instinct || 0);
-    let intStep = (tempMods.intelligence || 0);
-    let spiStep = (tempMods.spirit || 0);
+    activeBoosts.forEach(b => {
+      if (!b.state || b.state === 'off') return;
+
+      if (b.type === 'stimpack') {
+        steps.agility += 1;
+      } else if (b.type === 'enhance-abilities' && b.targetAttr) {
+        const stepVal = (b.state === 'raise' ? 2 : 1);
+        if (steps[b.targetAttr] !== undefined) {
+          steps[b.targetAttr] += stepVal;
+        }
+      } else if (b.type === 'custom' && b.customType && b.targetAttr) {
+        if (b.customType === 'attr-step' || b.customType === 'custom-attr-1') {
+          steps[b.targetAttr] += 1;
+        } else if (b.customType === 'attr-step-2' || b.customType === 'custom-attr-2') {
+          steps[b.targetAttr] += 2;
+        }
+      }
+    });
 
     const baseAgi = char.attributes.agility || 4;
     const baseStr = char.attributes.strength || 4;
@@ -266,45 +348,79 @@
 
     return {
       base: { agility: baseAgi, strength: baseStr, vigor: baseVig, instinct: baseInst, intelligence: baseIntel, spirit: baseSpi },
-      steps: { agility: agiStep, strength: strStep, vigor: vigStep, instinct: instStep, intelligence: intStep, spirit: spiStep },
+      steps: steps,
       effective: {
-        agility: getSteppedDie(baseAgi, agiStep),
-        strength: getSteppedDie(baseStr, strStep),
-        vigor: getSteppedDie(baseVig, vigStep),
-        instinct: getSteppedDie(baseInst, instStep),
-        intelligence: getSteppedDie(baseIntel, intStep),
-        spirit: getSteppedDie(baseSpi, spiStep)
+        agility: getSteppedDie(baseAgi, steps.agility),
+        strength: getSteppedDie(baseStr, steps.strength),
+        vigor: getSteppedDie(baseVig, steps.vigor),
+        instinct: getSteppedDie(baseInst, steps.instinct),
+        intelligence: getSteppedDie(baseIntel, steps.intelligence),
+        spirit: getSteppedDie(baseSpi, steps.spirit)
       }
     };
   }
 
   function getEffectiveAttributeRollBonus(char, attrId) {
-    const buffs = char.activeBuffs || {};
     let bonus = 0;
-    if (attrId === 'strength' && buffs.muscularEnhancement) {
-      bonus += buffs.muscularEnhancementRaise ? 2 : 1;
-    }
+    const activeBoosts = char.activeBoosts || [];
+    activeBoosts.forEach(b => {
+      if (!b.state || b.state === 'off') return;
+      if (b.type === 'muscular-enh' && attrId === 'strength') {
+        bonus += (b.state === 'raise' ? 2 : 1);
+      }
+      if (b.type === 'custom' && b.targetAttr === attrId) {
+        if (b.customType === 'roll-1') bonus += 1;
+        if (b.customType === 'roll-2') bonus += 2;
+      }
+    });
     return bonus;
   }
 
   function getEffectiveSkillBonus(char, skillId) {
-    const buffs = char.activeBuffs || {};
     const tempMods = char.tempSkillMods || {};
     let bonus = tempMods[skillId] || 0;
+    const activeBoosts = char.activeBoosts || [];
+    const skillNorm = skillId.toLowerCase().trim();
+    const linkedAttr = SKILL_ATTR_MAP[skillNorm] || 'agility';
 
-    if (buffs.digitalUplink && ['ranged', 'athletics', 'computers', 'medicine', 'lore', 'perception', 'science', 'stealth'].includes(skillId)) {
-      bonus += 1;
-    }
-    if (buffs.muscularEnhancement && ['athletics', 'stealth'].includes(skillId)) {
-      bonus += buffs.muscularEnhancementRaise ? 2 : 1;
-    }
-    if (buffs.enhanceAbilities) {
-      const target = buffs.enhanceAbilitiesTarget || 'agility';
-      const skData = window.SC_DATA?.skills?.find(s => s.id === skillId);
-      if (skData && skData.attr.toLowerCase() === target) {
-        bonus += buffs.enhanceAbilitiesRaise ? 2 : 1;
+    activeBoosts.forEach(b => {
+      if (!b.state || b.state === 'off') return;
+
+      // Digital Uplink: +1 to tech & tactical skills
+      if (b.type === 'digital-uplink') {
+        const uplinkSkills = ['computers', 'engineering', 'lore', 'medicine', 'science', 'tactics', 'perception', 'pilot', 'ranged'];
+        if (uplinkSkills.includes(skillNorm)) {
+          bonus += 1;
+        }
       }
-    }
+
+      // Muscular Enhancement: +1 (+2 on Raise) to Athletics, Stealth
+      if (b.type === 'muscular-enh') {
+        if (['athletics', 'stealth'].includes(skillNorm)) {
+          bonus += (b.state === 'raise' ? 2 : 1);
+        }
+      }
+
+      // Enhance Abilities: ONLY boosts skills linked to the targeted attribute
+      if (b.type === 'enhance-abilities') {
+        if (b.targetAttr && b.targetAttr.toLowerCase() === linkedAttr) {
+          bonus += (b.state === 'raise' ? 2 : 1);
+        }
+      }
+
+      // Custom Boosts
+      if (b.type === 'custom') {
+        if (b.targetAttr && b.targetAttr.toLowerCase() === linkedAttr) {
+          if (b.customType === 'roll-1') bonus += 1;
+          if (b.customType === 'roll-2') bonus += 2;
+        }
+        if (b.targetSkill && b.targetSkill.toLowerCase() === skillNorm) {
+          if (b.customType === 'roll-1') bonus += 1;
+          if (b.customType === 'roll-2') bonus += 2;
+        }
+      }
+    });
+
     return bonus;
   }
 
@@ -312,38 +428,57 @@
     const attrData = getEffectiveAttributes(char);
     const eff = attrData.effective;
     const psi = parseInt(char.psiRating, 10) || 5;
-    const buffs = char.activeBuffs || {};
     const armorMods = getArmorStatModifiers(char);
+    const activeBoosts = char.activeBoosts || [];
+
+    let customDef = 0;
+    let customToughness = 0;
+    let customSpeed = 0;
+    let thoughtBlockBonus = 0;
+    let stimpackActive = false;
+
+    activeBoosts.forEach(b => {
+      if (!b.state || b.state === 'off') return;
+      if (b.type === 'thought-block') {
+        thoughtBlockBonus += (b.state === 'raise' ? 3 : 1);
+      }
+      if (b.type === 'stimpack') {
+        stimpackActive = true;
+      }
+      if (b.type === 'custom') {
+        if (b.customType === 'def-2') customDef += 2;
+        if (b.customType === 'armor-4') customToughness += 4;
+        if (b.customType === 'speed-2') customSpeed += 2;
+      }
+    });
 
     const armorVal = armorMods.armorVal;
     const defMod = armorMods.defMod;
 
-    const rawDefense = Math.floor(eff.agility / 2) + Math.floor(eff.instinct / 2) + defMod;
+    const rawDefense = Math.floor(eff.agility / 2) + Math.floor(eff.instinct / 2) + defMod + customDef;
     const defense = Math.max(1, rawDefense);
 
-    const tbBonus = buffs.thoughtBlock ? (buffs.thoughtBlockRaise ? 3 : 1) : 0;
-    const discipline = Math.floor(eff.spirit / 2) + Math.floor(eff.intelligence / 2) + tbBonus;
+    const discipline = Math.floor(eff.spirit / 2) + Math.floor(eff.intelligence / 2) + thoughtBlockBonus;
 
     const baseToughness = Math.floor(eff.vigor / 2) + Math.floor(eff.strength / 2);
-    const totalToughness = baseToughness + armorVal;
+    const totalToughness = baseToughness + armorVal + customToughness;
 
-    const resolve = Math.floor(eff.spirit / 2) + Math.floor(eff.instinct / 2) + psi + tbBonus;
+    const resolve = Math.floor(eff.spirit / 2) + Math.floor(eff.instinct / 2) + psi + thoughtBlockBonus;
     const maxWounds = Math.floor(eff.strength / 3) + 1;
     const maxFatigue = Math.floor(eff.vigor / 3);
 
-    let speed = 6;
-    if (buffs.stimpack) speed += 2;
+    let speed = 6 + (stimpackActive ? 2 : 0) + customSpeed;
 
     return {
       defense,
+      defMod,
       discipline,
       baseToughness,
       totalToughness,
-      armorVal,
-      defMod,
+      armorVal: armorVal + customToughness,
       resolve,
-      maxWounds: Math.max(2, maxWounds),
-      maxFatigue: Math.max(1, maxFatigue),
+      maxWounds,
+      maxFatigue,
       speed,
       attrData
     };
@@ -374,15 +509,16 @@
     let spentSkillPoints = 0;
     if (window.SC_DATA && window.SC_DATA.skills) {
       window.SC_DATA.skills.forEach(sk => {
-        const charSkillDie = char.skills[sk.id] || 0;
-        const linkedAttr = sk.attr.toLowerCase();
+        const skillId = (sk.id || sk.name.toLowerCase().replace(/[^a-z0-9]/g, '')).trim();
+        const charSkillDie = char.skills[skillId] || 0;
+        const linkedAttr = (sk.attr || SKILL_ATTR_MAP[skillId] || 'Agility').toLowerCase();
         const linkedAttrDie = char.attributes[linkedAttr] || 4;
 
         if (charSkillDie > 0) {
           let freeDie = sk.core ? 4 : 0;
           if (char.trainingPath === 'ghost') {
-            if (sk.id === 'ranged' || sk.id === 'melee') freeDie = Math.max(freeDie, 4);
-            if (sk.id === 'stealth') freeDie = Math.max(freeDie, 6);
+            if (skillId === 'ranged' || skillId === 'melee') freeDie = Math.max(freeDie, 4);
+            if (skillId === 'stealth') freeDie = Math.max(freeDie, 6);
           }
 
           if (charSkillDie > freeDie) {
@@ -427,6 +563,13 @@
       saveCharacters();
     }
 
+    // Ensure activeBoosts array exists on all characters
+    characters.forEach(char => {
+      if (!char.activeBoosts || !Array.isArray(char.activeBoosts)) {
+        char.activeBoosts = getDefaultActiveBoosts();
+      }
+    });
+
     const activeId = localStorage.getItem('sc_rpg_active_char_id');
     currentCharacter = characters.find(c => c.id === activeId) || characters[0];
   }
@@ -466,12 +609,92 @@
     document.getElementById('char-concept-input').value = currentCharacter.concept || '';
   }
 
+  function renderActiveBoosts() {
+    const container = document.getElementById('active-boosts-container');
+    const counter = document.getElementById('active-boosts-counter');
+    if (!container || !currentCharacter) return;
+
+    if (!currentCharacter.activeBoosts || !Array.isArray(currentCharacter.activeBoosts)) {
+      currentCharacter.activeBoosts = getDefaultActiveBoosts();
+    }
+
+    container.innerHTML = '';
+    let activeCount = 0;
+
+    const shortCodes = { agility: 'Agi', strength: 'Str', vigor: 'Vig', instinct: 'Inst', intelligence: 'Int', spirit: 'Spi' };
+
+    currentCharacter.activeBoosts.forEach((b, idx) => {
+      const isActive = (b.state && b.state !== 'off');
+      if (isActive) activeCount++;
+
+      const card = document.createElement('div');
+      card.className = `buff-control-card ${isActive ? 'active-buff' : ''}`;
+
+      const catLower = (b.category || '').toLowerCase();
+      const badgeColor = catLower.includes('psion') ? 'violet' : (catLower.includes('gear') ? 'cyan' : (catLower.includes('chem') ? 'emerald' : 'amber'));
+      let categoryTag = b.category ? `<span class="tag tag-${badgeColor}">${b.category}</span>` : '';
+
+      let targetNotation = '';
+      if (b.type === 'enhance-abilities' && b.targetAttr) {
+        const sc = shortCodes[b.targetAttr] || b.targetAttr;
+        if (b.state === 'raise') targetNotation = `<span class="tag tag-emerald" style="margin-left:4px; font-weight:bold;">${sc}++</span>`;
+        else if (b.state === 'success' || b.state === 'active') targetNotation = `<span class="tag tag-cyan" style="margin-left:4px; font-weight:bold;">${sc}+</span>`;
+        else targetNotation = `<span class="tag tag-outline" style="margin-left:4px;">${sc}</span>`;
+      } else if (b.type === 'custom' && b.targetAttr) {
+        const sc = shortCodes[b.targetAttr] || b.targetAttr;
+        targetNotation = `<span class="tag tag-outline" style="margin-left:4px;">${sc}</span>`;
+      }
+
+      let buttonsHtml = '';
+      if (b.hasRaise) {
+        buttonsHtml = `
+          <div class="tri-state-group" data-boost-idx="${idx}">
+            <button class="tri-btn ${b.state === 'off' ? 'active' : ''}" data-boost-val="off">Off</button>
+            <button class="tri-btn ${b.state === 'success' ? 'active' : ''}" data-boost-val="success">Success</button>
+            <button class="tri-btn ${b.state === 'raise' ? 'active raise-active' : ''}" data-boost-val="raise">Raise</button>
+          </div>
+        `;
+      } else {
+        buttonsHtml = `
+          <div class="tri-state-group" data-boost-idx="${idx}">
+            <button class="tri-btn ${b.state === 'off' ? 'active' : ''}" data-boost-val="off">Off</button>
+            <button class="tri-btn ${b.state === 'active' ? 'active' : ''}" data-boost-val="active">Active</button>
+          </div>
+        `;
+      }
+
+      const isCore = ['boost_hes_suit', 'boost_digital_uplink'].includes(b.id);
+      const deleteBtn = !isCore ? `<button class="btn btn-crimson btn-sm" data-delete-boost-idx="${idx}" title="Remove Boost" style="padding:1px 6px; font-size:0.75rem; margin-left:auto;">✕</button>` : '';
+
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; width:100%;">
+          <div style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap;">
+            <span class="buff-title" style="font-weight:600; color:#fff;">${b.name}</span>
+            ${targetNotation}
+            ${categoryTag}
+            <span class="info-icon" title="${b.desc || ''}">ⓘ
+              <span class="tooltip-box">${b.desc || ''}</span>
+            </span>
+          </div>
+          ${deleteBtn}
+        </div>
+        <div style="display:flex; justify-content:flex-end; width:100%;">
+          ${buttonsHtml}
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+
+    if (counter) {
+      counter.textContent = `${activeCount} Active`;
+      counter.className = activeCount > 0 ? 'tag tag-emerald' : 'tag tag-amber';
+    }
+  }
+
   function renderAttributesAndStats() {
     if (!currentCharacter) return;
 
-    if (!currentCharacter.activeBuffs) {
-      currentCharacter.activeBuffs = { hesSuit: true, digitalUplink: true, muscularEnhancement: false, muscularEnhancementRaise: false, rush: false, rushRaise: false, thoughtBlock: false, thoughtBlockRaise: false, stimpack: false };
-    }
     if (!currentCharacter.tempAttributeMods) {
       currentCharacter.tempAttributeMods = { agility: 0, strength: 0, vigor: 0, instinct: 0, intelligence: 0, spirit: 0 };
     }
@@ -479,41 +702,11 @@
       currentCharacter.tempSkillMods = {};
     }
 
+    renderActiveBoosts();
+
     const stats = calculateDerivedStats(currentCharacter);
     const points = calculatePoints(currentCharacter);
     const attrData = stats.attrData;
-
-    // Sync 3-State Segmented Controls
-    const syncTriGroup = (groupName, activeVal) => {
-      const group = document.querySelector(`.tri-state-group[data-buff-group="${groupName}"]`);
-      if (group) {
-        group.querySelectorAll('.tri-btn').forEach(btn => {
-          const val = btn.getAttribute('data-val');
-          if (val === activeVal) {
-            btn.classList.add('active');
-            if (val === 'raise') btn.classList.add('raise-active');
-            else btn.classList.remove('raise-active');
-          } else {
-            btn.classList.remove('active', 'raise-active');
-          }
-        });
-      }
-    };
-
-    const b = currentCharacter.activeBuffs || {};
-    syncTriGroup('hesSuit', b.hesSuit ? 'active' : 'off');
-    syncTriGroup('digitalUplink', b.digitalUplink ? 'active' : 'off');
-    const muscVal = b.muscularEnhancement ? (b.muscularEnhancementRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('muscularEnhancement', muscVal);
-    const eaVal = b.enhanceAbilities ? (b.enhanceAbilitiesRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('enhanceAbilities', eaVal);
-    const eaSelect = document.getElementById('enhance-abilities-target');
-    if (eaSelect && b.enhanceAbilitiesTarget) {
-      eaSelect.value = b.enhanceAbilitiesTarget;
-    }
-    const tbVal = b.thoughtBlock ? (b.thoughtBlockRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('thoughtBlock', tbVal);
-    syncTriGroup('stimpack', b.stimpack ? 'active' : 'off');
 
     // Points Badges
     const attrBadge = document.getElementById('attr-points-badge');
@@ -583,21 +776,28 @@
     }
 
     // Derived Stats Update
-    document.getElementById('stat-defense').textContent = stats.defense;
+    const defEl = document.getElementById('stat-defense');
+    if (defEl) defEl.textContent = stats.defense;
     const defFormula = document.getElementById('stat-defense-formula');
     if (defFormula) {
       defFormula.textContent = `½ Agi (${Math.floor(stats.attrData.effective.agility/2)}) + ½ Inst (${Math.floor(stats.attrData.effective.instinct/2)})${stats.defMod !== 0 ? ` + Armor (${stats.defMod})` : ''}`;
     }
 
-    document.getElementById('stat-discipline').textContent = stats.discipline;
-    document.getElementById('stat-toughness').textContent = `${stats.totalToughness} (${stats.armorVal})`;
+    const discEl = document.getElementById('stat-discipline');
+    if (discEl) discEl.textContent = stats.discipline;
+
+    const toughEl = document.getElementById('stat-toughness');
+    if (toughEl) toughEl.textContent = stats.armorVal > 0 ? `${stats.totalToughness} (${stats.armorVal})` : `${stats.totalToughness}`;
     const toughFormula = document.getElementById('stat-toughness-formula');
     if (toughFormula) {
-      toughFormula.textContent = `½ Vigor (${Math.floor(stats.attrData.effective.vigor/2)}) + ½ Str (${Math.floor(stats.attrData.effective.strength/2)}) + Armor (${stats.armorVal})`;
+      toughFormula.textContent = `½ Vigor (${Math.floor(stats.attrData.effective.vigor/2)}) + ½ Str (${Math.floor(stats.attrData.effective.strength/2)})${stats.armorVal > 0 ? ` + Armor (${stats.armorVal})` : ''}`;
     }
 
-    document.getElementById('stat-resolve').textContent = stats.resolve;
-    document.getElementById('stat-speed').textContent = `${stats.speed}"`;
+    const resEl = document.getElementById('stat-resolve');
+    if (resEl) resEl.textContent = stats.resolve;
+
+    const speedEl = document.getElementById('stat-speed');
+    if (speedEl) speedEl.textContent = `${stats.speed}″`;
 
     // Damage Pips
     const woundsWrap = document.getElementById('wounds-pips-wrap');
@@ -651,12 +851,17 @@
 
     container.innerHTML = '';
     const attrData = getEffectiveAttributes(currentCharacter);
+    const shortCodes = { agility: 'Agi', strength: 'Str', vigor: 'Vig', instinct: 'Inst', intelligence: 'Int', spirit: 'Spi' };
 
     window.SC_DATA.skills.forEach(sk => {
-      const baseVal = currentCharacter.skills[sk.id] || 0;
-      const linkedAttr = sk.attr.toLowerCase();
+      const skillId = (sk.id || sk.name.toLowerCase().replace(/[^a-z0-9]/g, '')).trim();
+      const baseVal = currentCharacter.skills[skillId] || 0;
+      const linkedAttr = (sk.attr || SKILL_ATTR_MAP[skillId] || 'Agility').toLowerCase();
       const linkedAttrEff = attrData.effective[linkedAttr] || 4;
-      const bonus = getEffectiveSkillBonus(currentCharacter, sk.id);
+      const linkedAttrStep = attrData.steps[linkedAttr] || 0;
+      const bonus = getEffectiveSkillBonus(currentCharacter, skillId);
+
+      const boostTag = linkedAttrStep !== 0 ? formatTraitBoost(shortCodes[linkedAttr] || linkedAttr, linkedAttrStep) : '';
 
       const row = document.createElement('div');
       row.className = 'skill-row';
@@ -665,12 +870,13 @@
           <span class="skill-name">${sk.name}</span>
           ${sk.core ? '<span class="core-badge">Core</span>' : ''}
           ${bonus > 0 ? `<span class="tag tag-emerald">+${bonus} Buff</span>` : ''}
-          <div style="font-size:0.72rem; color:var(--text-dim);">${sk.attr} (${dieLabel(linkedAttrEff)})</div>
+          ${boostTag ? `<span class="tag tag-cyan" style="margin-left:4px; font-weight:bold;">${boostTag}</span>` : ''}
+          <div style="font-size:0.72rem; color:var(--text-dim);">${sk.attr || linkedAttr} (${dieLabel(linkedAttrEff)})</div>
         </div>
         <div style="display:flex; align-items:center; gap:0.35rem;">
-          <button class="attr-btn" data-skill="${sk.id}" data-action="dec" ${baseVal <= 0 ? 'disabled' : ''}>-</button>
+          <button class="attr-btn" data-skill="${skillId}" data-action="dec" ${baseVal <= 0 ? 'disabled' : ''}>-</button>
           <span class="skill-die-badge">${dieLabel(baseVal)}</span>
-          <button class="attr-btn" data-skill="${sk.id}" data-action="inc" ${baseVal >= 14 ? 'disabled' : ''}>+</button>
+          <button class="attr-btn" data-skill="${skillId}" data-action="inc" ${baseVal >= 14 ? 'disabled' : ''}>+</button>
           <button class="roll-btn" data-roll-type="skill" data-name="${sk.name}" data-die="${baseVal}" data-mod="${bonus}">
             Roll ${dieLabel(baseVal)}${bonus > 0 ? `+${bonus}` : ''} 🎲
           </button>
@@ -691,9 +897,9 @@
       div.innerHTML = `
         <div class="card-top">
           <span class="card-title">${p.name}</span>
-          <span class="tag tag-violet">${p.discipline}</span>
+          <span class="tag tag-violet">${p.discipline || 'Psionic'}</span>
         </div>
-        <div class="card-desc">${p.desc}</div>
+        <div class="card-desc">${p.desc || ''}</div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.4rem;">
           <button class="roll-btn" data-roll-type="skill" data-name="Psionics (${p.name})" data-die="${currentCharacter.skills.psionics || 10}">Test Power 🎲</button>
           <button class="btn btn-crimson btn-sm" data-remove-power="${idx}">Remove</button>
@@ -744,7 +950,7 @@
               <strong style="color:#fff; font-size:0.95rem;">${arm.name}</strong>
               <span class="tag tag-amber" style="margin-left:6px;">${arm.class || 'Armor'}</span>
               <span class="tag tag-emerald" style="margin-left:4px;">+${arm.value} Armor</span>
-              ${arm.boost ? `<span class="tag tag-cyan" style="margin-left:4px;">${arm.boost}</span>` : ''}
+              ${arm.boost ? `<span class="tag tag-cyan" style="margin-left:4px; font-weight:bold;">${arm.boost}</span>` : ''}
               ${arm.defMod ? `<span class="tag tag-crimson" style="margin-left:4px;">Def ${arm.defMod}</span>` : ''}
               ${!armorMods.active ? `<span class="tag tag-crimson" style="margin-left:4px;">(Deactivated / Off)</span>` : ''}
             </div>
@@ -801,38 +1007,44 @@
       div.style.padding = '0.5rem';
       div.innerHTML = `
         <div class="card-top">
-          <span class="card-title" style="font-size:0.85rem;">${c.name}</span>
-          <span class="tag tag-emerald">${c.points || 1} Pt</span>
+          <span class="card-title">${c.name}</span>
+          <span class="tag tag-cyan">${c.points || 1} Cyber Point</span>
         </div>
         <div class="card-desc">${c.desc || ''}</div>
-        <div style="display:flex; justify-content:flex-end; margin-top:0.2rem;">
+        <div style="text-align:right; margin-top:0.3rem;">
           <button class="btn btn-crimson btn-sm" data-remove-cyber="${idx}">Remove</button>
         </div>
       `;
       list.appendChild(div);
     });
 
-    const badge = document.getElementById('cyborg-rating-badge');
-    if (badge) badge.textContent = `Cyborg Rating: ${totalPoints}`;
+    const ptsBadge = document.getElementById('cyber-points-badge');
+    if (ptsBadge) {
+      const maxPts = Math.floor((currentCharacter.attributes.vigor || 6) / 2);
+      ptsBadge.textContent = `${totalPoints} / ${maxPts} Points Used`;
+      ptsBadge.className = totalPoints > maxPts ? 'point-tracker-badge warning' : 'point-tracker-badge';
+    }
   }
 
   function updateQuickTelemetry() {
-    if (!currentCharacter) return;
+    const dName = document.getElementById('dossier-name');
+    if (dName) dName.textContent = currentCharacter.name || 'Operative';
+    const dCode = document.getElementById('dossier-codename');
+    if (dCode) dCode.textContent = currentCharacter.codename || 'Ghost Unit';
+    const dConcept = document.getElementById('dossier-concept');
+    if (dConcept) dConcept.textContent = currentCharacter.concept || '';
+
     const stats = calculateDerivedStats(currentCharacter);
-    const nameEl = document.getElementById('quick-hud-name');
-    if (nameEl) nameEl.textContent = currentCharacter.name || 'Ghost';
-    const defEl = document.getElementById('quick-hud-defense');
-    if (defEl) defEl.textContent = stats.defense;
-    const discEl = document.getElementById('quick-hud-discipline');
-    if (discEl) discEl.textContent = stats.discipline;
-    const tghEl = document.getElementById('quick-hud-toughness');
-    if (tghEl) tghEl.textContent = `${stats.totalToughness} (${stats.armorVal})`;
-    const resEl = document.getElementById('quick-hud-resolve');
-    if (resEl) resEl.textContent = stats.resolve;
-    const wndEl = document.getElementById('quick-hud-wounds');
-    if (wndEl) wndEl.textContent = `${currentCharacter.currentWounds || 0}/${stats.maxWounds}`;
-    const psiEl = document.getElementById('quick-hud-psi');
-    if (psiEl) psiEl.textContent = currentCharacter.psiRating || 5;
+    const attrData = stats.attrData;
+
+    const tDef = document.getElementById('telemetry-defense');
+    if (tDef) tDef.textContent = stats.defense;
+    const tTough = document.getElementById('telemetry-toughness');
+    if (tTough) tTough.textContent = `${stats.totalToughness} (${stats.armorVal})`;
+    const tDisc = document.getElementById('telemetry-discipline');
+    if (tDisc) tDisc.textContent = stats.discipline;
+    const tRes = document.getElementById('telemetry-resolve');
+    if (tRes) tRes.textContent = stats.resolve;
   }
 
   function updateCharacterSelector() {
@@ -842,148 +1054,151 @@
     characters.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c.id;
-      opt.textContent = `${c.name} (${c.codename || 'Ghost'})`;
+      opt.textContent = `${c.name} (${c.codename || 'Operative'})`;
       if (currentCharacter && c.id === currentCharacter.id) opt.selected = true;
       sel.appendChild(opt);
     });
   }
 
-  // --- Dice & Roll Engine ---
+  // --- Dice & Combat Action Engine ---
   function rollExplodingDie(sides) {
-    if (sides <= 0) return { total: 0, rolls: [0] };
-    const rolls = [];
-    let current = 0;
+    let total = 0;
+    let rolls = [];
+    let r = 0;
     do {
-      current = Math.floor(Math.random() * sides) + 1;
-      rolls.push(current);
-    } while (current === sides);
-    return { total: rolls.reduce((a, b) => a + b, 0), rolls };
+      r = Math.floor(Math.random() * sides) + 1;
+      rolls.push(r);
+      total += r;
+    } while (r === sides && sides > 1);
+    return { total, rolls };
   }
 
   function executeTraitRoll(name, dieVal, modifier = 0, isWild = true) {
     SoundFX.roll();
-    openDiceDrawer();
+    const traitRoll = rollExplodingDie(dieVal);
+    let wildRoll = null;
+    if (isWild) wildRoll = rollExplodingDie(6);
 
-    const trait = rollExplodingDie(dieVal);
-    let wild = null;
-    let finalRes = 0;
-    let chosen = 'Trait';
-
-    if (isWild) {
-      wild = rollExplodingDie(6);
-      if (wild.total > trait.total) {
-        finalRes = wild.total + modifier;
-        chosen = 'Wild Die';
-      } else {
-        finalRes = trait.total + modifier;
-        chosen = 'Trait Die';
-      }
-    } else {
-      finalRes = trait.total + modifier;
+    let bestDie = traitRoll.total;
+    let bestType = `d${dieVal}`;
+    if (wildRoll && wildRoll.total > bestDie) {
+      bestDie = wildRoll.total;
+      bestType = 'Wild d6';
     }
 
-    const isCritFail = isWild && trait.rolls[0] === 1 && wild.rolls[0] === 1;
-    const isSuccess = finalRes >= 4;
-    const raises = isSuccess ? Math.floor((finalRes - 4) / 4) : 0;
+    const finalTotal = bestDie + modifier;
+    const isCriticalFailure = (traitRoll.rolls[0] === 1 && (wildRoll ? wildRoll.rolls[0] === 1 : true));
+    const isSuccess = !isCriticalFailure && finalTotal >= 4;
+    const isRaise = !isCriticalFailure && finalTotal >= 8;
+    const raises = isRaise ? Math.floor((finalTotal - 4) / 4) : 0;
 
-    if (isCritFail) SoundFX.alert();
-    else if (isSuccess) SoundFX.success();
+    let resultText = '';
+    let resultClass = '';
+
+    if (isCriticalFailure) {
+      resultText = 'CRITICAL FAILURE! (Snake Eyes)';
+      resultClass = 'crit-fail';
+      SoundFX.alert();
+    } else if (isRaise) {
+      resultText = `SUCCESS WITH ${raises} RAISE${raises > 1 ? 'S' : ''}!`;
+      resultClass = 'crit-success';
+      SoundFX.success();
+    } else if (isSuccess) {
+      resultText = 'SUCCESS (Target 4 Achieved)';
+      resultClass = 'success';
+      SoundFX.success();
+    } else {
+      resultText = 'FAILURE (Missed Target 4)';
+      resultClass = 'failure';
+    }
 
     logToTerminal({
-      title: `ROLL: ${name}`,
-      traitDie: `d${dieVal} [${trait.rolls.join('+')}] = ${trait.total}`,
-      wildDie: isWild ? `Wild d6 [${wild.rolls.join('+')}] = ${wild.total}` : null,
-      modifier: modifier !== 0 ? (modifier > 0 ? `+${modifier}` : `${modifier}`) : null,
-      outcome: isCritFail ? 'CRITICAL FAILURE!' : (isSuccess ? (raises > 0 ? `SUCCESS with ${raises} RAISE${raises > 1 ? 'S' : ''}!` : 'SUCCESS!') : 'FAILURE.')
+      name,
+      finalTotal,
+      resultText,
+      resultClass,
+      details: `Trait d${dieVal}: [${traitRoll.rolls.join(', ')}] = ${traitRoll.total}${wildRoll ? ` | Wild d6: [${wildRoll.rolls.join(', ')}] = ${wildRoll.total}` : ''}${modifier ? ` | Mod: ${modifier > 0 ? '+' : ''}${modifier}` : ''}`
     });
+
+    openDiceDrawer();
   }
 
   function executeDamageRoll(name, damageExpr, ap = 0) {
     SoundFX.roll();
-    openDiceDrawer();
-
-    let expr = damageExpr;
-    const strVal = currentCharacter?.attributes?.strength || 6;
-    expr = expr.replace(/Str/gi, `d${strVal}`);
-    const psiVal = currentCharacter?.psiRating || 5;
-    expr = expr.replace(/Psi/gi, `${psiVal}`);
-
-    let totalDmg = 0;
+    let total = 0;
     let breakdown = [];
-    const parts = expr.split('+').map(p => p.trim());
 
+    const parts = damageExpr.toLowerCase().replace(/\s+/g, '').split('+');
     parts.forEach(part => {
-      const match = part.match(/^(\d*)d(\d+)$/i);
-      if (match) {
-        const count = parseInt(match[1], 10) || 1;
-        const sides = parseInt(match[2], 10);
-        let dRolls = [];
+      if (part === 'str') {
+        const strEff = getEffectiveAttributes(currentCharacter).effective.strength || 6;
+        const res = rollExplodingDie(strEff);
+        total += res.total;
+        breakdown.push(`Str(d${strEff}): [${res.rolls.join(',')}]`);
+      } else if (part.includes('d')) {
+        const [cntStr, sideStr] = part.split('d');
+        const count = cntStr ? parseInt(cntStr, 10) : 1;
+        const sides = parseInt(sideStr, 10);
+        let partTotal = 0;
+        let pRolls = [];
         for (let i = 0; i < count; i++) {
           const res = rollExplodingDie(sides);
-          dRolls.push(res.total);
-          totalDmg += res.total;
+          partTotal += res.total;
+          pRolls.push(res.rolls.join(','));
         }
-        breakdown.push(`${count}d${sides} [${dRolls.join(', ')}]`);
+        total += partTotal;
+        breakdown.push(`${part}: [${pRolls.join(' + ')}]`);
       } else {
-        const n = parseInt(part, 10);
-        if (!isNaN(n)) {
-          totalDmg += n;
-          breakdown.push(`+${n}`);
-        }
+        const flat = parseInt(part, 10) || 0;
+        total += flat;
+        breakdown.push(`+${flat}`);
       }
     });
 
     SoundFX.success();
     logToTerminal({
-      title: `DAMAGE: ${name}`,
-      formula: `${damageExpr} (${expr})`,
-      breakdown: breakdown.join(' + '),
-      ap: ap > 0 ? `Armor Piercing (AP): ${ap}` : null,
-      outcome: `Total Damage: ${totalDmg} pts (AP ${ap})`
+      name: `${name} (Damage Roll)`,
+      finalTotal: total,
+      resultText: `Damage: ${total} Total (AP ${ap})`,
+      resultClass: total >= 12 ? 'crit-success' : 'success',
+      details: `${damageExpr} => ${breakdown.join(' + ')} (AP: ${ap})`
     });
+
+    openDiceDrawer();
   }
 
   function openDiceDrawer() {
     const drawer = document.getElementById('dice-drawer');
-    if (drawer) drawer.classList.add('active');
+    if (drawer && !drawer.classList.contains('active')) {
+      drawer.classList.add('active');
+    }
   }
 
   function logToTerminal(data) {
     const screen = document.getElementById('terminal-screen-logs');
     if (!screen) return;
 
-    const div = document.createElement('div');
-    div.style.marginBottom = '0.6rem';
-    div.style.paddingBottom = '0.4rem';
-    div.style.borderBottom = '1px solid rgba(0, 229, 255, 0.15)';
+    const timeStr = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const logItem = document.createElement('div');
+    logItem.className = 'log-entry';
+    logItem.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="log-title">${data.name}</span>
+        <span class="log-time">[${timeStr}]</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem; margin:0.35rem 0;">
+        <span class="log-total">${data.finalTotal}</span>
+        <span class="log-status ${data.resultClass}">${data.resultText}</span>
+      </div>
+      <div class="log-details">${data.details}</div>
+    `;
 
-    let html = `<div class="terminal-line cyan" style="font-weight:bold;">▶ ${data.title}</div>`;
-    if (data.traitDie) html += `<div class="terminal-line">${data.traitDie}</div>`;
-    if (data.wildDie) html += `<div class="terminal-line">${data.wildDie}</div>`;
-    if (data.modifier) html += `<div class="terminal-line">Mod: ${data.modifier}</div>`;
-    if (data.breakdown) html += `<div class="terminal-line">${data.breakdown}</div>`;
-    if (data.ap) html += `<div class="terminal-line emerald">${data.ap}</div>`;
-
-    const outcomeClass = data.outcome?.includes('SUCCESS') ? 'emerald' : (data.outcome?.includes('CRITICAL') || data.outcome?.includes('FAILURE') ? 'crimson' : 'amber');
-    html += `<div class="terminal-line ${outcomeClass}" style="font-weight:bold; margin-top:0.2rem;">➔ ${data.outcome}</div>`;
-
-    div.innerHTML = html;
-    screen.appendChild(div);
-    screen.scrollTop = screen.scrollHeight;
+    screen.insertBefore(logItem, screen.firstChild);
+    while (screen.children.length > 50) {
+      screen.removeChild(screen.lastChild);
+    }
   }
 
-  window.DocEngine = {
-    rollExpr(expr) {
-      if (expr.includes('+') || expr.toLowerCase().includes('str') || expr.startsWith('2d') || expr.startsWith('3d')) {
-        executeDamageRoll('Formula Roll', expr, 0);
-      } else {
-        const sides = parseInt(expr.replace('d', ''), 10) || 6;
-        executeTraitRoll(`Roll ${expr}`, sides, 0, true);
-      }
-    }
-  };
-
-  // --- Fast Debounce Helper ---
   function debounce(fn, delay) {
     let timer = null;
     return function (...args) {
@@ -1029,7 +1244,7 @@
       if (screen) screen.innerHTML = '<div class="terminal-line dim">Terminal reset. Ready for operations.</div>';
     });
 
-    // Global Document Search (Debounced for 60fps performance)
+    // Global Document Search
     const searchBox = document.getElementById('global-doc-search');
     if (searchBox) {
       searchBox.addEventListener('input', debounce(e => {
@@ -1056,7 +1271,7 @@
       });
     }
 
-    // Filter Hindrances (Debounced)
+    // Filter Hindrances
     document.getElementById('hindrance-filter-input')?.addEventListener('input', debounce(e => {
       const q = e.target.value.toLowerCase();
       document.querySelectorAll('#hindrances-grid-container [data-hind-item]').forEach(el => {
@@ -1064,7 +1279,7 @@
       });
     }, 150));
 
-    // Filter Edges (Debounced)
+    // Filter Edges
     document.getElementById('edge-filter-input')?.addEventListener('input', debounce(e => {
       const q = e.target.value.toLowerCase();
       document.querySelectorAll('#edges-grid-container [data-edge-item]').forEach(el => {
@@ -1191,57 +1406,183 @@
     bindInput('char-credits-input', 'credits');
     bindInput('char-concept-input', 'concept');
 
-    // Unified Global Click Listener (High-Performance Event Delegation)
-    document.addEventListener('click', e => {
-      // 3-State Segmented Buttons
-      const triBtn = e.target.closest('.tri-btn');
-      if (triBtn) {
-        const group = triBtn.closest('.tri-state-group');
-        if (!group) return;
-        const groupName = group.getAttribute('data-buff-group');
-        const val = triBtn.getAttribute('data-val');
-        if (!currentCharacter.activeBuffs) currentCharacter.activeBuffs = {};
+    // --- Add Boost UI Setup ---
+    const addBoostPanel = document.getElementById('add-boost-panel');
+    const btnToggleAddBoost = document.getElementById('btn-toggle-add-boost');
+    const btnCloseAddBoost = document.getElementById('btn-close-add-boost');
+    const btnCancelAddBoost = document.getElementById('btn-cancel-add-boost');
+    const btnConfirmAddBoost = document.getElementById('btn-confirm-add-boost');
+    const selBoostTemplate = document.getElementById('new-boost-template');
+    const grpTargetAttr = document.getElementById('grp-boost-target-attr');
+    const grpBoostLevel = document.getElementById('grp-boost-level');
+    const grpCustomFields = document.getElementById('grp-custom-fields');
 
-        if (groupName === 'hesSuit') {
-          const isActive = (val === 'active');
-          currentCharacter.activeBuffs.hesSuit = isActive;
-          if (isActive && (!currentCharacter.armor || currentCharacter.armor.name !== 'Hostile Environment Suit')) {
-            const hesData = window.SC_DATA?.armors?.find(a => a.name === 'Hostile Environment Suit');
-            if (hesData) {
-              currentCharacter.armor = {
-                name: hesData.name,
-                value: hesData.armor,
-                class: hesData.class,
-                boost: hesData.boost,
-                defMod: hesData.defMod || 0,
-                weight: hesData.weight,
-                traits: hesData.traits,
-                mounted: hesData.mounted,
-                notes: hesData.desc
-              };
-            }
-          }
-        } else if (groupName === 'digitalUplink') {
-          currentCharacter.activeBuffs.digitalUplink = (val === 'active');
-        } else if (groupName === 'muscularEnhancement') {
-          currentCharacter.activeBuffs.muscularEnhancement = (val !== 'off');
-          currentCharacter.activeBuffs.muscularEnhancementRaise = (val === 'raise');
-        } else if (groupName === 'enhanceAbilities') {
-          currentCharacter.activeBuffs.enhanceAbilities = (val !== 'off');
-          currentCharacter.activeBuffs.enhanceAbilitiesRaise = (val === 'raise');
-        } else if (groupName === 'thoughtBlock') {
-          currentCharacter.activeBuffs.thoughtBlock = (val !== 'off');
-          currentCharacter.activeBuffs.thoughtBlockRaise = (val === 'raise');
-        } else if (groupName === 'stimpack') {
-          currentCharacter.activeBuffs.stimpack = (val === 'active');
+    const toggleBoostPanel = (open) => {
+      if (!addBoostPanel) return;
+      if (open === undefined) {
+        addBoostPanel.classList.toggle('open');
+      } else if (open) {
+        addBoostPanel.classList.add('open');
+      } else {
+        addBoostPanel.classList.remove('open');
+      }
+      SoundFX.click();
+    };
+
+    btnToggleAddBoost?.addEventListener('click', () => toggleBoostPanel());
+    btnCloseAddBoost?.addEventListener('click', () => toggleBoostPanel(false));
+    btnCancelAddBoost?.addEventListener('click', () => toggleBoostPanel(false));
+
+    if (selBoostTemplate) {
+      selBoostTemplate.addEventListener('change', () => {
+        const val = selBoostTemplate.value;
+        if (val === 'enhance-abilities') {
+          if (grpTargetAttr) grpTargetAttr.style.display = 'block';
+          if (grpBoostLevel) grpBoostLevel.style.display = 'block';
+          if (grpCustomFields) grpCustomFields.style.display = 'none';
+        } else if (val === 'muscular-enh' || val === 'thought-block') {
+          if (grpTargetAttr) grpTargetAttr.style.display = 'none';
+          if (grpBoostLevel) grpBoostLevel.style.display = 'block';
+          if (grpCustomFields) grpCustomFields.style.display = 'none';
+        } else if (val === 'stimpack' || val === 'digital-uplink') {
+          if (grpTargetAttr) grpTargetAttr.style.display = 'none';
+          if (grpBoostLevel) grpBoostLevel.style.display = 'none';
+          if (grpCustomFields) grpCustomFields.style.display = 'none';
+        } else if (val === 'custom') {
+          if (grpTargetAttr) grpTargetAttr.style.display = 'block';
+          if (grpBoostLevel) grpBoostLevel.style.display = 'none';
+          if (grpCustomFields) grpCustomFields.style.display = 'block';
         }
+      });
+    }
 
-        SoundFX.toggle();
+    btnConfirmAddBoost?.addEventListener('click', () => {
+      if (!currentCharacter) return;
+      if (!currentCharacter.activeBoosts) currentCharacter.activeBoosts = getDefaultActiveBoosts();
+
+      const template = selBoostTemplate ? selBoostTemplate.value : 'enhance-abilities';
+      const targetAttr = document.getElementById('new-boost-target-attr')?.value || 'agility';
+      const stance = document.getElementById('new-boost-level')?.value || 'success';
+      const shortCodes = { agility: 'Agi', strength: 'Str', vigor: 'Vig', instinct: 'Inst', intelligence: 'Int', spirit: 'Spi' };
+      const attrCap = targetAttr.charAt(0).toUpperCase() + targetAttr.slice(1);
+      const sc = shortCodes[targetAttr] || attrCap;
+
+      let newBoost = null;
+
+      if (template === 'enhance-abilities') {
+        newBoost = {
+          id: 'boost_' + Date.now(),
+          name: `Enhance Abilities (${attrCap})`,
+          category: 'Psionics (PL 3)',
+          type: 'enhance-abilities',
+          targetAttr: targetAttr,
+          state: stance,
+          hasRaise: true,
+          desc: `+1 die step (${sc}+) on Success, +2 die steps (${sc}++) on Raise to ${attrCap} and its linked skills.`
+        };
+      } else if (template === 'muscular-enh') {
+        newBoost = {
+          id: 'boost_' + Date.now(),
+          name: 'Muscular Enhancement',
+          category: 'Psionics (PL 4)',
+          type: 'muscular-enh',
+          state: stance,
+          hasRaise: true,
+          desc: '+1 (+2 on Raise) to Strength rolls, Athletics, Stealth, and Vigor tests vs extreme environments/fatigue/disease/poison.'
+        };
+      } else if (template === 'thought-block') {
+        newBoost = {
+          id: 'boost_' + Date.now(),
+          name: 'Thought Blocking',
+          category: 'Psionics',
+          type: 'thought-block',
+          state: stance,
+          hasRaise: true,
+          desc: '+1 (+3 on Raise) to Discipline and Resolve.'
+        };
+      } else if (template === 'stimpack') {
+        newBoost = {
+          id: 'boost_' + Date.now(),
+          name: 'Military Stimpack',
+          category: 'Chemical',
+          type: 'stimpack',
+          state: 'active',
+          hasRaise: false,
+          desc: '+2 Speed and Agi+ for the combat encounter.'
+        };
+      } else if (template === 'digital-uplink') {
+        newBoost = {
+          id: 'boost_' + Date.now(),
+          name: 'Digital Uplink II',
+          category: 'Gear',
+          type: 'digital-uplink',
+          state: 'active',
+          hasRaise: false,
+          desc: '+1 trait bonus to tech & tactical skills.'
+        };
+      } else if (template === 'custom') {
+        const customName = document.getElementById('new-boost-custom-name')?.value.trim() || 'Custom Trait Boost';
+        const customType = document.getElementById('new-boost-custom-type')?.value || 'attr-step';
+        newBoost = {
+          id: 'boost_' + Date.now(),
+          name: customName,
+          category: 'Custom / Ally',
+          type: 'custom',
+          customType: customType,
+          targetAttr: targetAttr,
+          state: 'active',
+          hasRaise: false,
+          desc: `Custom modifier targeting ${attrCap} (${customType}).`
+        };
+      }
+
+      if (newBoost) {
+        currentCharacter.activeBoosts.push(newBoost);
+        SoundFX.success();
         saveCharacters();
+        toggleBoostPanel(false);
         renderAttributesAndStats();
         renderSkillsList();
         renderCharacterWeapons();
         updateQuickTelemetry();
+      }
+    });
+
+    // Unified Global Click Listener
+    document.addEventListener('click', e => {
+      // Dynamic Boost Segmented Buttons
+      const triBtn = e.target.closest('.tri-btn[data-boost-val]');
+      if (triBtn) {
+        const group = triBtn.closest('.tri-state-group[data-boost-idx]');
+        if (!group) return;
+        const idx = parseInt(group.getAttribute('data-boost-idx'), 10);
+        const val = triBtn.getAttribute('data-boost-val');
+
+        if (currentCharacter && currentCharacter.activeBoosts && currentCharacter.activeBoosts[idx]) {
+          currentCharacter.activeBoosts[idx].state = val;
+          SoundFX.toggle();
+          saveCharacters();
+          renderAttributesAndStats();
+          renderSkillsList();
+          renderCharacterWeapons();
+          updateQuickTelemetry();
+        }
+        return;
+      }
+
+      // Delete Boost Button
+      const delBoostBtn = e.target.closest('button[data-delete-boost-idx]');
+      if (delBoostBtn) {
+        const idx = parseInt(delBoostBtn.getAttribute('data-delete-boost-idx'), 10);
+        if (currentCharacter && currentCharacter.activeBoosts) {
+          currentCharacter.activeBoosts.splice(idx, 1);
+          SoundFX.toggle();
+          saveCharacters();
+          renderAttributesAndStats();
+          renderSkillsList();
+          renderCharacterWeapons();
+          updateQuickTelemetry();
+        }
         return;
       }
 
@@ -1352,8 +1693,11 @@
             mounted: data.mounted,
             notes: data.desc
           };
-          if (!currentCharacter.activeBuffs) currentCharacter.activeBuffs = {};
-          currentCharacter.activeBuffs.hesSuit = (data.name === 'Hostile Environment Suit');
+          
+          // Ensure HES boost card state reflects equipped suit
+          const hesBoost = currentCharacter.activeBoosts?.find(b => b.type === 'hes-suit');
+          if (hesBoost) hesBoost.state = 'active';
+
           SoundFX.success();
           saveCharacters();
           renderAttributesAndStats();
@@ -1367,7 +1711,8 @@
       const unequipArmorBtn = e.target.closest('#unequip-armor-btn');
       if (unequipArmorBtn) {
         currentCharacter.armor = { name: 'Unarmored', value: 0, boost: '', defMod: 0 };
-        if (currentCharacter.activeBuffs) currentCharacter.activeBuffs.hesSuit = false;
+        const hesBoost = currentCharacter.activeBoosts?.find(b => b.type === 'hes-suit');
+        if (hesBoost) hesBoost.state = 'off';
         SoundFX.toggle();
         saveCharacters();
         renderAttributesAndStats();
@@ -1456,18 +1801,6 @@
         saveCharacters();
         renderCharacterCybernetics();
         return;
-      }
-    });
-
-    document.addEventListener('change', e => {
-      if (e.target && e.target.id === 'enhance-abilities-target') {
-        if (!currentCharacter.activeBuffs) currentCharacter.activeBuffs = {};
-        currentCharacter.activeBuffs.enhanceAbilitiesTarget = e.target.value;
-        SoundFX.toggle();
-        saveCharacters();
-        renderAttributesAndStats();
-        renderSkillsList();
-        updateQuickTelemetry();
       }
     });
   }
