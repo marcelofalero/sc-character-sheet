@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && cp -r dist/assets . && node -e \"const fs=require('fs'); let h=fs.readFileSync('index.html','utf8'); h=h.replace(/\\?t=\\d+/g, '?t='+Date.now()); fs.writeFileSync('index.html', h);\"",
+    "build": "cp index.source.html index.html && tsc && vite build && cp dist/index.html index.html && cp -r dist/assets . && node -e \"const fs=require('fs'); let h=fs.readFileSync('index.html','utf8'); h=h.replace(/app\\.bundle\\.js/g, 'app.bundle.js?t='+Date.now()).replace(/app\\.bundle\\.css/g, 'app.bundle.css?t='+Date.now()); fs.writeFileSync('index.html', h);\"",
     "preview": "vite preview"
   },
   "dependencies": {
