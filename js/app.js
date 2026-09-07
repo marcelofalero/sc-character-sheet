@@ -201,17 +201,12 @@
     const buffs = char.activeBuffs || {};
     const tempMods = char.tempAttributeMods || {};
 
-    let strMuscStep = 0;
-    if (buffs.muscularEnhancement) {
-      strMuscStep = buffs.muscularEnhancementRaise ? 2 : 1;
-    }
-
     let agiRushStep = 0;
     if (buffs.rush) {
       agiRushStep = buffs.rushRaise ? 2 : 1;
     }
 
-    let strStep = (buffs.hesSuit ? 1 : 0) + strMuscStep + (tempMods.strength || 0);
+    let strStep = (buffs.hesSuit ? 1 : 0) + (tempMods.strength || 0);
     let agiStep = agiRushStep + (tempMods.agility || 0);
     let vigStep = (tempMods.vigor || 0);
     let instStep = (tempMods.instinct || 0);
@@ -237,6 +232,15 @@
         spirit: getSteppedDie(baseSpi, spiStep)
       }
     };
+  }
+
+  function getEffectiveAttributeRollBonus(char, attrId) {
+    const buffs = char.activeBuffs || {};
+    let bonus = 0;
+    if (attrId === 'strength' && buffs.muscularEnhancement) {
+      bonus += buffs.muscularEnhancementRaise ? 2 : 1;
+    }
+    return bonus;
   }
 
   function getEffectiveSkillBonus(char, skillId) {
@@ -491,6 +495,7 @@
         const stepOffset = attrData.steps[attr.id];
         const isBoosted = stepOffset > 0;
         const customTemp = currentCharacter.tempAttributeMods[attr.id] || 0;
+        const rollBonus = getEffectiveAttributeRollBonus(currentCharacter, attr.id);
 
         const card = document.createElement('div');
         card.className = `attribute-card ${isBoosted ? 'boosted' : ''}`;
@@ -499,7 +504,7 @@
           <div class="attr-die-display" title="Base: ${dieLabel(baseVal)} | Effective: ${dieLabel(effVal)}">
             ${isBoosted ? `${dieLabel(baseVal)}<span style="font-size:1.1rem; color:var(--emerald);"> (${dieLabel(effVal)})</span>` : dieLabel(baseVal)}
           </div>
-          ${isBoosted ? `<span class="eff-badge">${formatTraitBoost(shortCodes[attr.id], stepOffset)}</span>` : (stepOffset < 0 ? `<span class="eff-badge penalty">${formatTraitBoost(shortCodes[attr.id], stepOffset)}</span>` : '')}
+          ${isBoosted ? `<span class="eff-badge">${formatTraitBoost(shortCodes[attr.id], stepOffset)}</span>` : (stepOffset < 0 ? `<span class="eff-badge penalty">${formatTraitBoost(shortCodes[attr.id], stepOffset)}</span>` : (rollBonus > 0 ? `<span class="eff-badge">+${rollBonus} Rolls</span>` : ''))}
           <div class="attr-controls">
             <button class="attr-btn" data-attr="${attr.id}" data-action="dec" ${baseVal <= 4 ? 'disabled' : ''} title="Lower Base Die">-</button>
             <button class="attr-btn" data-attr="${attr.id}" data-action="inc" ${baseVal >= 14 ? 'disabled' : ''} title="Raise Base Die">+</button>
@@ -510,7 +515,7 @@
             <span style="font-size:0.75rem; font-weight:bold; color:var(--amber);">${customTemp >= 0 ? `+${customTemp}` : customTemp}</span>
             <button class="temp-step-btn" data-temp-attr="${attr.id}" data-action="inc">+</button>
           </div>
-          <button class="roll-btn" data-roll-type="trait" data-name="${attr.name}" data-die="${effVal}">Roll ${dieLabel(effVal)} 🎲</button>
+          <button class="roll-btn" data-roll-type="trait" data-name="${attr.name}" data-die="${effVal}" data-mod="${rollBonus}">Roll ${dieLabel(effVal)}${rollBonus > 0 ? `+${rollBonus}` : ''} 🎲</button>
         `;
         attrContainer.appendChild(card);
       });
