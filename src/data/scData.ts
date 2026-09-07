@@ -1,5 +1,5 @@
-// StarCraft RPG Ghost Operative System Data Compendium - High Precision Dataset
-window.SC_DATA = {
+// StarCraft RPG Compendium & Armory Dataset
+export const SC_DATA: any = {
   "homeworlds": [
     {
       "id": "tarsonis",
@@ -43,7 +43,7 @@ window.SC_DATA = {
     },
     {
       "id": "dead_mans_rock",
-      "name": "Dead Man\u2019s Rock",
+      "name": "Dead Man’s Rock",
       "tagline": "Outlaw Haven, Pirates, and Mercenary Hub",
       "description": "A lawless garbage and ship graveyard haven for mercenaries, scavengers, criminals, and rogue operatives where only the ruthless and sharp survive.",
       "attributeBonus": "Start with d6 in Instinct or Agility.",
@@ -258,17 +258,17 @@ window.SC_DATA = {
     {
       "name": "Hindrances\nHindrances\nAll Thumbs",
       "type": "Minor",
-      "desc": "Due to upbringing, lack of exposure, or pure bad luck, some individuals are \u201call thumbs\u201d when it comes to mechanical devices. All Thumbs inflict a -2 penalty when using mechanical devices. If he rolls a Critical Failure while using such a device (and it doesn\u2019t already have a built-in effect), it\u2019s broken. If the GM feels it\u2019s appropriate, it can be fixed with an Engineering roll and 1d6 hours. This hindrance does not apply to electronic or digital devices."
+      "desc": "Due to upbringing, lack of exposure, or pure bad luck, some individuals are “all thumbs” when it comes to mechanical devices. All Thumbs inflict a -2 penalty when using mechanical devices. If he rolls a Critical Failure while using such a device (and it doesn’t already have a built-in effect), it’s broken. If the GM feels it’s appropriate, it can be fixed with an Engineering roll and 1d6 hours. This hindrance does not apply to electronic or digital devices."
     },
     {
       "name": "Amorous",
       "type": "Minor",
-      "desc": "The character is easily enamored with a pretty face. Perhaps it\u2019s lust or lechery, or perhaps he just has a keen appreciation of natural beauty. Amorous characters suffer an additional -2 penalty to resist Tests by any character with the Attractive or Very Attractive Edge."
+      "desc": "The character is easily enamored with a pretty face. Perhaps it’s lust or lechery, or perhaps he just has a keen appreciation of natural beauty. Amorous characters suffer an additional -2 penalty to resist Tests by any character with the Attractive or Very Attractive Edge."
     },
     {
       "name": "Arrogant",
       "type": "Major",
-      "desc": "Arrogant heroes don\u2019t think they are the best\u2014they know it. These characters flaunt their prowess and aim to dominate opponents. They seek the greatest threats in battle, taking on lesser enemies only when necessary."
+      "desc": "Arrogant heroes don’t think they are the best—they know it. These characters flaunt their prowess and aim to dominate opponents. They seek the greatest threats in battle, taking on lesser enemies only when necessary."
     },
     {
       "name": "Bad Connections",
@@ -283,12 +283,12 @@ window.SC_DATA = {
     {
       "name": "Big Mouth",
       "type": "Minor",
-      "desc": "This hero can\u2019t keep secrets and tends to reveal plans or important information at the worst times."
+      "desc": "This hero can’t keep secrets and tends to reveal plans or important information at the worst times."
     },
     {
       "name": "Bitter",
       "type": "Major",
-      "desc": "You have been hurt repeatedly by those you trusted, and it has become difficult for you to accept help. Other people attempting to assist this character suffer a \u20132 penalty to their roll."
+      "desc": "You have been hurt repeatedly by those you trusted, and it has become difficult for you to accept help. Other people attempting to assist this character suffer a –2 penalty to their roll."
     },
     {
       "name": "Bloodthirsty",
@@ -313,12 +313,12 @@ window.SC_DATA = {
     {
       "name": "Clueless",
       "type": "Major",
-      "desc": "The character suffers a \u22122 penalty to Lore and Perception rolls, often missing important details."
+      "desc": "The character suffers a −2 penalty to Lore and Perception rolls, often missing important details."
     },
     {
       "name": "Clumsy",
       "type": "Major",
-      "desc": "Your hero is uncoordinated, suffering a \u22122 penalty to Athletics rolls."
+      "desc": "Your hero is uncoordinated, suffering a −2 penalty to Athletics rolls."
     },
     {
       "name": "Code of Honor",
@@ -328,7 +328,7 @@ window.SC_DATA = {
     {
       "name": "Cocky",
       "type": "Major",
-      "desc": "Your character just doesn\u2019t know when to brag and when to act. The hero\u2019s first round in any combat must be spent announcing how great he is, or pronouncing the doom of those who oppose him. If for some reason your hero must act instead, it costs him a Benny. A villain with this Hindrance never delivers a finishing blow to a foe. Instead, he leaves them to die, or orders his minions to finish them while he stalks off well out of earshot. Inevitably, these foes survive their wounds, escape the minions, and so on."
+      "desc": "Your character just doesn’t know when to brag and when to act. The hero’s first round in any combat must be spent announcing how great he is, or pronouncing the doom of those who oppose him. If for some reason your hero must act instead, it costs him a Benny. A villain with this Hindrance never delivers a finishing blow to a foe. Instead, he leaves them to die, or orders his minions to finish them while he stalks off well out of earshot. Inevitably, these foes survive their wounds, escape the minions, and so on."
     },
     {
       "name": "Corporate Debt",
@@ -353,12 +353,12 @@ window.SC_DATA = {
     {
       "name": "Driven",
       "type": "Minor/Major",
-      "desc": "A vow is a commitment to others\u2014driven characters want something for themselves. It may be to protect their world, prove you\u2019re the best poker player or race driver. The Minor version shapes the character and influences decisions but either happens rarely or is fairly harmless. As a Major Hindrance it\u2019s an overriding desire that comes up frequently or causes peril for the hero and companions. Easily Cowed (Mayor) The hero crumples easily when pressured or pushed. He or she receives a -2 penalty to Discipline against Fear or Intimidation rolls."
+      "desc": "A vow is a commitment to others—driven characters want something for themselves. It may be to protect their world, prove you’re the best poker player or race driver. The Minor version shapes the character and influences decisions but either happens rarely or is fairly harmless. As a Major Hindrance it’s an overriding desire that comes up frequently or causes peril for the hero and companions. Easily Cowed (Mayor) The hero crumples easily when pressured or pushed. He or she receives a -2 penalty to Discipline against Fear or Intimidation rolls."
     },
     {
       "name": "Echoes of the Khala/Void",
       "type": "Minor",
-      "desc": "Exposure to Protoss or Xel\u2019Naga psionic technology changed your mind forever. You occasionally sense emotions or thoughts not your own. These impressions can be helpful\u2014or deeply distracting."
+      "desc": "Exposure to Protoss or Xel’Naga psionic technology changed your mind forever. You occasionally sense emotions or thoughts not your own. These impressions can be helpful—or deeply distracting."
     },
     {
       "name": "Emotional Isolation",
@@ -378,7 +378,7 @@ window.SC_DATA = {
     {
       "name": "Grim",
       "type": "Minor",
-      "desc": "The hero is serious, taciturn, and finds mirth tiresome. He\u2019s Provoked on any successful Taunt\u2014whether the opponent has the Provoke Edge or not. Provoked characters subtract 2 from rolls to affect any opponent except the one who insulted him. This lasts until a Joker is drawn (by either side) or someone else successfully Taunts the dour ruffian. Grim also counts as a Requirement for the Menacing Edge."
+      "desc": "The hero is serious, taciturn, and finds mirth tiresome. He’s Provoked on any successful Taunt—whether the opponent has the Provoke Edge or not. Provoked characters subtract 2 from rolls to affect any opponent except the one who insulted him. This lasts until a Joker is drawn (by either side) or someone else successfully Taunts the dour ruffian. Grim also counts as a Requirement for the Menacing Edge."
     },
     {
       "name": "Habit",
@@ -393,7 +393,7 @@ window.SC_DATA = {
     {
       "name": "Heroic",
       "type": "Major",
-      "desc": "This noble soul never says no to a person in need. He will always help those who can't help themselves, even if he's not thrilled about it. He\u2019s the first to run into danger and often accepts little to no pay for her efforts."
+      "desc": "This noble soul never says no to a person in need. He will always help those who can't help themselves, even if he's not thrilled about it. He’s the first to run into danger and often accepts little to no pay for her efforts."
     },
     {
       "name": "Hesitant",
@@ -428,37 +428,37 @@ window.SC_DATA = {
     {
       "name": "Mean",
       "type": "Minor",
-      "desc": "This ill-tempered character is unkind, only does things for pay, and has a \u22121 penalty to Persuasion rolls due to their unpleasant demeanor."
+      "desc": "This ill-tempered character is unkind, only does things for pay, and has a −1 penalty to Persuasion rolls due to their unpleasant demeanor."
     },
     {
       "name": "Meticulous",
       "type": "Minor",
-      "desc": "You plan and prepare everything in detail, and aren\u2019t good at improvising when things don\u2019t go as planned. You suffer a \u20134 penalty on untrained skill rolls instead of the usual \u20132."
+      "desc": "You plan and prepare everything in detail, and aren’t good at improvising when things don’t go as planned. You suffer a –4 penalty on untrained skill rolls instead of the usual –2."
     },
     {
       "name": "Mild Mannered",
       "type": "Minor",
-      "desc": "This hero isn\u2019t threatening. Maybe he\u2019s a little doughy around the middle, has a kind face, or a soft voice. He subtracts 2 from Intimidation rolls due to his calm or gentle nature."
+      "desc": "This hero isn’t threatening. Maybe he’s a little doughy around the middle, has a kind face, or a soft voice. He subtracts 2 from Intimidation rolls due to his calm or gentle nature."
     },
     {
       "name": "Military Bureaucrat",
       "type": "Minor",
-      "desc": "Protocol exists for a reason\u2014and you follow it. To ignore standing orders, regulations, or established procedures, you must first succeed on a Spirit roll."
+      "desc": "Protocol exists for a reason—and you follow it. To ignore standing orders, regulations, or established procedures, you must first succeed on a Spirit roll."
     },
     {
       "name": "Overconfident",
       "type": "Major",
-      "desc": "Your hero believes they can take on anything. While not suicidal, they rarely back down from challenges, even when it\u2019s unwise."
+      "desc": "Your hero believes they can take on anything. While not suicidal, they rarely back down from challenges, even when it’s unwise."
     },
     {
       "name": "Pacifist",
       "type": "Minor/Major",
-      "desc": "A Minor Pacifist avoids unnecessary violence and won\u2019t kill prisoners. A Major Pacifist refuses to fight living creatures, using nonlethal methods for self-defense."
+      "desc": "A Minor Pacifist avoids unnecessary violence and won’t kill prisoners. A Major Pacifist refuses to fight living creatures, using nonlethal methods for self-defense."
     },
     {
       "name": "Phobia",
       "type": "Minor/Major",
-      "desc": "An irrational fear causes this character to take a \u22121 penalty (Minor) or \u22122 penalty (Major) on Trait rolls when confronted by their phobia."
+      "desc": "An irrational fear causes this character to take a −1 penalty (Minor) or −2 penalty (Major) on Trait rolls when confronted by their phobia."
     },
     {
       "name": "Post-Traumatic Stress Disorder",
@@ -468,12 +468,12 @@ window.SC_DATA = {
     {
       "name": "Poverty",
       "type": "Minor",
-      "desc": "This hero starts with half the usual funds and can\u2019t seem to hold onto money, halving their total funds each game week."
+      "desc": "This hero starts with half the usual funds and can’t seem to hold onto money, halving their total funds each game week."
     },
     {
       "name": "Psionic Dependency",
       "type": "Major",
-      "desc": "Your mental powers require chemical stabilization. Without proper medication, you suffer severe penalties to psionic abilities. Extended deprivation may cause dangerous psychic episodes. Psionically Sensitive (Major/Minor) The character\u2019s mind is particularly sensitive to psionics. As a Minor Hindrance, get a -2 to Discipline against psionic powers. Get a -4 as a Major Hindrance."
+      "desc": "Your mental powers require chemical stabilization. Without proper medication, you suffer severe penalties to psionic abilities. Extended deprivation may cause dangerous psychic episodes. Psionically Sensitive (Major/Minor) The character’s mind is particularly sensitive to psionics. As a Minor Hindrance, get a -2 to Discipline against psionic powers. Get a -4 as a Major Hindrance."
     },
     {
       "name": "Quirk",
@@ -493,22 +493,22 @@ window.SC_DATA = {
     {
       "name": "Selfless",
       "type": "Minor/Major",
-      "desc": "You think of others before yourself. You sleep on the floor to give another the bed. You pretend to be full to give your friends the last bite of meat. You stand before your friends when a grenade explodes. You buy the book that everyone else in your group reads\u2014a true hero! The extent and frequency of your sacrifice determines whether this is a Minor/Major Hindrance."
+      "desc": "You think of others before yourself. You sleep on the floor to give another the bed. You pretend to be full to give your friends the last bite of meat. You stand before your friends when a grenade explodes. You buy the book that everyone else in your group reads—a true hero! The extent and frequency of your sacrifice determines whether this is a Minor/Major Hindrance."
     },
     {
       "name": "Shamed",
       "type": "Minor/Major",
-      "desc": "Something haunts your hero. Maybe he made a vow he didn\u2019t keep. Maybe he was defeated in an honorable fight and ordered the death of his foe anyway for some greater principle. Maybe he isn\u2019t actually cowardly but once ran from a battle and left others to die. As a Minor Hindrance, the shameful circumstances aren\u2019t generally known\u2014it just haunts the hero. He might go out of his way, against all reason, not to repeat the mistake. Or he might give in to the same set of circumstances and hate himself for it. As a Major Hindrance, his deed is well known\u2014or at least known among those he cares about. The other player characters should be told the tale as soon as possible (preferably at character creation). If not, it should be revealed by nonplayer characters at some point, and occasionally used against the hero."
+      "desc": "Something haunts your hero. Maybe he made a vow he didn’t keep. Maybe he was defeated in an honorable fight and ordered the death of his foe anyway for some greater principle. Maybe he isn’t actually cowardly but once ran from a battle and left others to die. As a Minor Hindrance, the shameful circumstances aren’t generally known—it just haunts the hero. He might go out of his way, against all reason, not to repeat the mistake. Or he might give in to the same set of circumstances and hate himself for it. As a Major Hindrance, his deed is well known—or at least known among those he cares about. The other player characters should be told the tale as soon as possible (preferably at character creation). If not, it should be revealed by nonplayer characters at some point, and occasionally used against the hero."
     },
     {
       "name": "Short Tempered",
       "type": "Minor",
-      "desc": "The hero cannot control him or herself when insulted or made fun of. He\u2019s Provoked on any successful Taunt\u2014whether the opponent has the Provoke Edge or not. Provoked characters subtract 2 from rolls to affect any opponent except the one who insulted him. This lasts until a Joker is drawn (by either side) or someone else successfully Taunts the hero. Short Tempered also counts as a Requirement for the Menacing Edge."
+      "desc": "The hero cannot control him or herself when insulted or made fun of. He’s Provoked on any successful Taunt—whether the opponent has the Provoke Edge or not. Provoked characters subtract 2 from rolls to affect any opponent except the one who insulted him. This lasts until a Joker is drawn (by either side) or someone else successfully Taunts the hero. Short Tempered also counts as a Requirement for the Menacing Edge."
     },
     {
       "name": "Small",
       "type": "Minor",
-      "desc": "The character is unusually small, reducing their Size (and Toughness) by 1. They cannot have a Size below \u22121, but the Toughness penalty applies."
+      "desc": "The character is unusually small, reducing their Size (and Toughness) by 1. They cannot have a Size below −1, but the Toughness penalty applies."
     },
     {
       "name": "Stimulant Addiction",
@@ -518,7 +518,7 @@ window.SC_DATA = {
     {
       "name": "Stubborn",
       "type": "Minor",
-      "desc": "Stubborn individuals always want their way and never admit they\u2019re wrong. Even when it\u2019s painfully obvious they\u2019ve made a mistake they try to justify it with half-truths and rationalizations."
+      "desc": "Stubborn individuals always want their way and never admit they’re wrong. Even when it’s painfully obvious they’ve made a mistake they try to justify it with half-truths and rationalizations."
     },
     {
       "name": "Suspicious",
@@ -528,7 +528,7 @@ window.SC_DATA = {
     {
       "name": "Talisman",
       "type": "Minor/Major",
-      "desc": "Only characters with the Arcane Background (Psionics) Edge can take this Hindrance.The caster is dependent on a physical item to manifest his powers. This is a mental block on the individual\u2019s part. When caught without it, he subtracts 2 from all arcane skill rolls (\u22124 as a Major Hindrance), and is Stunned if the roll is a Critical Failure. Replacing a lost Talisman depends on the object, but should usually require getting it back from whoever took it. If it was destroyed, the Game Master should work with the player to figure out what might make a suitable replacement and how it might be gained."
+      "desc": "Only characters with the Arcane Background (Psionics) Edge can take this Hindrance.The caster is dependent on a physical item to manifest his powers. This is a mental block on the individual’s part. When caught without it, he subtracts 2 from all arcane skill rolls (−4 as a Major Hindrance), and is Stunned if the roll is a Critical Failure. Replacing a lost Talisman depends on the object, but should usually require getting it back from whoever took it. If it was destroyed, the Game Master should work with the player to figure out what might make a suitable replacement and how it might be gained."
     },
     {
       "name": "Tech Dependent",
@@ -538,7 +538,7 @@ window.SC_DATA = {
     {
       "name": "Thin Skinned",
       "type": "Minor/Major",
-      "desc": "This character is easily offended. They take a \u22122 penalty to resist"
+      "desc": "This character is easily offended. They take a −2 penalty to resist"
     },
     {
       "name": "Timid",
@@ -548,22 +548,22 @@ window.SC_DATA = {
     {
       "name": "Tongue-Tied",
       "type": "Major",
-      "desc": "Your hero flubs cool lines (or thinks of them afterwards!), goes off on tangents when he\u2019s trying to talk someone into something, and generally miscommunicates most everything he says. He suffers a -1 penalty to Influence rolls that involve speech."
+      "desc": "Your hero flubs cool lines (or thinks of them afterwards!), goes off on tangents when he’s trying to talk someone into something, and generally miscommunicates most everything he says. He suffers a -1 penalty to Influence rolls that involve speech."
     },
     {
       "name": "Ugly",
       "type": "Minor/Major",
-      "desc": "This character isn\u2019t blessed with good looks, taking a \u22121 (Minor) or \u22122 (Major) penalty to Persuasion rolls."
+      "desc": "This character isn’t blessed with good looks, taking a −1 (Minor) or −2 (Major) penalty to Persuasion rolls."
     },
     {
       "name": "Vengeful",
       "type": "Minor/Major",
-      "desc": "Payback is\u2026well\u2026bad news for someone, and this hero is going to get it. As a Minor Hindrance he usually seeks vengeance legally. The method varies by situation. Some plot and scheme for months while others demand immediate results. Those with the Major version of this Hindrance don\u2019t let anything prevent them from a reckoning. This doesn\u2019t mean they immediately resort to violence, but their actions always escalate until total and complete satisfaction is achieved."
+      "desc": "Payback is…well…bad news for someone, and this hero is going to get it. As a Minor Hindrance he usually seeks vengeance legally. The method varies by situation. Some plot and scheme for months while others demand immediate results. Those with the Major version of this Hindrance don’t let anything prevent them from a reckoning. This doesn’t mean they immediately resort to violence, but their actions always escalate until total and complete satisfaction is achieved."
     },
     {
       "name": "Vow",
       "type": "Minor/Major",
-      "desc": "The character has sworn an oath to someone or something he believes in. The danger in fulfilling the Vow and how often it might occur determines the level of the Hindrance. A Minor Vow might be to serve an order with a broad mandate that rarely conflicts with the group\u2019s goals. A Major Vow makes long-term and frequent demands on the servant\u2019s time and results in great risks to his life."
+      "desc": "The character has sworn an oath to someone or something he believes in. The danger in fulfilling the Vow and how often it might occur determines the level of the Hindrance. A Minor Vow might be to serve an order with a broad mandate that rarely conflicts with the group’s goals. A Major Vow makes long-term and frequent demands on the servant’s time and results in great risks to his life."
     },
     {
       "name": "Whispers of the Swarm",
@@ -575,7 +575,7 @@ window.SC_DATA = {
     {
       "name": "Edges\nBACKGROUND EDGES\nAlertness",
       "req": "Novice",
-      "desc": "Not much gets by this hero. He\u2019s very observant and perceptive, and adds +2 to his Perception rolls to hear, see, or otherwise sense the world around him."
+      "desc": "Not much gets by this hero. He’s very observant and perceptive, and adds +2 to his Perception rolls to hear, see, or otherwise sense the world around him."
     },
     {
       "name": "Ambidextrous",
@@ -585,7 +585,7 @@ window.SC_DATA = {
     {
       "name": "Attractive",
       "req": "Novice, Vigor d6+",
-      "desc": "+2 to Influence rolls if the target is attracted to the character\u2019s general type (gender, sex, species, etc.), +1 otherwise."
+      "desc": "+2 to Influence rolls if the target is attracted to the character’s general type (gender, sex, species, etc.), +1 otherwise."
     },
     {
       "name": "Very Attractive",
@@ -595,12 +595,12 @@ window.SC_DATA = {
     {
       "name": "Berserk",
       "req": "Novice",
-      "desc": "Berserkers become wild and nearly uncontrollable when the \u201cred rage\u201d takes them, but they are deadly killing machines as well! As a limited free action, a berserker may \u201cgo berserk\u201d voluntarily. If he\u2019s Shaken or Wounded (from physical damage only), he must make a Smarts roll or go berserk whether he wants to or not, he can voluntarily fail this check if he likes. Going Berserk has the following effects: \u0084 \u2022 Fury: His Strength increases a die type (ignoring his usual maximum) and every attack must be a Wild Attack. He can\u2019t use any skill or ability that requires more than a few seconds of concentration (GM\u2019s call). \u2022 Enraged: He ignores two points of Wound penalties and all Fatigue penalties (this stacks with any other abilities that reduce those penalties). \u2022 Reckless Abandon: If he rolls a Critical Failure on an attack roll while berserk, he hits a random target within range of her attack (not the intended target), friend or foe. If there are no applicable targets, the blow simply misses, smashes nearby objects, etc. After five consecutive rounds of berserk fury, the hero takes a level of Fatigue. At ten rounds, he takes another level of Fatigue and the rage ends. He may also choose to end his rage at any time by making a Smarts \u22122 roll (as a free action; possibly avoiding Fatigue if he manages to end his rage before it\u2019s incurred!). Start the count anew if he goes berserk again, even in the same battle."
+      "desc": "Berserkers become wild and nearly uncontrollable when the “red rage” takes them, but they are deadly killing machines as well! As a limited free action, a berserker may “go berserk” voluntarily. If he’s Shaken or Wounded (from physical damage only), he must make a Smarts roll or go berserk whether he wants to or not, he can voluntarily fail this check if he likes. Going Berserk has the following effects:  • Fury: His Strength increases a die type (ignoring his usual maximum) and every attack must be a Wild Attack. He can’t use any skill or ability that requires more than a few seconds of concentration (GM’s call). • Enraged: He ignores two points of Wound penalties and all Fatigue penalties (this stacks with any other abilities that reduce those penalties). • Reckless Abandon: If he rolls a Critical Failure on an attack roll while berserk, he hits a random target within range of her attack (not the intended target), friend or foe. If there are no applicable targets, the blow simply misses, smashes nearby objects, etc. After five consecutive rounds of berserk fury, the hero takes a level of Fatigue. At ten rounds, he takes another level of Fatigue and the rage ends. He may also choose to end his rage at any time by making a Smarts −2 roll (as a free action; possibly avoiding Fatigue if he manages to end his rage before it’s incurred!). Start the count anew if he goes berserk again, even in the same battle."
     },
     {
       "name": "Brave",
       "req": "Novice, Spirit d6+",
-      "desc": "Those with this Edge have learned to master their fear, or have dealt with so many horrors they\u2019ve become jaded. These valiant explorers add +2 to Discipline vs Fear and subtract 2 from Fear Table results."
+      "desc": "Those with this Edge have learned to master their fear, or have dealt with so many horrors they’ve become jaded. These valiant explorers add +2 to Discipline vs Fear and subtract 2 from Fear Table results."
     },
     {
       "name": "Fearless Example",
@@ -625,7 +625,7 @@ window.SC_DATA = {
     {
       "name": "Elan",
       "req": "Novice, Spirit d8+",
-      "desc": "Elan means energy or spirit. Those who have it rise to the occasion when the going gets toughest. When you spend a Benny or Morale point to reroll a Trait, add +2 to the total. The bonus applies only when rerolling. It doesn\u2019t apply to damage rolls (since they\u2019re not Trait rolls), nor does it apply to Soak rolls unless you\u2019re using another Morale point to reroll the Vigor check."
+      "desc": "Elan means energy or spirit. Those who have it rise to the occasion when the going gets toughest. When you spend a Benny or Morale point to reroll a Trait, add +2 to the total. The bonus applies only when rerolling. It doesn’t apply to damage rolls (since they’re not Trait rolls), nor does it apply to Soak rolls unless you’re using another Morale point to reroll the Vigor check."
     },
     {
       "name": "Fame",
@@ -635,12 +635,12 @@ window.SC_DATA = {
     {
       "name": "Fleet-Footed",
       "req": "Novice, Agility d6+",
-      "desc": "The hero\u2019s Speed is increased by +2 and his running die increases one step (from d6 to d8, for example)."
+      "desc": "The hero’s Speed is increased by +2 and his running die increases one step (from d6 to d8, for example)."
     },
     {
       "name": "Kel-Morian Combine",
       "req": "Moria",
-      "desc": "Your loyalty to one of the Kel-Morian factions has its perks and downsides. You should work with your Game Master to decide what Kel-Morian faction you belong to, such as the Kelanis Shipping Guild, the Meinhoff Miner\u2019s Union, or the Paladino Pirate Blockade. You gain a +2 bonus on Lore and Influence checks when interacting with fellow members of your guild. As long as you are a member in good standing in your Kel-Morian faction, every time you get paid up, you receive an amount of credits equal to 2500x your rank."
+      "desc": "Your loyalty to one of the Kel-Morian factions has its perks and downsides. You should work with your Game Master to decide what Kel-Morian faction you belong to, such as the Kelanis Shipping Guild, the Meinhoff Miner’s Union, or the Paladino Pirate Blockade. You gain a +2 bonus on Lore and Influence checks when interacting with fellow members of your guild. As long as you are a member in good standing in your Kel-Morian faction, every time you get paid up, you receive an amount of credits equal to 2500x your rank."
     },
     {
       "name": "Noble Born",
@@ -650,7 +650,7 @@ window.SC_DATA = {
     {
       "name": "Famous",
       "req": "Seasoned, Fame",
-      "desc": "Your hero is truly famous. He\u2019s well known in a large circle such as a large industry, or a popular medium (film or television, the music industry). He makes 5\u00d7 the normal fee when performing and adds +2 to Influence rolls when influencing friendly individuals who know who he is. The price is higher for the truly Famous, too, with more demands on his time, obligations, rivals, scandals, and an inability to operate in crowds without being recognized."
+      "desc": "Your hero is truly famous. He’s well known in a large circle such as a large industry, or a popular medium (film or television, the music industry). He makes 5× the normal fee when performing and adds +2 to Influence rolls when influencing friendly individuals who know who he is. The price is higher for the truly Famous, too, with more demands on his time, obligations, rivals, scandals, and an inability to operate in crowds without being recognized."
     },
     {
       "name": "Infamy",
@@ -660,7 +660,7 @@ window.SC_DATA = {
     {
       "name": "Military Family",
       "req": "Novice.",
-      "desc": "The hero\u2019s father or mother was a Confederate officer who distinguished him or herself with a glorious career. The hero has a +2 bonus to Influence when dealing with Confederate officers because of his father\u2019s reputation and a +2 to Lore rolls related to the Confederacy. Should he ever fail in his duties in an embarrassing way the bonus becomes a -2 penalty to Influence until he makes it up to himself and to the Confederacy."
+      "desc": "The hero’s father or mother was a Confederate officer who distinguished him or herself with a glorious career. The hero has a +2 bonus to Influence when dealing with Confederate officers because of his father’s reputation and a +2 to Lore rolls related to the Confederacy. Should he ever fail in his duties in an embarrassing way the bonus becomes a -2 penalty to Influence until he makes it up to himself and to the Confederacy."
     },
     {
       "name": "General Combat\nAccuracy",
@@ -675,7 +675,7 @@ window.SC_DATA = {
     {
       "name": "Calculating",
       "req": "Novice, Intelligence d8+",
-      "desc": "A few seconds to study a foe\u2019s actions gives your hero a major advantage. When his Action Card is a Five or less, he ignores up to 2 points of penalties on one action that turn, which can include Multi-Action, cover, Range, and even Wound penalties."
+      "desc": "A few seconds to study a foe’s actions gives your hero a major advantage. When his Action Card is a Five or less, he ignores up to 2 points of penalties on one action that turn, which can include Multi-Action, cover, Range, and even Wound penalties."
     },
     {
       "name": "Chemical Tolerance",
@@ -720,7 +720,7 @@ window.SC_DATA = {
     {
       "name": "Extraction",
       "req": "Seasoned, Athletics d8+",
-      "desc": "When a character withdraws from melee, adjacent attackers get a free Fighting attack against him. This is a very dangerous proposition for most, but not your wily champion. When moving away from adjacent foes, three of them (player\u2019s choice) don't get their free Fighting attack. Vault Away Requirements: Heroic, Athletics d10+, Extraction Once, on his turn, as he Withdraws from Melee, the hero can perform a free attack (melee or ranged), or a free Push, against one of the foes he used the Extraction Edge on. If performing a ranged attack, it is fired immediately after leaving the adjacency, so 1\u201d away from the target."
+      "desc": "When a character withdraws from melee, adjacent attackers get a free Fighting attack against him. This is a very dangerous proposition for most, but not your wily champion. When moving away from adjacent foes, three of them (player’s choice) don't get their free Fighting attack. Vault Away Requirements: Heroic, Athletics d10+, Extraction Once, on his turn, as he Withdraws from Melee, the hero can perform a free attack (melee or ranged), or a free Push, against one of the foes he used the Extraction Edge on. If performing a ranged attack, it is fired immediately after leaving the adjacency, so 1” away from the target."
     },
     {
       "name": "Free Runner",
@@ -740,7 +740,7 @@ window.SC_DATA = {
     {
       "name": "Hard to Kill",
       "req": "Novice, Spirit d8+",
-      "desc": "This hero has more lives than a herd of cats. He may ignore his Wound penalties when making Vigor rolls to Soak. If your hero is ever \u201ckilled,\u201d roll a die. On an odd result, he\u2019s dead as usual. On an even roll, he\u2019s Incapacitated but somehow escapes death. He may be captured, stripped of all his belongings, or mistakenly left for dead, but he somehow survives. Never Give Up Requirements: Heroic, Vigor d10+, Spirit d8+, Hard to Kill While suffering Wound penalties, add the penalty as a bonus to your Toughness and Resolve."
+      "desc": "This hero has more lives than a herd of cats. He may ignore his Wound penalties when making Vigor rolls to Soak. If your hero is ever “killed,” roll a die. On an odd result, he’s dead as usual. On an even roll, he’s Incapacitated but somehow escapes death. He may be captured, stripped of all his belongings, or mistakenly left for dead, but he somehow survives. Never Give Up Requirements: Heroic, Vigor d10+, Spirit d8+, Hard to Kill While suffering Wound penalties, add the penalty as a bonus to your Toughness and Resolve."
     },
     {
       "name": "Iron Jaw",
@@ -815,7 +815,7 @@ window.SC_DATA = {
     {
       "name": "Quick",
       "req": "Novice, Agility d8+",
-      "desc": "Quick characters have lightning-fast reflexes and a cool head. Whenever you are dealt an Action Card of Five or lower, you may discard it and draw again until you get a card higher than Five. Characters with both the Level Headed and Quick Edges first draw their additional card and choose which to take. If that card is a Five or less, the Quick Edge may be used to draw a replacement until it\u2019s Six or higher."
+      "desc": "Quick characters have lightning-fast reflexes and a cool head. Whenever you are dealt an Action Card of Five or lower, you may discard it and draw again until you get a card higher than Five. Characters with both the Level Headed and Quick Edges first draw their additional card and choose which to take. If that card is a Five or less, the Quick Edge may be used to draw a replacement until it’s Six or higher."
     },
     {
       "name": "Resolute",
@@ -830,7 +830,7 @@ window.SC_DATA = {
     {
       "name": "Sharp Reflexes",
       "req": "Novice, Agility d8+, Instinct d8+",
-      "desc": "The hero reacts promptly to external events. He can roll the same Trait for the Action he wishes to use to Interrupt and he further adds +2 on rolls to interrupt someone else\u2019s actions or resist being interrupted by them. In addition, when spending a Morale to draw a new Action Card, draw an additional one (the Quick Edge applies, if the hero has it) and keep the one you like the most (if the hero is Level Headed, choose amongst all the cards you drew)."
+      "desc": "The hero reacts promptly to external events. He can roll the same Trait for the Action he wishes to use to Interrupt and he further adds +2 on rolls to interrupt someone else’s actions or resist being interrupted by them. In addition, when spending a Morale to draw a new Action Card, draw an additional one (the Quick Edge applies, if the hero has it) and keep the one you like the most (if the hero is Level Headed, choose amongst all the cards you drew)."
     },
     {
       "name": "See the Unseen",
@@ -840,7 +840,7 @@ window.SC_DATA = {
     {
       "name": "Spot Weakness",
       "req": "Novice, Instinct d8+",
-      "desc": "As an action, or as a free action during the Defend or the Aim maneuvers, the hero observes his target to discover his weaknesses. He may roll Perception or Tactics opposed by the target\u2019s Intelligence. If successful, the target is Vulnerable to him until the end of the scene, or until he successfully Spots Weakness on another target. Instead of a single target, he may observe a group of similar Extras. They resist with a group roll and are either all Vulnerable (on a success) or none (on a failure)."
+      "desc": "As an action, or as a free action during the Defend or the Aim maneuvers, the hero observes his target to discover his weaknesses. He may roll Perception or Tactics opposed by the target’s Intelligence. If successful, the target is Vulnerable to him until the end of the scene, or until he successfully Spots Weakness on another target. Instead of a single target, he may observe a group of similar Extras. They resist with a group roll and are either all Vulnerable (on a success) or none (on a failure)."
     },
     {
       "name": "Stand Tall",
@@ -855,17 +855,17 @@ window.SC_DATA = {
     {
       "name": "Sweep",
       "req": "Novice, Strength d8+, Melee d8+",
-      "desc": "Some heroes are able to face down multiple enemies at once. As a limited action, Sweep allows a character to make a single Melee attack and apply it against all targets in his Reach (friends and foes alike). If you are not using a two-handed weapon, you have a \u22122 penalty to your roll. Resolve damage separately for each enemy that\u2019s hit. Improved Sweep Requirements: Veteran, Sweep As above, but the whirlwind of death is able to avoid allies when using Sweep."
+      "desc": "Some heroes are able to face down multiple enemies at once. As a limited action, Sweep allows a character to make a single Melee attack and apply it against all targets in his Reach (friends and foes alike). If you are not using a two-handed weapon, you have a −2 penalty to your roll. Resolve damage separately for each enemy that’s hit. Improved Sweep Requirements: Veteran, Sweep As above, but the whirlwind of death is able to avoid allies when using Sweep."
     },
     {
       "name": "Trademark Weapon",
       "req": "Novice, skill with weapon of d8+",
-      "desc": "The hero knows one unique weapon like the back of his hand. When using it, he adds +1 to his Athletics (throwing), Melee, or Ranged rolls, and +1 to Defense when readied (even if it\u2019s a ranged weapon). A fighter can take this Edge multiple times, applying it to a different weapon each time. If a Trademark Weapon is lost, he can replace it but the benefits don\u2019t kick in for a few days (however long the GM feels is dramatically appropriate). Improved Trademark Weapon Requirements: Veteran, Trademark Weapon As above but the bonuses when using the weapon increase to +2."
+      "desc": "The hero knows one unique weapon like the back of his hand. When using it, he adds +1 to his Athletics (throwing), Melee, or Ranged rolls, and +1 to Defense when readied (even if it’s a ranged weapon). A fighter can take this Edge multiple times, applying it to a different weapon each time. If a Trademark Weapon is lost, he can replace it but the benefits don’t kick in for a few days (however long the GM feels is dramatically appropriate). Improved Trademark Weapon Requirements: Veteran, Trademark Weapon As above but the bonuses when using the weapon increase to +2."
     },
     {
       "name": "Two-Weapon Fighting",
       "req": "Novice, Agility d8+",
-      "desc": "If a character makes an attack with one action and another from a different hand in a later action, the second attack doesn\u2019t inflict a Multi-Action penalty. The Off-Hand penalty still applies unless he\u2019s Ambidextrous. The character can choose to make a Melee or Ranged attack with each hand, an Athletics (throwing) attack with each hand, or a combination of these, depending on the readied weapons."
+      "desc": "If a character makes an attack with one action and another from a different hand in a later action, the second attack doesn’t inflict a Multi-Action penalty. The Off-Hand penalty still applies unless he’s Ambidextrous. The character can choose to make a Melee or Ranged attack with each hand, an Athletics (throwing) attack with each hand, or a combination of these, depending on the readied weapons."
     },
     {
       "name": "Unstoppable Movement",
@@ -880,17 +880,17 @@ window.SC_DATA = {
     {
       "name": "Melee Combat\nBlind Fighting",
       "req": "Novice, Perception d8+",
-      "desc": "When your vision is impaired, your other senses step up. You hear or smell others around you, your senses anticipating their movement. You ignore all Illumination and blindness penalties to attack, Test, Support, or to manifest powers on targets up to 3\u201d away."
+      "desc": "When your vision is impaired, your other senses step up. You hear or smell others around you, your senses anticipating their movement. You ignore all Illumination and blindness penalties to attack, Test, Support, or to manifest powers on targets up to 3” away."
     },
     {
       "name": "Brawler",
       "req": "Novice, Strength d8+, Vigor d8+",
-      "desc": "His fists hit like hammers or his talons cut like scythes. His body feels like it\u2019s made of stone. Brawlers increase their Toughness by 1 and roll Strength +d4 when hitting with their fists or feet (or claws if they have them). If they already have a damage die from the Martial Artist Edge, etc., increase the damage die type by one instead. The Brawler Edge doesn\u2019t make the character\u2019s fists Natural Weapons. Bruiser Requirements: Seasoned, Brawler The fighter increases his Toughness an additional +1, and the damage caused with his fists or another die type."
+      "desc": "His fists hit like hammers or his talons cut like scythes. His body feels like it’s made of stone. Brawlers increase their Toughness by 1 and roll Strength +d4 when hitting with their fists or feet (or claws if they have them). If they already have a damage die from the Martial Artist Edge, etc., increase the damage die type by one instead. The Brawler Edge doesn’t make the character’s fists Natural Weapons. Bruiser Requirements: Seasoned, Brawler The fighter increases his Toughness an additional +1, and the damage caused with his fists or another die type."
     },
     {
       "name": "Charge",
       "req": "Novice, Fighting d8+",
-      "desc": "A short burst of speed adds significant impact to this hero\u2019s melee damage. If he moves at least 2 squares towards its target, he adds +2 to the damage of his Melee attacks that turn. This may be combined with a Wild Attack."
+      "desc": "A short burst of speed adds significant impact to this hero’s melee damage. If he moves at least 2 squares towards its target, he adds +2 to the damage of his Melee attacks that turn. This may be combined with a Wild Attack."
     },
     {
       "name": "Close Quarters Specialist",
@@ -905,12 +905,12 @@ window.SC_DATA = {
     {
       "name": "Counterattack",
       "req": "Seasoned, Melee d8+",
-      "desc": "Fighters with this Edge deal instant punishment for an enemy\u2019s mistakes. Once per round (if not Shaken or Stunned), the character receives a Free Attack against one failed Fighting attack against him. The counterattack takes place immediately (before other hits against the hero on the same Action Card, if any). Improved Counterattack Requirements: Veteran, Counterattack As above but the hero gets a Free Attack against up to three failed attacks each round. Reprisal Requirements: Heroic, Counterattack The hero can now use his counterattacks against opponents in Reach of his weapon even when the failed melee attack does not target him. He could counterattack an enemy targeting an ally or a bystander he wishes to protect. The attack must roll lower than his Parry, regardless if it hits his ally. The counterattack is resolved after the enemy\u2019s attack."
+      "desc": "Fighters with this Edge deal instant punishment for an enemy’s mistakes. Once per round (if not Shaken or Stunned), the character receives a Free Attack against one failed Fighting attack against him. The counterattack takes place immediately (before other hits against the hero on the same Action Card, if any). Improved Counterattack Requirements: Veteran, Counterattack As above but the hero gets a Free Attack against up to three failed attacks each round. Reprisal Requirements: Heroic, Counterattack The hero can now use his counterattacks against opponents in Reach of his weapon even when the failed melee attack does not target him. He could counterattack an enemy targeting an ally or a bystander he wishes to protect. The attack must roll lower than his Parry, regardless if it hits his ally. The counterattack is resolved after the enemy’s attack."
     },
     {
       "name": "Defender",
       "req": "Seasoned, Melee d6+",
-      "desc": "You can share your shield\u2019s Defense and shield cover bonus with one adjacent ally as a free action. Shield bonuses don\u2019t stack, so use only the highest if a character is protected by more than one."
+      "desc": "You can share your shield’s Defense and shield cover bonus with one adjacent ally as a free action. Shield bonuses don’t stack, so use only the highest if a character is protected by more than one."
     },
     {
       "name": "Ghost Knife Fighter",
@@ -920,7 +920,7 @@ window.SC_DATA = {
     {
       "name": "Parry",
       "req": "Seasoned, Melee d8+",
-      "desc": "Through hard-fought experience your hero has learned to defend himself in vicious hand-to-hand combat. His Defense increases by +1 against melee attacks and any Gang Up bonus against him is reduced by one. Improved Parry Requirements: Veteran, Parry The hero\u2019s Defense bonus is now +2 and the Gang Up bonus against him is reduced by 2."
+      "desc": "Through hard-fought experience your hero has learned to defend himself in vicious hand-to-hand combat. His Defense increases by +1 against melee attacks and any Gang Up bonus against him is reduced by one. Improved Parry Requirements: Veteran, Parry The hero’s Defense bonus is now +2 and the Gang Up bonus against him is reduced by 2."
     },
     {
       "name": "Feint",
@@ -930,7 +930,7 @@ window.SC_DATA = {
     {
       "name": "First Strike",
       "req": "Novice, Agility d8+",
-      "desc": "Once per round, as long as he\u2019s not Shaken or Stunned, the hero gets a free Fighting attack against a foe immediately after he moves into Reach. Improved First Strike Requirements: Heroic, First Strike As above but the hero may attack up to three foes each round."
+      "desc": "Once per round, as long as he’s not Shaken or Stunned, the hero gets a free Fighting attack against a foe immediately after he moves into Reach. Improved First Strike Requirements: Heroic, First Strike As above but the hero may attack up to three foes each round."
     },
     {
       "name": "Formation Fighter",
@@ -945,7 +945,7 @@ window.SC_DATA = {
     {
       "name": "Gun Fu!",
       "req": "Novice, Martial Artist, Melee d6+, Ranged d6+",
-      "desc": "Heavily trained in close quarters gunplay, you know gun fu. When using pistols against a target\u2019s Defense, you have +2 to Ranged and +2 to Pistol damage. This benefit only applies to such close range combat, not to attacks from further than adjacent."
+      "desc": "Heavily trained in close quarters gunplay, you know gun fu. When using pistols against a target’s Defense, you have +2 to Ranged and +2 to Pistol damage. This benefit only applies to such close range combat, not to attacks from further than adjacent."
     },
     {
       "name": "Enlightened Gun Fu!",
@@ -960,12 +960,12 @@ window.SC_DATA = {
     {
       "name": "Leap",
       "req": "Novice, Athletics d8+",
-      "desc": "As part of your movement, you may leap up to your Speed. This movement ignores difficult terrain and does not provoke free attacks for moving within an enemy\u2019s reach. If you attack a target immediately after leaping, the target does not gain Gang Up bonuses against you until the beginning of your next turn."
+      "desc": "As part of your movement, you may leap up to your Speed. This movement ignores difficult terrain and does not provoke free attacks for moving within an enemy’s reach. If you attack a target immediately after leaping, the target does not gain Gang Up bonuses against you until the beginning of your next turn."
     },
     {
       "name": "Martial Artist",
       "req": "Novice, Melee d6+",
-      "desc": "The fighter has trained in basic martial arts. His fists and feet are weapons (see Natural Weapons) so he\u2019s always considered armed. He adds +1 when striking with them and causes Strength+d4 damage. If he already has a Strength damage die the Brawler Edge, increase the damage a die type. Martial Warrior Requirements: Seasoned, Martial Artist Increase the warrior\u2019s Melee bonus to +2 and his damage die by an additional step."
+      "desc": "The fighter has trained in basic martial arts. His fists and feet are weapons (see Natural Weapons) so he’s always considered armed. He adds +1 when striking with them and causes Strength+d4 damage. If he already has a Strength damage die the Brawler Edge, increase the damage a die type. Martial Warrior Requirements: Seasoned, Martial Artist Increase the warrior’s Melee bonus to +2 and his damage die by an additional step."
     },
     {
       "name": "Polearm Master",
@@ -975,12 +975,12 @@ window.SC_DATA = {
     {
       "name": "Redirect Blows",
       "req": "Seasoned, Melee d8+, Agility d8+",
-      "desc": "Once per round, when being targeted by a melee attack, the hero can roll Melee opposed to the attacker\u2019s Melee total. If successful, he redirects the attack to a new target, adjacent to himself and in Reach of the attacker. The attack is now resolved against that target instead of against the hero. The new target, not expecting that blow, suffers a \u20132 penalty to Defense (\u20134 on a raise on the roll to redirect)."
+      "desc": "Once per round, when being targeted by a melee attack, the hero can roll Melee opposed to the attacker’s Melee total. If successful, he redirects the attack to a new target, adjacent to himself and in Reach of the attacker. The attack is now resolved against that target instead of against the hero. The new target, not expecting that blow, suffers a –2 penalty to Defense (–4 on a raise on the roll to redirect)."
     },
     {
       "name": "Savagery",
       "req": "Novice, Melee d6+",
-      "desc": "Violence is a way of life for some. Those with this Edge hit their foes hard enough that they often don\u2019t get to reply in kind. A character with this Edge causes +4 damage when making a Wild Attack rather than +2."
+      "desc": "Violence is a way of life for some. Those with this Edge hit their foes hard enough that they often don’t get to reply in kind. A character with this Edge causes +4 damage when making a Wild Attack rather than +2."
     },
     {
       "name": "Shadowguard Duelist",
@@ -1015,12 +1015,12 @@ window.SC_DATA = {
     {
       "name": "Marksman",
       "req": "Seasoned, Athletics d8+ or Ranged d8+",
-      "desc": "The hero is a natural with ranged weapons. If he doesn\u2019t move in a turn and fires no more than a Rate of Fire of 1 as her first action, he may add +1 to an Athletics (throwing) or Ranged roll, or ignore up to 2 points of penalties from Called Shots, Cover, Range, Scale, or Speed. This is a lesser version of the Aim maneuver and does not stack with it. Marksman doesn\u2019t apply to additional attacks after the first in a turn."
+      "desc": "The hero is a natural with ranged weapons. If he doesn’t move in a turn and fires no more than a Rate of Fire of 1 as her first action, he may add +1 to an Athletics (throwing) or Ranged roll, or ignore up to 2 points of penalties from Called Shots, Cover, Range, Scale, or Speed. This is a lesser version of the Aim maneuver and does not stack with it. Marksman doesn’t apply to additional attacks after the first in a turn."
     },
     {
       "name": "Focus Fire",
       "req": "Veteran, Marksman, Athletics d10+ or Ranged d10+",
-      "desc": "The Marksman Edge and the Aim maneuver affect all of the shooter\u2019s ranged attacks on his turn, not just the first one, as long as he fires no more than a Rate of Fire of 1, doesn\u2019t move, and all his attacks target the same foe as the first one. Also, after the hero successfully hits a target for the second time in the same turn, the target becomes Vulnerable."
+      "desc": "The Marksman Edge and the Aim maneuver affect all of the shooter’s ranged attacks on his turn, not just the first one, as long as he fires no more than a Rate of Fire of 1, doesn’t move, and all his attacks target the same foe as the first one. Also, after the hero successfully hits a target for the second time in the same turn, the target becomes Vulnerable."
     },
     {
       "name": "Sharpshooter",
@@ -1050,12 +1050,12 @@ window.SC_DATA = {
     {
       "name": "Rapid Fire",
       "req": "Seasoned, Ranged d6+",
-      "desc": "The shooter is practiced at taking quick and accurate shots. As long as he\u2019s armed with a fast-firing ranged weapon of some sort (such as a revolver or semi-automatic) and has enough ammunition to do so, he may increase his weapon\u2019s Rate of Fire by 1 for any one of his Shooting attacks that turn. Improved Rapid Fire Requirements: Veteran, Rapid Fire The shooter may now increase his weapon\u2019s Rate of Fire by 1 twice in the same turn (via a Multi-Action)."
+      "desc": "The shooter is practiced at taking quick and accurate shots. As long as he’s armed with a fast-firing ranged weapon of some sort (such as a revolver or semi-automatic) and has enough ammunition to do so, he may increase his weapon’s Rate of Fire by 1 for any one of his Shooting attacks that turn. Improved Rapid Fire Requirements: Veteran, Rapid Fire The shooter may now increase his weapon’s Rate of Fire by 1 twice in the same turn (via a Multi-Action)."
     },
     {
       "name": "Rapid Reload",
       "req": "Seasoned, Athletics d8+ or Ranged d8+",
-      "desc": "If the shooter doesn\u2019t move in a turn, he gets one Reload action for free (so he can reload then attack and still benefit from the Marksman Edge if he has it)."
+      "desc": "If the shooter doesn’t move in a turn, he gets one Reload action for free (so he can reload then attack and still benefit from the Marksman Edge if he has it)."
     },
     {
       "name": "Return Fire",
@@ -1065,7 +1065,7 @@ window.SC_DATA = {
     {
       "name": "Rock and Roll!",
       "req": "Seasoned, Ranged d8+",
-      "desc": "Experienced shooters learn to compensate for the recoil of fully automatic weapons. If a character with this Edge doesn\u2019t move on his turn, he ignores the Recoil penalty."
+      "desc": "Experienced shooters learn to compensate for the recoil of fully automatic weapons. If a character with this Edge doesn’t move on his turn, he ignores the Recoil penalty."
     },
     {
       "name": "Shot on the Runner",
@@ -1090,7 +1090,7 @@ window.SC_DATA = {
     {
       "name": "Threatening Shot",
       "req": "Seasoned, Instinct d8+, Ranged d8+",
-      "desc": "You have learned to dominate open ground with disciplined fields of fire. Enemies quickly learn that moving under your watch is often fatal. As a Limited Action, you can set up a killing zone by placing a Large Burst Template that lasts until the beginning of your next turn. Enemies moving through your kill zone provoke a Ranged Free Attack from you. You can benefit from this Edge a maximum amount of times per round equal to your weapon\u2019s Rate of Fire."
+      "desc": "You have learned to dominate open ground with disciplined fields of fire. Enemies quickly learn that moving under your watch is often fatal. As a Limited Action, you can set up a killing zone by placing a Large Burst Template that lasts until the beginning of your next turn. Enemies moving through your kill zone provoke a Ranged Free Attack from you. You can benefit from this Edge a maximum amount of times per round equal to your weapon’s Rate of Fire."
     },
     {
       "name": "Trick Shot",
@@ -1105,17 +1105,17 @@ window.SC_DATA = {
     {
       "name": "Acrobat",
       "req": "Novice, Agility d8+, Athletics d8+",
-      "desc": "The Acrobat gets one free reroll on Athletics totals that involve balance, tumbling, or grappling. It doesn\u2019t affect rolls to interrupt actions. Acrobats also leap about quickly so that opponents take a -1 to their attacks against them as long as they\u2019re aware of an attack, can reasonably move about, and aren't suffering any Encumbrance penalties."
+      "desc": "The Acrobat gets one free reroll on Athletics totals that involve balance, tumbling, or grappling. It doesn’t affect rolls to interrupt actions. Acrobats also leap about quickly so that opponents take a -1 to their attacks against them as long as they’re aware of an attack, can reasonably move about, and aren't suffering any Encumbrance penalties."
     },
     {
       "name": "Assassin",
       "req": "Novice, Agility d8+, Melee d6+ or Ranged d6+, Stealth d8+",
-      "desc": "Assassins are trained killers who know how to kill even the toughest foes. They add +2 to damage rolls when their foe is Vulnerable or they have The Drop. Sneak Attack Requirements: Seasoned, Assassin The +2 bonus from the Assassin Edge is replaced by a d6, which may Ace as usual. This applies to Athletics (throwing), Melee, or Ranged attacks. Improved Sneak Attack Requirements: Veteran, Sneak Attack The character\u2019s Sneak Attack bonus also now applies if the foe is Distracted."
+      "desc": "Assassins are trained killers who know how to kill even the toughest foes. They add +2 to damage rolls when their foe is Vulnerable or they have The Drop. Sneak Attack Requirements: Seasoned, Assassin The +2 bonus from the Assassin Edge is replaced by a d6, which may Ace as usual. This applies to Athletics (throwing), Melee, or Ranged attacks. Improved Sneak Attack Requirements: Veteran, Sneak Attack The character’s Sneak Attack bonus also now applies if the foe is Distracted."
     },
     {
       "name": "Athlete",
       "req": "Novice, Strength d6+, Athletics d8+",
-      "desc": "An athlete, strong and fit, gets a free reroll on Athletics totals that involve climbing, swimming, jumping (long or high), grappling, as well as Athletics or Strength totals for Pushing, or Tripping targets. It doesn\u2019t affect rolls for interrupting actions. Athletes also increase the Short Ranges of throwing actions by 1 (double the Short Range to get the Medium Range, and double again for the Long Range)."
+      "desc": "An athlete, strong and fit, gets a free reroll on Athletics totals that involve climbing, swimming, jumping (long or high), grappling, as well as Athletics or Strength totals for Pushing, or Tripping targets. It doesn’t affect rolls for interrupting actions. Athletes also increase the Short Ranges of throwing actions by 1 (double the Short Range to get the Medium Range, and double again for the Long Range)."
     },
     {
       "name": "Bureaucrat",
@@ -1175,7 +1175,7 @@ window.SC_DATA = {
     {
       "name": "Jack-of-All-Trades",
       "req": "Novice, Intelligence d10+",
-      "desc": "Through advanced schooling, book-learning, or just amazing intuitive perception, your hero has a talent for picking up skills on the fly. There\u2019s little he can\u2019t figure out given a little time and a dash of luck. The character makes a Intelligence roll as an action after observing or studying some subject. He gains a d4 in the relevant skill with success, or d6 with a raise. He may try again after an hour of study, trial and effort, or immersion if he fails or wants to try for a raise. This lasts until the character attempts to learn a different subject, whether he\u2019s successful or not."
+      "desc": "Through advanced schooling, book-learning, or just amazing intuitive perception, your hero has a talent for picking up skills on the fly. There’s little he can’t figure out given a little time and a dash of luck. The character makes a Intelligence roll as an action after observing or studying some subject. He gains a d4 in the relevant skill with success, or d6 with a raise. He may try again after an hour of study, trial and effort, or immersion if he fails or wants to try for a raise. This lasts until the character attempts to learn a different subject, whether he’s successful or not."
     },
     {
       "name": "Medic",
@@ -1190,17 +1190,17 @@ window.SC_DATA = {
     {
       "name": "Scholar",
       "req": "Novice, Intelligence d8+",
-      "desc": "Learned professors, devoted students, and amateur enthusiasts spend great amounts of time and energy studying particular subjects. They become experts in these fields, and rarely fail to answer questions in their particular area of expertise. Pick any one of the following skills: Lore, Tactics, or Science, and add +2 to the total whenever they\u2019re used. This Edge may be taken more than once if applied to different skills."
+      "desc": "Learned professors, devoted students, and amateur enthusiasts spend great amounts of time and energy studying particular subjects. They become experts in these fields, and rarely fail to answer questions in their particular area of expertise. Pick any one of the following skills: Lore, Tactics, or Science, and add +2 to the total whenever they’re used. This Edge may be taken more than once if applied to different skills."
     },
     {
       "name": "Soldier",
       "req": "Novice, Strength d6+, Vigor d6+",
-      "desc": "Professional soldiers get used to carrying heavy loads and enduring harsh conditions. After a few days getting used to their gear (GM\u2019s call), they treat their Strength as one die type higher when determining Encumbrance and Wounds. (This stacks with the Brawny Edge.) They also get a free reroll on Vigor rolls made to survive environmental hazards."
+      "desc": "Professional soldiers get used to carrying heavy loads and enduring harsh conditions. After a few days getting used to their gear (GM’s call), they treat their Strength as one die type higher when determining Encumbrance and Wounds. (This stacks with the Brawny Edge.) They also get a free reroll on Vigor rolls made to survive environmental hazards."
     },
     {
       "name": "Strategist",
       "req": "Novice, Tactics d8+",
-      "desc": "Strategists don\u2019t have just a single plan in mind. They imagine various outcomes and prepare for them all. A strategist gets a free reroll on Tactics rolls."
+      "desc": "Strategists don’t have just a single plan in mind. They imagine various outcomes and prepare for them all. A strategist gets a free reroll on Tactics rolls."
     },
     {
       "name": "Woodsman",
@@ -1220,7 +1220,7 @@ window.SC_DATA = {
     {
       "name": "Danger Sense",
       "req": "Novice, Psi Level 1+",
-      "desc": "By projecting a constant psychic field, the Psion picks up on environmental cues that allow him to sense when something bad is about to happen. When rolling for Surprise, he adds +2 to his Perception roll to act in the first round. With a raise, he starts the encounter on Hold. In other situations not covered by the Surprise rules (a sniper shot, pit trap, poisoned drink, etc.), The Psion gets a Perception roll at -2 (or +2 if a Notice roll is usually allowed) to detect the hazard and take appropriate action. If this was an attack and the Psion makes his Perception roll, the foe doesn\u2019t get The Drop against him."
+      "desc": "By projecting a constant psychic field, the Psion picks up on environmental cues that allow him to sense when something bad is about to happen. When rolling for Surprise, he adds +2 to his Perception roll to act in the first round. With a raise, he starts the encounter on Hold. In other situations not covered by the Surprise rules (a sniper shot, pit trap, poisoned drink, etc.), The Psion gets a Perception roll at -2 (or +2 if a Notice roll is usually allowed) to detect the hazard and take appropriate action. If this was an attack and the Psion makes his Perception roll, the foe doesn’t get The Drop against him."
     },
     {
       "name": "Combat Precognition",
@@ -1240,7 +1240,7 @@ window.SC_DATA = {
     {
       "name": "Uncanny Reflexes",
       "req": "Veteran, Danger Sense, Athletics d8+, Psionics d8+",
-      "desc": "The character has an uncanny ability to avoid area attacks and effects. He ignores the usual \u22122 Agility penalty when making Evasion attempts. He also gets a regular Evasion attempt against area effect attacks or effects that don\u2019t usually allow it (at the usual \u22122 penalty), such as burst or blast, or even confusion or similar spells cast with the Area Effect modifier."
+      "desc": "The character has an uncanny ability to avoid area attacks and effects. He ignores the usual −2 Agility penalty when making Evasion attempts. He also gets a regular Evasion attempt against area effect attacks or effects that don’t usually allow it (at the usual −2 penalty), such as burst or blast, or even confusion or similar spells cast with the Area Effect modifier."
     },
     {
       "name": "Efficient Manifestation",
@@ -1270,7 +1270,7 @@ window.SC_DATA = {
     {
       "name": "Psychic Discipline Focus",
       "req": "Novice, Psionics d6+",
-      "desc": "Some psions spread their talents across many fields. Others dedicate themselves to mastering a single aspect of the psychic arts, refining a chosen discipline until it becomes second nature. Choose one psionic discipline. Gain +1 to all activation rolls involving powers from that discipline. You can manifest your discipline\u2019s power at +1 PL. Improved Psychic Discipline Focus Requirements: Seasoned, Psionics d8+, Psychic Discipline Focus Increase the bonus to +2."
+      "desc": "Some psions spread their talents across many fields. Others dedicate themselves to mastering a single aspect of the psychic arts, refining a chosen discipline until it becomes second nature. Choose one psionic discipline. Gain +1 to all activation rolls involving powers from that discipline. You can manifest your discipline’s power at +1 PL. Improved Psychic Discipline Focus Requirements: Seasoned, Psionics d8+, Psychic Discipline Focus Increase the bonus to +2."
     },
     {
       "name": "Telepath",
@@ -1310,7 +1310,7 @@ window.SC_DATA = {
     {
       "name": "Terran Telekinetic",
       "req": "Novice, Arcane Background (Psionics)",
-      "desc": "Among all known Terran psychics, Telekinetics\u2014often called \"Teeks\"\u2014are the rarest and most feared. While most psions develop abilities centered around telepathy and mental influence, Telekinetics possess the ability to manipulate matter directly through psionic force. Their gifts allow them to move objects, create invisible barriers, crush armored targets, and project devastating waves of force. Many psionic researchers believe Telekinetics represent an evolutionary divergence within the Terran psychic population. Gain access to the Telekinesis Discipline, Telekinesis counts as a native discipline for you. You learn one Telekinesis power. Gain +1 to Psionics rolls involving Telekinesis powers. Telekinetics may increase their Psi Rating to 10 and your maximum Spirit increases to d12+1."
+      "desc": "Among all known Terran psychics, Telekinetics—often called \"Teeks\"—are the rarest and most feared. While most psions develop abilities centered around telepathy and mental influence, Telekinetics possess the ability to manipulate matter directly through psionic force. Their gifts allow them to move objects, create invisible barriers, crush armored targets, and project devastating waves of force. Many psionic researchers believe Telekinetics represent an evolutionary divergence within the Terran psychic population. Gain access to the Telekinesis Discipline, Telekinesis counts as a native discipline for you. You learn one Telekinesis power. Gain +1 to Psionics rolls involving Telekinesis powers. Telekinetics may increase their Psi Rating to 10 and your maximum Spirit increases to d12+1."
     },
     {
       "name": "Telekinetic Combatant",
@@ -1320,7 +1320,7 @@ window.SC_DATA = {
     {
       "name": "Void Attunement",
       "req": "Veteran, Echoes of the Void (Hindrance)",
-      "desc": "The whispers of the Void no longer frighten you\u2014you have learned to interpret them. Strange visions reveal possibilities moments before they occur. Once per session, after making any roll, you may reroll with a +2 bonus as the Void briefly reveals a more favorable path. You gain access to the Temporal Discipline."
+      "desc": "The whispers of the Void no longer frighten you—you have learned to interpret them. Strange visions reveal possibilities moments before they occur. Once per session, after making any roll, you may reroll with a +2 bonus as the Void briefly reveals a more favorable path. You gain access to the Temporal Discipline."
     },
     {
       "name": "Whispers Beyond",
@@ -1340,7 +1340,7 @@ window.SC_DATA = {
     {
       "name": "Bolster",
       "req": "Novice, Spirit d8+",
-      "desc": "Belittling or humiliating an enemy can boost your ally\u2019s spirits. When this character successfully Tests a foe, he may also remove the Distracted or Vulnerable state from one of his allies."
+      "desc": "Belittling or humiliating an enemy can boost your ally’s spirits. When this character successfully Tests a foe, he may also remove the Distracted or Vulnerable state from one of his allies."
     },
     {
       "name": "Challenging Cry",
@@ -1355,7 +1355,7 @@ window.SC_DATA = {
     {
       "name": "Connections",
       "req": "Novice",
-      "desc": "Your hero is connected to people or organizations who can help him when the chips are down. It might be the mob, a guild, a wealthy aristocratic woman, a politician etc. Connections may be taken more than once, selecting a new faction or contact each time. Once per session, and assuming he can get in touch with them, the hero can call on his friends for a favor. The favor depends on the nature of the contact (GM\u2019s call), but might include a loan, gear, a few allied fighters, transportation, information, or even a professional with critical skills the party doesn\u2019t have, like a hacker or scholar."
+      "desc": "Your hero is connected to people or organizations who can help him when the chips are down. It might be the mob, a guild, a wealthy aristocratic woman, a politician etc. Connections may be taken more than once, selecting a new faction or contact each time. Once per session, and assuming he can get in touch with them, the hero can call on his friends for a favor. The favor depends on the nature of the contact (GM’s call), but might include a loan, gear, a few allied fighters, transportation, information, or even a professional with critical skills the party doesn’t have, like a hacker or scholar."
     },
     {
       "name": "Deceptive",
@@ -1370,12 +1370,12 @@ window.SC_DATA = {
     {
       "name": "Embolden",
       "req": "Seasoned, Spirit d8+",
-      "desc": "Once per round, when an event requires one or more allies to roll Spirit or Intelligence to resist a Test, power, Special Ability, or Fear check, the hero can immediately Support his allies\u2019 rolls to resist (as a free action). This Support is generally done with Influence, Tactics, Leadership or the Psionic skill (other skills are up to the GM). The hero rolls once and the result is applied to each of the affected allies."
+      "desc": "Once per round, when an event requires one or more allies to roll Spirit or Intelligence to resist a Test, power, Special Ability, or Fear check, the hero can immediately Support his allies’ rolls to resist (as a free action). This Support is generally done with Influence, Tactics, Leadership or the Psionic skill (other skills are up to the GM). The hero rolls once and the result is applied to each of the affected allies."
     },
     {
       "name": "Humiliate",
       "req": "Novice, Influence d8+",
-      "desc": "Those with a cruel wit can destroy a rival\u2019s ego in a single remark or well-timed gesture. Your hero gets +2 bonus to Influence rolls when using it to Taunt."
+      "desc": "Those with a cruel wit can destroy a rival’s ego in a single remark or well-timed gesture. Your hero gets +2 bonus to Influence rolls when using it to Taunt."
     },
     {
       "name": "Intimidating Presence",
@@ -1395,7 +1395,7 @@ window.SC_DATA = {
     {
       "name": "Provoke",
       "req": "Novice, Influence d6+",
-      "desc": "Clever characters can manipulate their foes, drawing enemy focus on themselves to protect their allies. When your hero uses Combat Influence to Taunt, increase the penalty an enemy suffers by an additional \u22122."
+      "desc": "Clever characters can manipulate their foes, drawing enemy focus on themselves to protect their allies. When your hero uses Combat Influence to Taunt, increase the penalty an enemy suffers by an additional −2."
     },
     {
       "name": "Rabble Rouser",
@@ -1415,7 +1415,7 @@ window.SC_DATA = {
     {
       "name": "Streetwise",
       "req": "Novice, Influence d6+",
-      "desc": "Streetwise characters know how to find the local black market, fence stolen goods, avoid the local law (or criminal element!), lay low when the heat\u2019s on, obtain illegal weapons, find out which \u201cboss\u201d is hiring muscle, or similar shady activities. Streetwise characters add +2 to Influence rolls made to Network with shady or criminal elements. They also add +2 to Lore rolls pertaining to the types of disreputable activities listed above."
+      "desc": "Streetwise characters know how to find the local black market, fence stolen goods, avoid the local law (or criminal element!), lay low when the heat’s on, obtain illegal weapons, find out which “boss” is hiring muscle, or similar shady activities. Streetwise characters add +2 to Influence rolls made to Network with shady or criminal elements. They also add +2 to Lore rolls pertaining to the types of disreputable activities listed above."
     },
     {
       "name": "Swift Support",
@@ -1425,7 +1425,7 @@ window.SC_DATA = {
     {
       "name": "Work the Room",
       "req": "Novice, Spirit d8+",
-      "desc": "Your hero\u2019s words don\u2019t just inspire those they\u2019re directed at\u2014they often inspire others as well. Once per turn, you can use Work the Room to roll an additional skill die when Supporting with Influence. The additional die Supports any other ally who can see or hear your hero, and applies to their next action, whatever it may be. Work the Crowd Requirements: Seasoned, Work the Room As Work the Room but the hero now can Support another on up to two of her Support actions."
+      "desc": "Your hero’s words don’t just inspire those they’re directed at—they often inspire others as well. Once per turn, you can use Work the Room to roll an additional skill die when Supporting with Influence. The additional die Supports any other ally who can see or hear your hero, and applies to their next action, whatever it may be. Work the Crowd Requirements: Seasoned, Work the Room As Work the Room but the hero now can Support another on up to two of her Support actions."
     },
     {
       "name": "Ace",
@@ -1440,7 +1440,7 @@ window.SC_DATA = {
     {
       "name": "Defensive Pilot",
       "req": "Seasoned, Piloting d10+ or the Ace edge.",
-      "desc": "A Pilot with this Edge receives a +1 his ship\u2019s Defense as well as to Piloting rolls to avoid attacks or obstacles."
+      "desc": "A Pilot with this Edge receives a +1 his ship’s Defense as well as to Piloting rolls to avoid attacks or obstacles."
     },
     {
       "name": "Defense Expert",
@@ -1470,7 +1470,7 @@ window.SC_DATA = {
     {
       "name": "Professional",
       "req": "Legendary, maximum die type possible in affected Trait",
-      "desc": "The character is an expert at a particular skill or attribute (his choice). This increases the Trait and its limit one step (a d12 + 1 becomes a d12 + 2, for example). This Edge may be selected once per Trait. Expert Requirements: Legendary, Professional in affected Trait As the Professional Edge, increasing the Trait and its limit one additional step. Master Requirements: Wild Card, Legendary, Expert in affected Trait The character\u2019s Wild Die increases to a d10 when rolling the selected Expert Trait."
+      "desc": "The character is an expert at a particular skill or attribute (his choice). This increases the Trait and its limit one step (a d12 + 1 becomes a d12 + 2, for example). This Edge may be selected once per Trait. Expert Requirements: Legendary, Professional in affected Trait As the Professional Edge, increasing the Trait and its limit one additional step. Master Requirements: Wild Card, Legendary, Expert in affected Trait The character’s Wild Die increases to a d10 when rolling the selected Expert Trait."
     },
     {
       "name": "Weapon Master",
@@ -1480,7 +1480,7 @@ window.SC_DATA = {
     {
       "name": "Master of Arms",
       "req": "Legendary, Weapon Master",
-      "desc": "Increase the hero\u2019s Defense an additional +1 and his Melee bonus damage die is now a d10."
+      "desc": "Increase the hero’s Defense an additional +1 and his Melee bonus damage die is now a d10."
     },
     {
       "name": "Hero of the Koprulu Sector",
@@ -1490,7 +1490,7 @@ window.SC_DATA = {
     {
       "name": "Living Legend",
       "req": "Legendary",
-      "desc": "Stories are told about your exploits. As long as you are not bleeding out, you and your allies can\u2019t go below Morale 0 and you can still soak damage even at morale 0. Equipment Equipment Tiers While all the items described in this chapter are the base stock variations, all weapons, armors, and gear items have multiple tiers of quality. Higher tiered items represent those constructed with better parts, higher levels of craftsmanship, more state-of-the-art features, experimental components, and overall more advanced planning. Equipment tiers ensure that a character will always be upgrading and searching for new items throughout his adventuring career and doesn\u2019t get tired of the Gauss Pistol he\u2019s been using since novice rank. They also present interesting opportunities to go on missions looking for a powerful or legendary object. Tier 1 items represent mass produced, stock brands. These are known as Basic items. This is the version most encounter. While many Tier 1 items are clearly advanced, such as Powered Armor and Gauss Weaponry, they are still simple compared to their true potential. Tier 1 items can be found nearly anywhere and cost the base price of the item. Tier 2 items tend to be specially crafted rather than produced stock on the factory floor. Every piece of these items is hand assembled, tested, and tuned to perfection. Companies generally keep limited quantities of these items available for the exclusive clientele. They are generally only found in government complexes or on core worlds, and they cost 4 x the price of their basic counterpart. Tier 3 items are rare. They tend to be custom made by special order and have an impressive price tag. These items are designed from the ground up, custom made from scratch to exactly match the customer\u2019s requirements. Custom parts are usually ordered from afar or built specifically for the item. Numerous variations are built and tested until perfection is reached. They often take months or years to make. Tier 3 items generally cannot be purchased unless their base cost (before tier multiplier) is 1,000 or less. Instead, they are usually custom ordered. Their cost is 12 x the price of the base item. Rumors persist of items even greater than tier 3, relics created by reclusive geniuses and experimentation with alien technology. However, these items are incredibly rare and outside the reach of most characters. Higher Tiered Weapons Weapons scale simply, mostly with passive bonuses, but the combined effect makes for powerful weaponry. The following are adjusted for higher tiered weaponry: -Ranged or Melee bonus is increased by +1 per tier above 1st -Base damage is increased by +1 per tier above 1st -Weapon can support 2 additional item upgrades per tier above 1st In addition, tier 2 or 3 weapons do not jam. Higher Tiered Armor Armor also scales simply, mostly with passive bonuses; although they gain much utility with the mounted gear that scales with them. The following are adjusted for higher tiered armor: -The armor\u2019s damage resistance increases by the armor\u2019s Resistance Rating. The Resistance Rating of a suit of armor depends on what type of armor it is. For light armor, the Resistance Rating is 1. For heavy armor, the Resistance Rating is 2. Power armor has a Resistance Rating of 3. Shields, instead, gain no damage resistance but gain +1 defense. -The armor\u2019s penalty to defenses is reduced by 1 by tier (to a maximum of 0) -The armor can support 2 additional item upgrades -Any and all mounted gear built onto the armor, such as a communicator or digital uplink, increases Tier to be the same level as the armor. Higher Tiered Gear Gear does not scale with simple passive upgrades. Instead, the entry of each item has to be checked. The item gains all the features listed under its tier. Generally, this is all the features of the base item plus a few more. Armor ARMOR Beyond a character\u2019s weapons, armor is the main tool they will need to survive. Armor varies as much as weapons do in the Koprulu Sector, ranging from primitive padded jackets to the 5-4AIS which turns its user into a walking tank. LIGHT ARMORED SUITS TYPE ARMOR CLASS BOOST COST Defense Modifier Flight Suit +4 Light 900 0 Shadowguard Field Armor +4 Light AGI +1 8000 0 Padded Jacket +2 Light 150 0 Protective Vest +5 Light 250 -1 Stealth Suit +1 Light 200 0 HEAVY ARMORED SUITS TYPE ARMOR CLASS BOOST COST Defense Modifier Commander\u2019s Battle Regalia +5 Heavy 4000 -1 Combat Body Suit +6 Heavy STR +1 3000 0 Environmental Suit +2 Heavy 300 -3 Flak Armor +6 Heavy 500 -1 Hostile Environment Suit +8 Heavy STR +1 10000 0 Light Combat Armor +8 Heavy 800 -1 POWER ARMORED SUITS TYPE ARMOR CLASS BOOST COST Defense Modifier 5-4 Armored Infantry Suits +20 Powered STR +4 25000 -4 CMC-200 Powered Combat Armor +13 Powered STR +3 2500 -3 CMC-300 Powered Combat Armor +15 Powered STR +4 5000 -3 CMC-400 Powered Combat Armor +16 Powered STR +4 10000 -3 CMC-405 Powered Light Combat Armor +12 Powered STR +3 9000 -2 CMC-660 Powered Light Combat Armor +20 Powered STR +4 21000 -4 SHIELDS ITEM DEFENSE COVER MIN. STR COST Ballistic Combat Shield +2 +4 d6 1000 Armor Details 5-4 Armored Infantry Suit Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Grenade Launcherx2, Navigation Unit, Digital Uplink, Gravity Boots, Equipment Belt, Backpack Weight: 600 lbs. Special Traits: Powered Armor, Extremely Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2), Bulky, Marauder Grenade Launchers* Description: 5-4 Armored Infantry Suit is the pinnacle of personal protective equipment, turning its user into a walking tank. Equipped with dual grenade launchers, the 5-4AIS possess an onboard armory rivaling that of a Terran walker. While its cost for an independent purchaser is significant, one cannot help but admire its effectiveness in deep combat. CMC-200 Powered Combat Armor Mounted Gear: Geiger Counter, Communicator, Gravity Boots, Backpack Weight: 400 lbs. Special Traits: Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply Description: The CMC-200 was basic era powered combat armor that had fallen from popularity by the Great War. However, even by the time of the Second Great War, it continues to be used by backwater marshals, mercenaries, rebels, and in the private sector. CMC-300 Powered Combat Armor Mounted Gear: Flashlightx2, Geiger Counter, Communicator, Gravity Boots, Binoculars, Navigation Unit, Digital Uplink, Equipment Belt, Backpack Weight: 400 lbs. Special Traits: Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2) Description: The CMC-300 was standard issue during the Great War and still used by most in the years afterwards. Considered by many to be the quintessential Terran armor, it allows a soldier to be ready for whatever obstacles he might face inside and out of combat. CMC-400 Powered Combat Armor Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Gravity Boots, Binoculars, Navigation Unit, Digital Uplink, Equipment Belt, Backpack Weight: 400 lbs. Special Traits: Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (4) Description: The newest and essentially \u2018elite\u2019 powered armor, the CMC-400 sees the most use with elite military units, officers, and wealthy mercenaries and operatives. The amount of additional protection offered from the armor makes it an attractive offer. CMC-405 Powered Light Combat Armor Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Gravity Boots, Binoculars, Navigation Unit, Digital Uplink, Equipment Belt, Backpack Weight: 250 lbs. Special Traits: Powered Armor, Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (4) Description: CMC Light Powered Armor was developed initially for non-combat personnel, such as reporters, medics, and diplomats, joining soldiers on the field of battle. While it possesses state of the art systems and security, it offers less protection and more mobility than standard heavy power armors CMC-660 Powered Combat Armor Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Flamethrowerx2, Binoculars, Gravity Boots, Digital Uplink, Equipment Belt, Backpack Weight: 600 lbs. Special Traits: Powered Armor, Extremely Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2), Bulky, Firebat Flamethrowers* Description: The CMC-660, also known as Firebat armor, is a super-heavy armor outfit designed to get close to the enemy and incinerate them. This armor proved its usefulness during the Zerg invasion of Terran space. While it has been slightly phased out by the 5-4 Armored Infantry Suits, Firebat armor remains popular, especially with mercenaries and rebels. Commander\u2019s Battle Regalia Mounted Gear: Communicator Weight: 25 lbs. Special Traits: Cumbersome, Oxygen Supply, Self-Medicating Description: The commander\u2019s battle regalia is a personalized military uniform with an underlaid mesh fiber and protective, but light weight plating. The uniform is designed for military officers to be able to make full display of rank and distinction on the battlefield while also providing protection from stray fire. The battle regalia has a communicator on the jacket collar, an oxygen mask hidden in a coat pocket, and the torso plates have a medical injector that can supply cures directly into the blood stream. Combat Body Suit Mounted Gear: Communicator, Protective Mask Weight: 30 lbs. Special Traits: Elemental Protection, Radiation Shielding, Oxygen Supply Description: Ideal for adventuring in a dangerous locale, combat Body Suits are uniforms that combine light infantry body armor with a hazard suit. Ideal for those with an adventuresome life style, its protective body armor is segmented to allow extra movement, and covering the entire body, including the gaps in the armor, is a skin tight hazardous environment suit that protects the wielder from adverse conditions and allows them to function in dangerous environments. In addition, it has charge servos that accelerate the user\u2019s Strength, not dissimilar from that of powered armor, only not nearly as potent. Dominion Reapers often wear suits of this armor which function admirably in conjunction with their jump packs. Environmental Suit Mounted Gear: NA Weight: 30 lbs. Special Traits: Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply Description: The environmental suit is a full body protective garment for science and civilian personnel walking into hazardous environments such as areas of radiation leakage, toxic planets, or environments with no atmosphere or oxygen. These bulky suits have no hardened reinforcement and are useless against ballistic projectiles or ripping claws. However, they serve well at protecting the entire body from the hostile environmental conditions. Flak Armor Mounted Gear: NA Weight: 30 lbs. Special Traits: Cumbersome Description: Flak Vests are lightweight suits designed to absorb blasts, cover from shrapnel, and overall protect the user from blasts. While designed to protect from explosives, it also serves as a serviceable, yet minor, protector against ballistic damage. Flight Suit Mounted Gear: Digital Uplink Weight: 25 lbs. Special Traits: Elemental Protection, Oxygen Supply Description: Flight Suits are generally issued to pilots of Terran starships and aerial combat vessels. In addition to giving some protection against cockpit explosions, they have basic protective armor, so the pilots can survive in case they survive an ejection and are forced to trek through enemy territories to reach safety. Finally, these suits come with helmets and visors that provide digital uplinks, allowing them to remain informed in what is going on around their vessels and make optimal judgment calls in combat. Hostile Environment Suit Mounted Gear: Communicator Weight: 15 lbs. Special Traits: Elemental Protection, Radiation Shielding, Oxygen Supply, Personal Cloaking, Armor Decay Description: Hostile Environment Suits are the armor of choice for Ghosts. Allowing them to cloak and serve as optimal assassins, these suits also add to the user\u2019s physical prowess and provide limited protection against projectiles. Their high price tag and lesser use to non-Ghosts makes them a less attractive option to other characters. Light Combat Armor Mounted Gear: Communicator Weight: 25 lbs. Special Traits: Cumbersome Description: Light Combat Armor is a heavily reinforced suit of armor designed to protect the user from the rigors of personal combat. While not as defensible as powered armor, these durable suits do provide freedom and maneuverability impossible in CMC armor. As such, it is often used by soldiers, adventurers, and mercenaries outside of an open warzone, as well as private sector security not expecting war-scale combat. Padded Jacket Mounted Gear: NA Weight: 4 lbs. Description: Padded Jackets are the bare minimum of armor, consisting mainly of a thick jacket with thickened layers of protective fiber. This is not recognized as official armor by any regime, and most of these are hand-crafted together by those who need them. They are commonly used by gangs and other assorted criminals or civilians and colonists who desire basic protection during an invasion of their home world. Protective Vest Mounted Gear: NA Weight: 8 lbs. Description: A step up from the padded jacket, the protective vest is a bullet retardant suit of chest armor with additional parts of the body protected by protective fibers. It does a serviceable job protecting against small arms slug projectiles, but it is quickly shredded by gauss fire. It is used by private corporations and law enforcement mainly. Shadowguard Field Armor Mounted Gear: Communicator Weight: 10 lbs. Special Traits: Umojan Networking, Personal Cloaking, Armor Decay, Umojan Exclusive, Concealable Description: Shadowguard Field Armor is a black and white, body suit that possesses state of the art physical attribute augmentation in a thin and sleek package. The signature armament of the shadowguard, it is designed to be potentially worn beneath heavy clothing and used with a psi weave mask. Like the signature armor of the ghost, shadowguard field armor is cloaking-capable and designed to disintegrate once the user is slain Stealth Suit Mounted Gear: NA Weight: 3 lbs. Special Traits: Shadowed Description: Stealth Suits are skin-tight black body suits specifically designed to create very little noise and be hard to see. It is invaluable for anyone who prefers to never be seen and ideal for those who wish never to be shot back at. It has no mainstream usage; although it is sometimes used by assassins, guerrilla fighters, and ghosts-in-training Armor Traits Armor Decay Once the armor detects that its user has been slain, the armor sets itself to automatically corrode, disintegrating into nothing within 1 minute. This prevents the armor from being stolen off of slain operatives. Bulky A character wearing this armor counts as being Size +1 and gains a Reach of +1. Concealable This armor can be worn beneath clothing to disguise its presence. It takes a Perception roll with -4 penalty to realize that the Shadow Guard is wearing a uniform beneath their armor. This allows a character to take their armor into locations that have a restricted access to arms and armor. Cumbersome Cumbersome armor gives the wearing character a -2 penalty to Athletics, and Stealth checks. If a character has the cumbersome trait from multiple sources such as armor and a shield, the effects stack. Very Cumbersome Very Cumbersome armor gives the wearing character a -3 penalty to Athletics, and Stealth checks. Extremely Cumbersome Extremely Cumbersome armor gives the wearing character a -4 penalty to Athletics, and Stealth checks. Elemental Protection This armor protects against extreme heat and cold. It allows prolonged survival in high and low temperatures, and the character does not need to make endurance checks to survive in such environments. Also, the character is immune to energy damage resulting from exposure to extreme ambient temperatures. Fall Protection (X) This armor has automated systems to reduce impact from falls and ignores a number of squares for determining fall distance based on the value under the armor\u2019s description. Impact Cushion This armor has a layer of self-replicating mesh foam that sits over the user\u2019s body and absorbs some of the impact and damage taken. Armor with this quality gives the user +4 against the first attack each round. Oxygen Supply This armor supplies oxygen to its user with 2 air tanks used to supply breathable air. Fresh air tanks can be swapped out as an action. Personal Cloaking This armor is constructed of psi-weave fibers that grant a Terran psychic the ability to cloak. The psychic must still have the cloaking power. The suit only has the capacity to cloak for 10 minutes, out of every hour. Powered Armor These are high-tech military armors powered with their own internal generators. These suits respond to the wearer\u2019s movement, and the wearer does not count the armor\u2019s weight against his carrying capacity while suited in it. Most of the mounted gear on the powered armor are hands free and are activated via voice command inside the helmet\u2019s heads up display. Characters using powered armor can only use pistols, rifles, and melee weapons with grip extensions. In addition, the time it takes to apply the Medicine skill to the character doubles. Powered armor power cells last 72 hours without needing to be recharged or replaced. When the armor loses power, the wearer loses access to all of the armor\u2019s functions, weapons, gear, and abilities. Their Agility drops to 1d4. All movement is considered limited movement. The armor check penalty triples, and they lose all benefits of the Powered Armor Training talent. Using powered armor while not being trained in powered armor gives you -2 Speed, -4 Attack, Defense, and Strength and Agility checks. Radiation Shielding The wearer of this armor is immune to the penalties dealt by ambient radiation but not the damage. Self-Medicating This armor automatically contains a supply of chemicals that can be activated as a limited free action. The suit can contain up to five injection-based chemicals such as Combat Stimulants and Painkillers. The armor can only automatically apply one chemical per round. Chemicals can be replenished as an action. Shadowed While this character is cloaked (Invisible) or hidden, any enemies who would notice the character without a check, instead have to make a perception check. This check suffers a penalty according to your stealth skill (1d4=0/1d6=1/1d8=2/1d10=3/1d12=4) If the check is failed, the character is not revealed. Umojan Exclusive This equipment is generally only available from Umojans for Umojans. Outside of the protectorate\u2019s worlds, these items are either unavailable, or drastically more expensive (+50-200% cost, GM\u2019s choice). Umojan Networking This armor has an Umojan Protection Chip imbedded within it, which allows it to synergize with the functions of the Umojan weaponry. Attacks from a weapon with an Umojan Guided Projectile automatically miss the wearer, and they are counted as being outside the burst areas of any attacks from weapons with the that rule, even if they are physically within the area. Furthermore, allies with the chip in melee combat with enemies do not suffer from the innocent bystander rule. For this feature to work, either the weapon or the ammunition must have this trait. Armor Upgrades All armors are customizable. Items can be customized using certain upgrades. To utilize an upgrade, the character must purchase all necessary parts to install the upgrade. Afterwards, a Science or Engineering skill check is required to install the upgrade to the armor. If the check fails you can try again the next day, if you botch the roll you have to wait one week before trying again. The equipment tier of the item determines how many slots of upgrades it can generally support. Tier 1 items have 2 upgrade slots. Tier 2 items have 4 upgrade slots. Tier 3 items have 6 upgrade slots. An upgrade cannot be applied more than once. NAME ARMOR TYPE COST CHECK BENEFIT Apollo Reactor Heavy Armor, Power Armor 5000 8 Increase Stress Pool by 2 per tier. Automated Medical Delivery System Power Armor 8000 8 Heal all allies within 5 squares as a limited free action (10 uses) 100 credits per use. Cloaking Field All Armors 15000 8 Allows non-psionic characters to cloak, the armor has 6pp and spends 1 pp per turn of cloaking. It recharges after 1 hour. Dispersion Plating Heavy Armor, Power Armor 4000 7 Increases armor by +4 against burst attacks. Empowered Servos Power Armor 2500 7 Increase STR bonus by +1 Extra Dense Plate Power Armor 5000 6 Increase Armor by +6, reduce Speed by -2, can\u2019t run, increase defense penalty by -3. Extra Enhancement HES 2500 8 Increase AGI +1 Energy Repellant Heavy Armor, Power Armor 3000 7 Select a type of energy damage such as fire, increase armor by +4 against that type. Extra Reinforcement All Armors 1000 4 Increase Armor by resistance rating. Flexible All Armors 500 5 Reduce defense penalty by 2. Improved Cloak HES 8000 8 The suit no longer limits how much cloaking the user is capable of every hour. Kinetic Foam Power Armor 3000 8 Gain the Impact Cushion trait. Medical Delivery System Power Armor 1500 8 This armor has a special medical delivery system built into the arm designed to beam nano-conveyed anesthetics to injured patients. Using the MDS is a limited free action that can target any ally within 3 squares. Heal as if using a Medkit. Propaganda Broadcast Array Power Armor 1000 6 Leadership affects twice as many targets, bonuses last until the end of the encounter. Psi-Blocker Heavy Armor, Power Armor 5000 8 This armor gives the user Resolve armor equal to his Spirit / 2. Shadow Armor All Armors 250 4 Gain the Shadowed trait. Umojan Protection Chip All Armors 1000 7 Gain the Umojan Networking trait. Melee Weapons MELEE WEAPONS While melee combat has somewhat waned amongst Terrans in the far future, many still rely on a close combat side arm to survive, especially against an onrushing Zerg swarm. Having a melee weapon on one\u2019s person could mean the difference between life and death. MELEE WEAPON TABLE WEAPON NAME DAMAGE AP REACH MIN STR WEIGHT COST NOTES Combat Knife Str+d6+2 - 0 d4 4 100 Can be thrown at range 5/10/20 Directorate Boarding Saw Str+d12+6 6 1-2 d12 20 15000 Two-Hands, Heavy Weapon, Cleaving, Slow Fusion Rod Str+d8 STR/2 1 - 2 3000 Stun, Energy Weapon, Smashing Power Glove Str+d10 STR/2 0 - - 5000 Smashing, Heavy Weapon Promethean Blade Str+d10+2 4 0-1 d10 12 6000 Flames, Defensive, Versatile, Heavy Weapon, Umojan Exclusive Weapon Psiblade Str+d10+1 Psi lvl 1 d4 4 7500 Defensive, Psionic Shock Blade Str+d12 4 0-1 d6 6 15000 Defensive, Energy Weapon, Energy Drain, St Sonic Hammer Str+d12+4 STR/2 1 d12 17 10000 Two-Hands, Heavy Weapon, Cleaving, Slow Stunner Str+d6 - 0-1 - 1 500 Stun, Energy Damage Sword Str+d10+2 2 1 d8 8 1250 Defensive, Versatile Sword, Dueling Str+d10 2 1 d6 6 1500 Defensive Tool, Light Str+d8 STR/2 1 d4 3 75 Smashing Tool, Heavy Str+d12 STR/2 1 d8 8 250 Two-Hands, Smashing, Cleaving, Slow Unarmed, Reinforced Str+d6 - 0 - 2 100 Concealed Weapon Unarmed, Power Armor Str+d8 - 0 - - - MELEE WEAPON TRAITS Armor Piercing (AP) The weapon or round ignores this many points of a target\u2019s Armor. Cleaving This weapon can strike any target in a small burst area centered on the character using the weapon despite being a melee weapon. The attack may exclude the character and any allies from the attack. Unlike other attacks with an area of effect cleaving is not considered an area attack for evading Concealed Weapon This weapon, even when equipped, is especially difficult to notice. It takes a perception check with -4 penalty while searching the target to notice the character is carrying the weapon. Defensive When the character has a weapon with this trait out and drawn, they add +1 to their defense against melee attacks. Energy Damage This weapon deals damage in the form of some manner of energy such as a laser, flame, or electricity. Energy damage attacks ignore the armor bonus of light armors. Energy Drain This weapon deals EMP Damage. When a target is hit by an EMP attack, resolve damage as usual. Then, if the damage equals or exceeds the target\u2019s Toughness, all the target\u2019s carried, worn, or attached electronics are \"knocked out\" as well. Cyberware, vehicles, power armor, robots, and sturdy gear meant for combat or hazardous environments continue to function but at a \u22124 penalty to any linked rolls. They may be reset or rebooted with an Engineering roll (at the same \u22124 penalty) and a limited action. EMP damage also reduces the Pace of Power Armor users by 4. Flames It gives targets the Burning condition if the attack surpasses defense. Burning characters take one wound at the start of each turn. The burning condition can be removed by making an Agility roll. Heavy Weapon (HW): The weapon can affect vehicles or other devices with Heavy Armor. It causes Gritty Wounds against targets without Heavy Armor. Reach: Weapons with \u201cReach\u201d allow their user to make Fighting attacks at the listed range. A Reach of 1, for example, allows a character to strike a target 1\u2033 distant. Weapons without a Reach value can only strike targets at arm\u2019s length (adjacent). Psionic Burst This weapon\u2019s damage goes vs Resolve rather than Toughness. Psionic This weapon can only be used by a psionic character. It gains an amount of penetration equal to the character\u2019s Psi Level. Slow This weapon\u2019s multi action penalty increases to -4 per extra action. Smashing This weapon gains AP = Strength / 2. Stun If an attack with this weapon bypasses the target\u2019s defense and leaves the target Shaken, they must make a Vigor check (at -2 on a raise). If they fail the Vigor check, they are Distracted and Vulnerable. If the attack would Wound the target, they make the same check but are instead Stunned if they fail. Two Hands: A two-handed weapon can be used with one hand at a -4 penalty. The character counts his full Strength for damage but loses all other advantages such as Reach or Defense bonuses. Versatile This weapon can be used in either one or two hands. Ranged Weapons RANGED WEAPONS Pistols are basic one-handed ranged projectile weapons. They are standard side-arms, and most Terrans in the dangerous Koprulu sector have some familiarity with them by the time of the Second Great War. Any pistol class weapon can be used to make a Pistol Whip attack in close combat that deals STR+d8 and has the Stun trait. Rifles include most two-handed ranged weapons, but beyond that they vary greatly. The rifles category includes sniper rifles, shotguns, assault rifles, and submachine guns. Any rifle class weapon can be used to make a Rifle Butt attack in close combat that deals STR+d10 and has the Stun trait. The exception to this is if the character is wearing powered armor in which the rifle can be used as a one-handed weapon, except the character cannot aim with the weapon while using it this way. Heavy weapons include some of the largest and most powerful portable weaponry such as fast firing chainguns, flamethrowers, and rocket launchers. Due to the size and encumbrance of these weapons, they cannot be used to make melee attacks, nor can they be used in one hand. Heavy Weapons do not require a grip extension to be used with power armor. FIREARMS TYPE RANGE DAMAGE AP ROF SHOTS MIN STR WEIGHT COST NOTES Pistols Pistol, Combat FWG5 12/24/48 1d8+2 0 1 15 d4 2 250 Energy Damage Pistol, Hand Cannon 12/24/48 2d12 2 2 6 d8 7 4000 Recoil Pistol, Flak 12/24/48 2d12+3 - 1 12 d8 10 1000 Recoil, Flak Shot, Spread Pistol, Gauss 24/48/96 1d8 4 3 20 d4 3 1500 Grip Extension Pistol, Gauss Repeating, P45 Scythe 25/50/100 1d8 4 4 50 d4 7 2500 Hailfire (1), Grip Extension Pistol, Needle 12/24/48 1d8 0 2 15 d4 3 1500 Poisonous Rounds, Silent Revolver, Light 6/12/24 2d8 0 2 6 d4 1 250 Revolver, Heavy 12/24/48 2d10+1 0 2 6 d6 4 500 Rifles Canister Rifle, C-10 50/100/200 2d12+4 2 2 30 d8 30 10000 Scope, Special Ammo Launcher, Targeting Laser Gauss Rifle, Assault 50/100/200 2d8 4 4 60 d6 14 5000 Hailfire (1), Scope, Attached Grenade Launcher Gauss Rifle, Heavy 50/100/200 2d8+1 4 5 150 d8 25 6000 Hailfire (2), Grip Extension, Recoil Gauss Rifle, Sniper 50/100/200 2d12+2 4 1 20 d6 11 7500 Digital Scope, Grip Extension Rifle, Auto 25/50/100 2d8+1 - 4 60 d6 11 3000 Hailfire (1), Scope Rifle, Flak 50/100/200 2d8+3 - 2 25 d8 25 10000 Flak Shot, Spread, Recoil Rifle, Needle 50/100/200 1d8+2 - 2 10 d4 8 6000 Poisonous Rounds, Silent Rifle, Long 25/50/100 2d10 - 1 6 d4 7 250 Scope Rifle, Sniper 25/50/100 2d12 2 1 4 d6 10 5000 Scope Shotguns Shotgun 6/12/24 1-3d6 - 1 2 d6 7 500 Spread, Twin-Linked, Close Quarters Shotgun, Automatic 6/12/24 1-3d6 - 3 12 d8 20 8000 Spread, Recoil Shotgun, Torrent SR-8 6/12/24 1-3d6 - 2 10 d6 7 3000 Spread, Close Quarters Heavy Weapons Chaingun 50/100/200 2d12 1 5 250 d12 50 6000 Heavy Weapon, Extreme Recoil, Hailfire (2) Cannon, Flak 100/200/400 2d12+3 3 4 40 d10 40 30000 Heavy Weapon, Recoil, Flak Shot, Spread, High Explosive, Hailfire (1) Cannon, Gauss 50/100/200 2d10+1 4 5 300 d12 60 15000 Heavy Weapon, Extreme Recoil, Hailfire (3) Cannon, Pulse 100/200/400 6d12+6 - 1 1 d8 30 40000 Heavy Weapon, Digital Scope, Extreme Recoil, Energy Drain, Umojan Networking, Umojan Exclusive Flamethrower Cone 6 4d6+2 2 2 30 d10 40 5000 Hailfire (1), Energy Damage, Flames, High Explosive, Close Quarters Flamethrower, Infernal Line 20 4d6+4 2 2 30 d8 30 8000 Hailfire (1), Energy Damage, Flames, High Explosive, Close Quarters Launcher, Rocket 50/100/200 * * 1 3 d8 30 7500 High Explosive Launcher, Grenade 25/50/100 * * 1 6 d6 20 7500 Recoil, High Explosive RANGED WEAPON TRAITS Acid Damage This weapon deals damage in the form of some manner of chemical such as acid or bio-plasma. On the target\u2019s next turn, he suffers the weapon\u2019s base damage minus one die type (for one additional turn only). If hit with a 3d6 damage weapon, for example, the target takes 3d4 damage at the start of his next turn. If the base damage is already a d4 die type, it is d4\u22122 instead. Armor Piercing (AP) The weapon or round ignores this many points of a target\u2019s Armor. Burst (SB/MB/LB) When this weapon is used, it makes an attack against all targets within a burst area in size based on the value under the weapon description. Close Quarters Characters get no unarmed combatant bonus for attacking you in melee. Concealed Weapon This weapon, even when equipped, is especially difficult to notice. It takes a perception check with -4 penalty while searching the target to notice the character is carrying the weapon. Digital Scope When aiming, this weapon gains a +2 bonus to the next Ranged attack. The character ignores all penalties related to concealment or darkness. These bonuses do not function if the character moves before shooting. Finally, the digital scope can be used to perform a detector action. Energy Damage This weapon deals damage in the form of some manner of energy such as a laser, flame, or electricity. Energy damage attacks ignore the armor bonus of light armors. Energy Drain This weapon deals EMP Damage. EMP attacks ignore armor. Organics can only be Shaken. Constructs, Shields and Vehicles take full damage. All of the target\u2019s carried, worn, or attached electronics are \"knocked out\" as well. Cyberware, power armor and sturdy gear meant continue to function but at a \u22124 penalty to any linked rolls. They may be reset or rebooted with an Engineering roll (at the same \u22124 penalty) and a Limited Action. EMP damage also reduces the Pace of Power Armor users by 4 for 1 round. Extreme Recoil Due to the weapon\u2019s extreme kickback, any attacks beyond the first in a round with this weapon suffer a -4 cumulative penalty unless t"
+      "desc": "Stories are told about your exploits. As long as you are not bleeding out, you and your allies can’t go below Morale 0 and you can still soak damage even at morale 0. Equipment Equipment Tiers While all the items described in this chapter are the base stock variations, all weapons, armors, and gear items have multiple tiers of quality. Higher tiered items represent those constructed with better parts, higher levels of craftsmanship, more state-of-the-art features, experimental components, and overall more advanced planning. Equipment tiers ensure that a character will always be upgrading and searching for new items throughout his adventuring career and doesn’t get tired of the Gauss Pistol he’s been using since novice rank. They also present interesting opportunities to go on missions looking for a powerful or legendary object. Tier 1 items represent mass produced, stock brands. These are known as Basic items. This is the version most encounter. While many Tier 1 items are clearly advanced, such as Powered Armor and Gauss Weaponry, they are still simple compared to their true potential. Tier 1 items can be found nearly anywhere and cost the base price of the item. Tier 2 items tend to be specially crafted rather than produced stock on the factory floor. Every piece of these items is hand assembled, tested, and tuned to perfection. Companies generally keep limited quantities of these items available for the exclusive clientele. They are generally only found in government complexes or on core worlds, and they cost 4 x the price of their basic counterpart. Tier 3 items are rare. They tend to be custom made by special order and have an impressive price tag. These items are designed from the ground up, custom made from scratch to exactly match the customer’s requirements. Custom parts are usually ordered from afar or built specifically for the item. Numerous variations are built and tested until perfection is reached. They often take months or years to make. Tier 3 items generally cannot be purchased unless their base cost (before tier multiplier) is 1,000 or less. Instead, they are usually custom ordered. Their cost is 12 x the price of the base item. Rumors persist of items even greater than tier 3, relics created by reclusive geniuses and experimentation with alien technology. However, these items are incredibly rare and outside the reach of most characters. Higher Tiered Weapons Weapons scale simply, mostly with passive bonuses, but the combined effect makes for powerful weaponry. The following are adjusted for higher tiered weaponry: -Ranged or Melee bonus is increased by +1 per tier above 1st -Base damage is increased by +1 per tier above 1st -Weapon can support 2 additional item upgrades per tier above 1st In addition, tier 2 or 3 weapons do not jam. Higher Tiered Armor Armor also scales simply, mostly with passive bonuses; although they gain much utility with the mounted gear that scales with them. The following are adjusted for higher tiered armor: -The armor’s damage resistance increases by the armor’s Resistance Rating. The Resistance Rating of a suit of armor depends on what type of armor it is. For light armor, the Resistance Rating is 1. For heavy armor, the Resistance Rating is 2. Power armor has a Resistance Rating of 3. Shields, instead, gain no damage resistance but gain +1 defense. -The armor’s penalty to defenses is reduced by 1 by tier (to a maximum of 0) -The armor can support 2 additional item upgrades -Any and all mounted gear built onto the armor, such as a communicator or digital uplink, increases Tier to be the same level as the armor. Higher Tiered Gear Gear does not scale with simple passive upgrades. Instead, the entry of each item has to be checked. The item gains all the features listed under its tier. Generally, this is all the features of the base item plus a few more. Armor ARMOR Beyond a character’s weapons, armor is the main tool they will need to survive. Armor varies as much as weapons do in the Koprulu Sector, ranging from primitive padded jackets to the 5-4AIS which turns its user into a walking tank. LIGHT ARMORED SUITS TYPE ARMOR CLASS BOOST COST Defense Modifier Flight Suit +4 Light 900 0 Shadowguard Field Armor +4 Light AGI +1 8000 0 Padded Jacket +2 Light 150 0 Protective Vest +5 Light 250 -1 Stealth Suit +1 Light 200 0 HEAVY ARMORED SUITS TYPE ARMOR CLASS BOOST COST Defense Modifier Commander’s Battle Regalia +5 Heavy 4000 -1 Combat Body Suit +6 Heavy STR +1 3000 0 Environmental Suit +2 Heavy 300 -3 Flak Armor +6 Heavy 500 -1 Hostile Environment Suit +8 Heavy STR +1 10000 0 Light Combat Armor +8 Heavy 800 -1 POWER ARMORED SUITS TYPE ARMOR CLASS BOOST COST Defense Modifier 5-4 Armored Infantry Suits +20 Powered STR +4 25000 -4 CMC-200 Powered Combat Armor +13 Powered STR +3 2500 -3 CMC-300 Powered Combat Armor +15 Powered STR +4 5000 -3 CMC-400 Powered Combat Armor +16 Powered STR +4 10000 -3 CMC-405 Powered Light Combat Armor +12 Powered STR +3 9000 -2 CMC-660 Powered Light Combat Armor +20 Powered STR +4 21000 -4 SHIELDS ITEM DEFENSE COVER MIN. STR COST Ballistic Combat Shield +2 +4 d6 1000 Armor Details 5-4 Armored Infantry Suit Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Grenade Launcherx2, Navigation Unit, Digital Uplink, Gravity Boots, Equipment Belt, Backpack Weight: 600 lbs. Special Traits: Powered Armor, Extremely Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2), Bulky, Marauder Grenade Launchers* Description: 5-4 Armored Infantry Suit is the pinnacle of personal protective equipment, turning its user into a walking tank. Equipped with dual grenade launchers, the 5-4AIS possess an onboard armory rivaling that of a Terran walker. While its cost for an independent purchaser is significant, one cannot help but admire its effectiveness in deep combat. CMC-200 Powered Combat Armor Mounted Gear: Geiger Counter, Communicator, Gravity Boots, Backpack Weight: 400 lbs. Special Traits: Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply Description: The CMC-200 was basic era powered combat armor that had fallen from popularity by the Great War. However, even by the time of the Second Great War, it continues to be used by backwater marshals, mercenaries, rebels, and in the private sector. CMC-300 Powered Combat Armor Mounted Gear: Flashlightx2, Geiger Counter, Communicator, Gravity Boots, Binoculars, Navigation Unit, Digital Uplink, Equipment Belt, Backpack Weight: 400 lbs. Special Traits: Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2) Description: The CMC-300 was standard issue during the Great War and still used by most in the years afterwards. Considered by many to be the quintessential Terran armor, it allows a soldier to be ready for whatever obstacles he might face inside and out of combat. CMC-400 Powered Combat Armor Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Gravity Boots, Binoculars, Navigation Unit, Digital Uplink, Equipment Belt, Backpack Weight: 400 lbs. Special Traits: Powered Armor, Very Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (4) Description: The newest and essentially ‘elite’ powered armor, the CMC-400 sees the most use with elite military units, officers, and wealthy mercenaries and operatives. The amount of additional protection offered from the armor makes it an attractive offer. CMC-405 Powered Light Combat Armor Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Gravity Boots, Binoculars, Navigation Unit, Digital Uplink, Equipment Belt, Backpack Weight: 250 lbs. Special Traits: Powered Armor, Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (4) Description: CMC Light Powered Armor was developed initially for non-combat personnel, such as reporters, medics, and diplomats, joining soldiers on the field of battle. While it possesses state of the art systems and security, it offers less protection and more mobility than standard heavy power armors CMC-660 Powered Combat Armor Mounted Gear: Flashlightx4, Geiger Counter, Communicator, Flamethrowerx2, Binoculars, Gravity Boots, Digital Uplink, Equipment Belt, Backpack Weight: 600 lbs. Special Traits: Powered Armor, Extremely Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply, Self-Medicating, Fall Protection (2), Bulky, Firebat Flamethrowers* Description: The CMC-660, also known as Firebat armor, is a super-heavy armor outfit designed to get close to the enemy and incinerate them. This armor proved its usefulness during the Zerg invasion of Terran space. While it has been slightly phased out by the 5-4 Armored Infantry Suits, Firebat armor remains popular, especially with mercenaries and rebels. Commander’s Battle Regalia Mounted Gear: Communicator Weight: 25 lbs. Special Traits: Cumbersome, Oxygen Supply, Self-Medicating Description: The commander’s battle regalia is a personalized military uniform with an underlaid mesh fiber and protective, but light weight plating. The uniform is designed for military officers to be able to make full display of rank and distinction on the battlefield while also providing protection from stray fire. The battle regalia has a communicator on the jacket collar, an oxygen mask hidden in a coat pocket, and the torso plates have a medical injector that can supply cures directly into the blood stream. Combat Body Suit Mounted Gear: Communicator, Protective Mask Weight: 30 lbs. Special Traits: Elemental Protection, Radiation Shielding, Oxygen Supply Description: Ideal for adventuring in a dangerous locale, combat Body Suits are uniforms that combine light infantry body armor with a hazard suit. Ideal for those with an adventuresome life style, its protective body armor is segmented to allow extra movement, and covering the entire body, including the gaps in the armor, is a skin tight hazardous environment suit that protects the wielder from adverse conditions and allows them to function in dangerous environments. In addition, it has charge servos that accelerate the user’s Strength, not dissimilar from that of powered armor, only not nearly as potent. Dominion Reapers often wear suits of this armor which function admirably in conjunction with their jump packs. Environmental Suit Mounted Gear: NA Weight: 30 lbs. Special Traits: Cumbersome, Elemental Protection, Radiation Shielding, Oxygen Supply Description: The environmental suit is a full body protective garment for science and civilian personnel walking into hazardous environments such as areas of radiation leakage, toxic planets, or environments with no atmosphere or oxygen. These bulky suits have no hardened reinforcement and are useless against ballistic projectiles or ripping claws. However, they serve well at protecting the entire body from the hostile environmental conditions. Flak Armor Mounted Gear: NA Weight: 30 lbs. Special Traits: Cumbersome Description: Flak Vests are lightweight suits designed to absorb blasts, cover from shrapnel, and overall protect the user from blasts. While designed to protect from explosives, it also serves as a serviceable, yet minor, protector against ballistic damage. Flight Suit Mounted Gear: Digital Uplink Weight: 25 lbs. Special Traits: Elemental Protection, Oxygen Supply Description: Flight Suits are generally issued to pilots of Terran starships and aerial combat vessels. In addition to giving some protection against cockpit explosions, they have basic protective armor, so the pilots can survive in case they survive an ejection and are forced to trek through enemy territories to reach safety. Finally, these suits come with helmets and visors that provide digital uplinks, allowing them to remain informed in what is going on around their vessels and make optimal judgment calls in combat. Hostile Environment Suit Mounted Gear: Communicator Weight: 15 lbs. Special Traits: Elemental Protection, Radiation Shielding, Oxygen Supply, Personal Cloaking, Armor Decay Description: Hostile Environment Suits are the armor of choice for Ghosts. Allowing them to cloak and serve as optimal assassins, these suits also add to the user’s physical prowess and provide limited protection against projectiles. Their high price tag and lesser use to non-Ghosts makes them a less attractive option to other characters. Light Combat Armor Mounted Gear: Communicator Weight: 25 lbs. Special Traits: Cumbersome Description: Light Combat Armor is a heavily reinforced suit of armor designed to protect the user from the rigors of personal combat. While not as defensible as powered armor, these durable suits do provide freedom and maneuverability impossible in CMC armor. As such, it is often used by soldiers, adventurers, and mercenaries outside of an open warzone, as well as private sector security not expecting war-scale combat. Padded Jacket Mounted Gear: NA Weight: 4 lbs. Description: Padded Jackets are the bare minimum of armor, consisting mainly of a thick jacket with thickened layers of protective fiber. This is not recognized as official armor by any regime, and most of these are hand-crafted together by those who need them. They are commonly used by gangs and other assorted criminals or civilians and colonists who desire basic protection during an invasion of their home world. Protective Vest Mounted Gear: NA Weight: 8 lbs. Description: A step up from the padded jacket, the protective vest is a bullet retardant suit of chest armor with additional parts of the body protected by protective fibers. It does a serviceable job protecting against small arms slug projectiles, but it is quickly shredded by gauss fire. It is used by private corporations and law enforcement mainly. Shadowguard Field Armor Mounted Gear: Communicator Weight: 10 lbs. Special Traits: Umojan Networking, Personal Cloaking, Armor Decay, Umojan Exclusive, Concealable Description: Shadowguard Field Armor is a black and white, body suit that possesses state of the art physical attribute augmentation in a thin and sleek package. The signature armament of the shadowguard, it is designed to be potentially worn beneath heavy clothing and used with a psi weave mask. Like the signature armor of the ghost, shadowguard field armor is cloaking-capable and designed to disintegrate once the user is slain Stealth Suit Mounted Gear: NA Weight: 3 lbs. Special Traits: Shadowed Description: Stealth Suits are skin-tight black body suits specifically designed to create very little noise and be hard to see. It is invaluable for anyone who prefers to never be seen and ideal for those who wish never to be shot back at. It has no mainstream usage; although it is sometimes used by assassins, guerrilla fighters, and ghosts-in-training Armor Traits Armor Decay Once the armor detects that its user has been slain, the armor sets itself to automatically corrode, disintegrating into nothing within 1 minute. This prevents the armor from being stolen off of slain operatives. Bulky A character wearing this armor counts as being Size +1 and gains a Reach of +1. Concealable This armor can be worn beneath clothing to disguise its presence. It takes a Perception roll with -4 penalty to realize that the Shadow Guard is wearing a uniform beneath their armor. This allows a character to take their armor into locations that have a restricted access to arms and armor. Cumbersome Cumbersome armor gives the wearing character a -2 penalty to Athletics, and Stealth checks. If a character has the cumbersome trait from multiple sources such as armor and a shield, the effects stack. Very Cumbersome Very Cumbersome armor gives the wearing character a -3 penalty to Athletics, and Stealth checks. Extremely Cumbersome Extremely Cumbersome armor gives the wearing character a -4 penalty to Athletics, and Stealth checks. Elemental Protection This armor protects against extreme heat and cold. It allows prolonged survival in high and low temperatures, and the character does not need to make endurance checks to survive in such environments. Also, the character is immune to energy damage resulting from exposure to extreme ambient temperatures. Fall Protection (X) This armor has automated systems to reduce impact from falls and ignores a number of squares for determining fall distance based on the value under the armor’s description. Impact Cushion This armor has a layer of self-replicating mesh foam that sits over the user’s body and absorbs some of the impact and damage taken. Armor with this quality gives the user +4 against the first attack each round. Oxygen Supply This armor supplies oxygen to its user with 2 air tanks used to supply breathable air. Fresh air tanks can be swapped out as an action. Personal Cloaking This armor is constructed of psi-weave fibers that grant a Terran psychic the ability to cloak. The psychic must still have the cloaking power. The suit only has the capacity to cloak for 10 minutes, out of every hour. Powered Armor These are high-tech military armors powered with their own internal generators. These suits respond to the wearer’s movement, and the wearer does not count the armor’s weight against his carrying capacity while suited in it. Most of the mounted gear on the powered armor are hands free and are activated via voice command inside the helmet’s heads up display. Characters using powered armor can only use pistols, rifles, and melee weapons with grip extensions. In addition, the time it takes to apply the Medicine skill to the character doubles. Powered armor power cells last 72 hours without needing to be recharged or replaced. When the armor loses power, the wearer loses access to all of the armor’s functions, weapons, gear, and abilities. Their Agility drops to 1d4. All movement is considered limited movement. The armor check penalty triples, and they lose all benefits of the Powered Armor Training talent. Using powered armor while not being trained in powered armor gives you -2 Speed, -4 Attack, Defense, and Strength and Agility checks. Radiation Shielding The wearer of this armor is immune to the penalties dealt by ambient radiation but not the damage. Self-Medicating This armor automatically contains a supply of chemicals that can be activated as a limited free action. The suit can contain up to five injection-based chemicals such as Combat Stimulants and Painkillers. The armor can only automatically apply one chemical per round. Chemicals can be replenished as an action. Shadowed While this character is cloaked (Invisible) or hidden, any enemies who would notice the character without a check, instead have to make a perception check. This check suffers a penalty according to your stealth skill (1d4=0/1d6=1/1d8=2/1d10=3/1d12=4) If the check is failed, the character is not revealed. Umojan Exclusive This equipment is generally only available from Umojans for Umojans. Outside of the protectorate’s worlds, these items are either unavailable, or drastically more expensive (+50-200% cost, GM’s choice). Umojan Networking This armor has an Umojan Protection Chip imbedded within it, which allows it to synergize with the functions of the Umojan weaponry. Attacks from a weapon with an Umojan Guided Projectile automatically miss the wearer, and they are counted as being outside the burst areas of any attacks from weapons with the that rule, even if they are physically within the area. Furthermore, allies with the chip in melee combat with enemies do not suffer from the innocent bystander rule. For this feature to work, either the weapon or the ammunition must have this trait. Armor Upgrades All armors are customizable. Items can be customized using certain upgrades. To utilize an upgrade, the character must purchase all necessary parts to install the upgrade. Afterwards, a Science or Engineering skill check is required to install the upgrade to the armor. If the check fails you can try again the next day, if you botch the roll you have to wait one week before trying again. The equipment tier of the item determines how many slots of upgrades it can generally support. Tier 1 items have 2 upgrade slots. Tier 2 items have 4 upgrade slots. Tier 3 items have 6 upgrade slots. An upgrade cannot be applied more than once. NAME ARMOR TYPE COST CHECK BENEFIT Apollo Reactor Heavy Armor, Power Armor 5000 8 Increase Stress Pool by 2 per tier. Automated Medical Delivery System Power Armor 8000 8 Heal all allies within 5 squares as a limited free action (10 uses) 100 credits per use. Cloaking Field All Armors 15000 8 Allows non-psionic characters to cloak, the armor has 6pp and spends 1 pp per turn of cloaking. It recharges after 1 hour. Dispersion Plating Heavy Armor, Power Armor 4000 7 Increases armor by +4 against burst attacks. Empowered Servos Power Armor 2500 7 Increase STR bonus by +1 Extra Dense Plate Power Armor 5000 6 Increase Armor by +6, reduce Speed by -2, can’t run, increase defense penalty by -3. Extra Enhancement HES 2500 8 Increase AGI +1 Energy Repellant Heavy Armor, Power Armor 3000 7 Select a type of energy damage such as fire, increase armor by +4 against that type. Extra Reinforcement All Armors 1000 4 Increase Armor by resistance rating. Flexible All Armors 500 5 Reduce defense penalty by 2. Improved Cloak HES 8000 8 The suit no longer limits how much cloaking the user is capable of every hour. Kinetic Foam Power Armor 3000 8 Gain the Impact Cushion trait. Medical Delivery System Power Armor 1500 8 This armor has a special medical delivery system built into the arm designed to beam nano-conveyed anesthetics to injured patients. Using the MDS is a limited free action that can target any ally within 3 squares. Heal as if using a Medkit. Propaganda Broadcast Array Power Armor 1000 6 Leadership affects twice as many targets, bonuses last until the end of the encounter. Psi-Blocker Heavy Armor, Power Armor 5000 8 This armor gives the user Resolve armor equal to his Spirit / 2. Shadow Armor All Armors 250 4 Gain the Shadowed trait. Umojan Protection Chip All Armors 1000 7 Gain the Umojan Networking trait. Melee Weapons MELEE WEAPONS While melee combat has somewhat waned amongst Terrans in the far future, many still rely on a close combat side arm to survive, especially against an onrushing Zerg swarm. Having a melee weapon on one’s person could mean the difference between life and death. MELEE WEAPON TABLE WEAPON NAME DAMAGE AP REACH MIN STR WEIGHT COST NOTES Combat Knife Str+d6+2 - 0 d4 4 100 Can be thrown at range 5/10/20 Directorate Boarding Saw Str+d12+6 6 1-2 d12 20 15000 Two-Hands, Heavy Weapon, Cleaving, Slow Fusion Rod Str+d8 STR/2 1 - 2 3000 Stun, Energy Weapon, Smashing Power Glove Str+d10 STR/2 0 - - 5000 Smashing, Heavy Weapon Promethean Blade Str+d10+2 4 0-1 d10 12 6000 Flames, Defensive, Versatile, Heavy Weapon, Umojan Exclusive Weapon Psiblade Str+d10+1 Psi lvl 1 d4 4 7500 Defensive, Psionic Shock Blade Str+d12 4 0-1 d6 6 15000 Defensive, Energy Weapon, Energy Drain, St Sonic Hammer Str+d12+4 STR/2 1 d12 17 10000 Two-Hands, Heavy Weapon, Cleaving, Slow Stunner Str+d6 - 0-1 - 1 500 Stun, Energy Damage Sword Str+d10+2 2 1 d8 8 1250 Defensive, Versatile Sword, Dueling Str+d10 2 1 d6 6 1500 Defensive Tool, Light Str+d8 STR/2 1 d4 3 75 Smashing Tool, Heavy Str+d12 STR/2 1 d8 8 250 Two-Hands, Smashing, Cleaving, Slow Unarmed, Reinforced Str+d6 - 0 - 2 100 Concealed Weapon Unarmed, Power Armor Str+d8 - 0 - - - MELEE WEAPON TRAITS Armor Piercing (AP) The weapon or round ignores this many points of a target’s Armor. Cleaving This weapon can strike any target in a small burst area centered on the character using the weapon despite being a melee weapon. The attack may exclude the character and any allies from the attack. Unlike other attacks with an area of effect cleaving is not considered an area attack for evading Concealed Weapon This weapon, even when equipped, is especially difficult to notice. It takes a perception check with -4 penalty while searching the target to notice the character is carrying the weapon. Defensive When the character has a weapon with this trait out and drawn, they add +1 to their defense against melee attacks. Energy Damage This weapon deals damage in the form of some manner of energy such as a laser, flame, or electricity. Energy damage attacks ignore the armor bonus of light armors. Energy Drain This weapon deals EMP Damage. When a target is hit by an EMP attack, resolve damage as usual. Then, if the damage equals or exceeds the target’s Toughness, all the target’s carried, worn, or attached electronics are \"knocked out\" as well. Cyberware, vehicles, power armor, robots, and sturdy gear meant for combat or hazardous environments continue to function but at a −4 penalty to any linked rolls. They may be reset or rebooted with an Engineering roll (at the same −4 penalty) and a limited action. EMP damage also reduces the Pace of Power Armor users by 4. Flames It gives targets the Burning condition if the attack surpasses defense. Burning characters take one wound at the start of each turn. The burning condition can be removed by making an Agility roll. Heavy Weapon (HW): The weapon can affect vehicles or other devices with Heavy Armor. It causes Gritty Wounds against targets without Heavy Armor. Reach: Weapons with “Reach” allow their user to make Fighting attacks at the listed range. A Reach of 1, for example, allows a character to strike a target 1″ distant. Weapons without a Reach value can only strike targets at arm’s length (adjacent). Psionic Burst This weapon’s damage goes vs Resolve rather than Toughness. Psionic This weapon can only be used by a psionic character. It gains an amount of penetration equal to the character’s Psi Level. Slow This weapon’s multi action penalty increases to -4 per extra action. Smashing This weapon gains AP = Strength / 2. Stun If an attack with this weapon bypasses the target’s defense and leaves the target Shaken, they must make a Vigor check (at -2 on a raise). If they fail the Vigor check, they are Distracted and Vulnerable. If the attack would Wound the target, they make the same check but are instead Stunned if they fail. Two Hands: A two-handed weapon can be used with one hand at a -4 penalty. The character counts his full Strength for damage but loses all other advantages such as Reach or Defense bonuses. Versatile This weapon can be used in either one or two hands. Ranged Weapons RANGED WEAPONS Pistols are basic one-handed ranged projectile weapons. They are standard side-arms, and most Terrans in the dangerous Koprulu sector have some familiarity with them by the time of the Second Great War. Any pistol class weapon can be used to make a Pistol Whip attack in close combat that deals STR+d8 and has the Stun trait. Rifles include most two-handed ranged weapons, but beyond that they vary greatly. The rifles category includes sniper rifles, shotguns, assault rifles, and submachine guns. Any rifle class weapon can be used to make a Rifle Butt attack in close combat that deals STR+d10 and has the Stun trait. The exception to this is if the character is wearing powered armor in which the rifle can be used as a one-handed weapon, except the character cannot aim with the weapon while using it this way. Heavy weapons include some of the largest and most powerful portable weaponry such as fast firing chainguns, flamethrowers, and rocket launchers. Due to the size and encumbrance of these weapons, they cannot be used to make melee attacks, nor can they be used in one hand. Heavy Weapons do not require a grip extension to be used with power armor. FIREARMS TYPE RANGE DAMAGE AP ROF SHOTS MIN STR WEIGHT COST NOTES Pistols Pistol, Combat FWG5 12/24/48 1d8+2 0 1 15 d4 2 250 Energy Damage Pistol, Hand Cannon 12/24/48 2d12 2 2 6 d8 7 4000 Recoil Pistol, Flak 12/24/48 2d12+3 - 1 12 d8 10 1000 Recoil, Flak Shot, Spread Pistol, Gauss 24/48/96 1d8 4 3 20 d4 3 1500 Grip Extension Pistol, Gauss Repeating, P45 Scythe 25/50/100 1d8 4 4 50 d4 7 2500 Hailfire (1), Grip Extension Pistol, Needle 12/24/48 1d8 0 2 15 d4 3 1500 Poisonous Rounds, Silent Revolver, Light 6/12/24 2d8 0 2 6 d4 1 250 Revolver, Heavy 12/24/48 2d10+1 0 2 6 d6 4 500 Rifles Canister Rifle, C-10 50/100/200 2d12+4 2 2 30 d8 30 10000 Scope, Special Ammo Launcher, Targeting Laser Gauss Rifle, Assault 50/100/200 2d8 4 4 60 d6 14 5000 Hailfire (1), Scope, Attached Grenade Launcher Gauss Rifle, Heavy 50/100/200 2d8+1 4 5 150 d8 25 6000 Hailfire (2), Grip Extension, Recoil Gauss Rifle, Sniper 50/100/200 2d12+2 4 1 20 d6 11 7500 Digital Scope, Grip Extension Rifle, Auto 25/50/100 2d8+1 - 4 60 d6 11 3000 Hailfire (1), Scope Rifle, Flak 50/100/200 2d8+3 - 2 25 d8 25 10000 Flak Shot, Spread, Recoil Rifle, Needle 50/100/200 1d8+2 - 2 10 d4 8 6000 Poisonous Rounds, Silent Rifle, Long 25/50/100 2d10 - 1 6 d4 7 250 Scope Rifle, Sniper 25/50/100 2d12 2 1 4 d6 10 5000 Scope Shotguns Shotgun 6/12/24 1-3d6 - 1 2 d6 7 500 Spread, Twin-Linked, Close Quarters Shotgun, Automatic 6/12/24 1-3d6 - 3 12 d8 20 8000 Spread, Recoil Shotgun, Torrent SR-8 6/12/24 1-3d6 - 2 10 d6 7 3000 Spread, Close Quarters Heavy Weapons Chaingun 50/100/200 2d12 1 5 250 d12 50 6000 Heavy Weapon, Extreme Recoil, Hailfire (2) Cannon, Flak 100/200/400 2d12+3 3 4 40 d10 40 30000 Heavy Weapon, Recoil, Flak Shot, Spread, High Explosive, Hailfire (1) Cannon, Gauss 50/100/200 2d10+1 4 5 300 d12 60 15000 Heavy Weapon, Extreme Recoil, Hailfire (3) Cannon, Pulse 100/200/400 6d12+6 - 1 1 d8 30 40000 Heavy Weapon, Digital Scope, Extreme Recoil, Energy Drain, Umojan Networking, Umojan Exclusive Flamethrower Cone 6 4d6+2 2 2 30 d10 40 5000 Hailfire (1), Energy Damage, Flames, High Explosive, Close Quarters Flamethrower, Infernal Line 20 4d6+4 2 2 30 d8 30 8000 Hailfire (1), Energy Damage, Flames, High Explosive, Close Quarters Launcher, Rocket 50/100/200 * * 1 3 d8 30 7500 High Explosive Launcher, Grenade 25/50/100 * * 1 6 d6 20 7500 Recoil, High Explosive RANGED WEAPON TRAITS Acid Damage This weapon deals damage in the form of some manner of chemical such as acid or bio-plasma. On the target’s next turn, he suffers the weapon’s base damage minus one die type (for one additional turn only). If hit with a 3d6 damage weapon, for example, the target takes 3d4 damage at the start of his next turn. If the base damage is already a d4 die type, it is d4−2 instead. Armor Piercing (AP) The weapon or round ignores this many points of a target’s Armor. Burst (SB/MB/LB) When this weapon is used, it makes an attack against all targets within a burst area in size based on the value under the weapon description. Close Quarters Characters get no unarmed combatant bonus for attacking you in melee. Concealed Weapon This weapon, even when equipped, is especially difficult to notice. It takes a perception check with -4 penalty while searching the target to notice the character is carrying the weapon. Digital Scope When aiming, this weapon gains a +2 bonus to the next Ranged attack. The character ignores all penalties related to concealment or darkness. These bonuses do not function if the character moves before shooting. Finally, the digital scope can be used to perform a detector action. Energy Damage This weapon deals damage in the form of some manner of energy such as a laser, flame, or electricity. Energy damage attacks ignore the armor bonus of light armors. Energy Drain This weapon deals EMP Damage. EMP attacks ignore armor. Organics can only be Shaken. Constructs, Shields and Vehicles take full damage. All of the target’s carried, worn, or attached electronics are \"knocked out\" as well. Cyberware, power armor and sturdy gear meant continue to function but at a −4 penalty to any linked rolls. They may be reset or rebooted with an Engineering roll (at the same −4 penalty) and a Limited Action. EMP damage also reduces the Pace of Power Armor users by 4 for 1 round. Extreme Recoil Due to the weapon’s extreme kickback, any attacks beyond the first in a round with this weapon suffer a -4 cumulative penalty unless t"
     }
   ],
   "armor": [
@@ -1573,7 +1573,7 @@ window.SC_DATA = {
       "desc": "Combines light infantry body armor with a hazard suit. Segmented protective plating allows high mobility. Features charge servos that accelerate the user's Strength. Used by Dominion Reapers with jump packs."
     },
     {
-      "name": "Commander\u2019s Battle Regalia",
+      "name": "Commander’s Battle Regalia",
       "category": "Heavy Armor",
       "armor": 5,
       "class": "Heavy",
@@ -1622,7 +1622,7 @@ window.SC_DATA = {
       "defMod": 0,
       "mounted": "Communicator",
       "traits": "Elemental Protection, Radiation Shielding, Oxygen Supply, Personal Cloaking, Armor Decay",
-      "desc": "Hostile Environment Suits are the armor of choice for Ghosts. Allowing them to cloak and serve as optimal assassins, these suits also add to the user\u2019s physical prowess (+1 Strength die step) and provide heavy ballistic protection (+8 Armor). Full life support in vacuum and radiation. Seamlessly powers Tactical Mask I for magnification and darkvision. Features Armor Decay to dissolve into dust upon operative death."
+      "desc": "Hostile Environment Suits are the armor of choice for Ghosts. Allowing them to cloak and serve as optimal assassins, these suits also add to the user’s physical prowess (+1 Strength die step) and provide heavy ballistic protection (+8 Armor). Full life support in vacuum and radiation. Seamlessly powers Tactical Mask I for magnification and darkvision. Features Armor Decay to dissolve into dust upon operative death."
     },
     {
       "name": "Light Combat Armor",
@@ -2592,3 +2592,5 @@ window.SC_DATA = {
     }
   ]
 };
+
+export default SC_DATA;
