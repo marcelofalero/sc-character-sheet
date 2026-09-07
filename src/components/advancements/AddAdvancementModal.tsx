@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useCharacter } from '../../store/useCharacterStore';
 import { getRankForAdvancements } from '../../utils/calculations';
 import { X, TrendingUp } from 'lucide-react';
@@ -49,7 +50,7 @@ export const AddAdvancementModal: React.FC<Props> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={e => e.stopPropagation()}>
         
@@ -68,18 +69,51 @@ export const AddAdvancementModal: React.FC<Props> = ({ isOpen, onClose }) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
           
           <div className="form-group">
-            <label className="form-label">Advancement Type / Choice</label>
-            <select
-              className="form-select"
-              value={advType}
-              onChange={e => setAdvType(e.target.value as any)}
-            >
-              <option value="skills">🎯 +3 Skill Points (Increases 3 skills below linked attr or 1-2 skills above)</option>
-              <option value="attribute">⚡ +1 Physical/Mental Attribute Die Step (Max 1 per Rank)</option>
-              <option value="edge">⭐ Gain 1 New Edge, Power, or +1 Psionic Level (PL)</option>
-              <option value="other">📜 Other Career Milestone / Special Reward</option>
-            </select>
+            <label className="form-label">Advancement Category</label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '0.4rem' }}>
+              <button
+                type="button"
+                className={`btn btn-sm ${advType === 'skills' ? 'btn-emerald' : 'btn-outline'}`}
+                onClick={() => setAdvType('skills')}
+              >
+                +3 Skill Points
+              </button>
+              <button
+                type="button"
+                className={`btn btn-sm ${advType === 'attribute' ? 'btn-emerald' : 'btn-outline'}`}
+                onClick={() => setAdvType('attribute')}
+              >
+                +1 Attribute Step
+              </button>
+              <button
+                type="button"
+                className={`btn btn-sm ${advType === 'edge' ? 'btn-emerald' : 'btn-outline'}`}
+                onClick={() => setAdvType('edge')}
+              >
+                New Edge / Power
+              </button>
+              <button
+                type="button"
+                className={`btn btn-sm ${advType === 'other' ? 'btn-emerald' : 'btn-outline'}`}
+                onClick={() => setAdvType('other')}
+              >
+                Other / Lore
+              </button>
+            </div>
           </div>
+
+          {advType === 'skills' && (
+            <div className="form-group">
+              <label className="form-label">Skill Allocation Details</label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g. Athletics d6, Melee d8, Stealth d8"
+                value={skillDesc}
+                onChange={e => setSkillDesc(e.target.value)}
+              />
+            </div>
+          )}
 
           {advType === 'attribute' && (
             <div className="form-group">
@@ -99,26 +133,13 @@ export const AddAdvancementModal: React.FC<Props> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {advType === 'skills' && (
-            <div className="form-group">
-              <label className="form-label">Skills Allocation Details</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="e.g. Athletics d6, Melee d8, Stealth d8 (+3 pts total)"
-                value={skillDesc}
-                onChange={e => setSkillDesc(e.target.value)}
-              />
-            </div>
-          )}
-
           {advType === 'edge' && (
             <div className="form-group">
-              <label className="form-label">Edge / Power / PL Details</label>
+              <label className="form-label">Edge or Power Name</label>
               <input
                 type="text"
                 className="form-input"
-                placeholder="e.g. Psionic Level +1 (Psi Rating to PL 5) or Marksman Edge"
+                placeholder="e.g. Combat Reflexes, Marksman, Power Level Increase"
                 value={edgeDesc}
                 onChange={e => setEdgeDesc(e.target.value)}
               />
@@ -145,6 +166,7 @@ export const AddAdvancementModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

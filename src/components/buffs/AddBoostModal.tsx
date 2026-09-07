@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useCharacter } from '../../store/useCharacterStore';
 import { ActiveBoost, AttributeKey } from '../../types/character';
 import { X, Sparkles } from 'lucide-react';
@@ -135,7 +136,7 @@ export const AddBoostModal: React.FC<Props> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         
@@ -239,6 +240,7 @@ export const AddBoostModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
