@@ -151,11 +151,6 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
     skillRollMods.perception = (skillRollMods.perception || 0) + 1;
     skillRollMods.ranged = (skillRollMods.ranged || 0) + 1;
     skillRollMods.melee = (skillRollMods.melee || 0) + 1;
-
-    // Psionic Reflexes & Absorption Field (while wearing HES Suit)
-    if (isWearingHES) {
-      attrSteps.agility = (attrSteps.agility || 0) + 1;
-    }
   } else if (trainingPath === 'shadowguard') {
     // Espionage Training: Gain +1 to Insight, Influence, and Stealth rolls
     skillRollMods.insight = (skillRollMods.insight || 0) + 1;
