@@ -218,11 +218,12 @@
       "concept": "Psionic Human operative from Moria (Kel-Morian Combine) channeling Void energy.",
       "psiRating": 5,
       "advancements": 4,
-      "advancementAllocation": {
-        "skills": 1,
-        "attributes": 1,
-        "edges": 2
-      },
+      "advancementsList": [
+        { "id": "adv_1", "rank": "Novice", "type": "attribute", "target": "agility", "desc": "Agility increase (+1 step: d6 → d8)" },
+        { "id": "adv_2", "rank": "Novice", "type": "edge", "desc": "Psychic Discipline Focus (Energy) [Seasoned Edge]" },
+        { "id": "adv_3", "rank": "Novice", "type": "skills", "desc": "+3 Skill Points (Athletics d6, Melee d8, Stealth d8)" },
+        { "id": "adv_4", "rank": "Seasoned", "type": "edge", "desc": "Psionic Level +1 (Psi Rating increased to PL 5)" }
+      ],
       "credits": 11325,
       "attributes": {
         "agility": 8,
@@ -562,15 +563,26 @@
   }
 
   function calculatePoints(char) {
-    const advAlloc = char.advancementAllocation || {
-      skills: 1,
-      attributes: 1,
-      edges: Math.max(0, (char.advancements || 4) - 2)
-    };
+    let advSkillCount = 0;
+    let advAttrCount = 0;
+    let advEdgeCount = 0;
 
-    const advSkillCount = advAlloc.skills !== undefined ? advAlloc.skills : 0;
-    const advAttrCount = advAlloc.attributes !== undefined ? advAlloc.attributes : 0;
-    const advEdgeCount = advAlloc.edges !== undefined ? advAlloc.edges : 0;
+    if (char && Array.isArray(char.advancementsList) && char.advancementsList.length > 0) {
+      char.advancementsList.forEach(a => {
+        if (a.type === 'skills') advSkillCount++;
+        else if (a.type === 'attribute') advAttrCount++;
+        else if (a.type === 'edge') advEdgeCount++;
+      });
+    } else if (char) {
+      const advAlloc = char.advancementAllocation || {
+        skills: 1,
+        attributes: 1,
+        edges: Math.max(0, (char.advancements || 4) - 2)
+      };
+      advSkillCount = advAlloc.skills !== undefined ? advAlloc.skills : 0;
+      advAttrCount = advAlloc.attributes !== undefined ? advAlloc.attributes : 0;
+      advEdgeCount = advAlloc.edges !== undefined ? advAlloc.edges : 0;
+    }
 
     const hindranceAttrBonus = (char.hindranceConversions && char.hindranceConversions.attributeSteps) || 0;
     const advAttrBonus = advAttrCount * 1;
@@ -695,6 +707,7 @@
     renderCharacterCybernetics();
     renderCharacterHindrances();
     renderCharacterEdges();
+    renderCharacterAdvancements();
     updateCharacterSelector();
     updateQuickTelemetry();
   }
@@ -1251,6 +1264,89 @@
     });
   }
 
+  function getRankForAdvancementIndex(idx) {
+    if (idx >= 16) return 'Legendary';
+    if (idx >= 12) return 'Heroic';
+    if (idx >= 8) return 'Veteran';
+    if (idx >= 4) return 'Seasoned';
+    return 'Novice';
+  }
+
+  function renderCharacterAdvancements() {
+    const list = document.getElementById('char-advancements-list');
+    if (!list || !currentCharacter) return;
+    list.innerHTML = '';
+
+    if (!Array.isArray(currentCharacter.advancementsList)) {
+      currentCharacter.advancementsList = [
+        { id: 'adv_1', rank: 'Novice', type: 'attribute', desc: 'Agility increase (+1 step: d6 → d8)' },
+        { id: 'adv_2', rank: 'Novice', type: 'edge', desc: 'Psychic Discipline Focus (Energy) [Seasoned Edge]' },
+        { id: 'adv_3', rank: 'Novice', type: 'skills', desc: '+3 Skill Points (Athletics d6, Melee d8, Stealth d8)' },
+        { id: 'adv_4', rank: 'Seasoned', type: 'edge', desc: 'Psionic Level +1 (Psi Rating increased to PL 5)' }
+      ];
+    }
+
+    const advList = currentCharacter.advancementsList;
+    const totalAdv = advList.length;
+    currentCharacter.advancements = totalAdv;
+
+    // Derive character rank milestone
+    const autoRank = getRankForAdvancementIndex(totalAdv);
+    if (!currentCharacter.rank || (totalAdv > 0 && currentCharacter.rank !== autoRank)) {
+      currentCharacter.rank = autoRank;
+      const rankInfo = RANK_COT_MAP[autoRank];
+      if (rankInfo) {
+        currentCharacter.cotLevel = rankInfo.cotLevel;
+      }
+    }
+
+    const countBadge = document.getElementById('adv-count-badge');
+    if (countBadge) countBadge.textContent = `${totalAdv} Advancement${totalAdv === 1 ? '' : 's'}`;
+
+    const rankBadge = document.getElementById('adv-rank-badge');
+    if (rankBadge) rankBadge.textContent = `${currentCharacter.rank || autoRank} Rank`;
+
+    const advInput = document.getElementById('char-adv-input');
+    if (advInput) advInput.value = totalAdv;
+
+    if (advList.length === 0) {
+      list.innerHTML = `
+        <div style="padding:0.85rem; text-align:center; color:var(--text-dim); font-size:0.85rem; border:1px dashed var(--border-subtle); border-radius:var(--radius-sm); background:rgba(8,16,28,0.5);">
+          No advancements recorded yet. Click <strong style="color:var(--cyan);">+ Add Advancement</strong> above to record character career progression.
+        </div>
+      `;
+      return;
+    }
+
+    const typeBadges = {
+      skills: '<span class="tag tag-emerald">🎯 Skills (+3 pts)</span>',
+      attribute: '<span class="tag tag-cyan">⚡ Attribute (+1 step)</span>',
+      edge: '<span class="tag tag-amber">⭐ Edge / Power</span>',
+      other: '<span class="tag tag-violet">📜 Other</span>'
+    };
+
+    advList.forEach((adv, idx) => {
+      const advNum = idx + 1;
+      const rankMilestone = adv.rank || getRankForAdvancementIndex(idx);
+      const div = document.createElement('div');
+      div.className = 'adv-item';
+      div.innerHTML = `
+        <div class="adv-item-info">
+          <div class="adv-item-title">
+            <span>Advancement #${advNum}</span>
+            <span class="tag tag-violet" style="font-size:0.7rem;">${rankMilestone}</span>
+            ${typeBadges[adv.type] || '<span class="tag tag-outline">Advancement</span>'}
+          </div>
+          <div class="adv-item-desc">${adv.desc || 'No details specified.'}</div>
+        </div>
+        <div>
+          <button class="btn btn-crimson btn-sm" data-remove-advancement="${idx}" title="Delete Advancement" style="padding:2px 8px; font-size:0.75rem;">✕</button>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
   function updateQuickTelemetry() {
     if (!currentCharacter) return;
     const dName = document.getElementById('dossier-name');
@@ -1670,6 +1766,50 @@
 
     bindInput('char-credits-input', 'credits');
     bindInput('char-concept-input', 'concept');
+
+    // --- Add Advancement Setup ---
+    const addAdvPanel = document.getElementById('add-advancement-panel');
+    const btnToggleAddAdv = document.getElementById('btn-toggle-add-adv');
+    const btnCloseAddAdv = document.getElementById('btn-close-add-adv');
+    const btnCancelAddAdv = document.getElementById('btn-cancel-add-adv');
+    const btnConfirmAddAdv = document.getElementById('btn-confirm-add-adv');
+
+    if (btnToggleAddAdv && addAdvPanel) {
+      btnToggleAddAdv.addEventListener('click', () => {
+        addAdvPanel.style.display = (addAdvPanel.style.display === 'none' || !addAdvPanel.style.display) ? 'block' : 'none';
+      });
+    }
+    if (btnCloseAddAdv && addAdvPanel) {
+      btnCloseAddAdv.addEventListener('click', () => addAdvPanel.style.display = 'none');
+    }
+    if (btnCancelAddAdv && addAdvPanel) {
+      btnCancelAddAdv.addEventListener('click', () => addAdvPanel.style.display = 'none');
+    }
+    if (btnConfirmAddAdv && addAdvPanel) {
+      btnConfirmAddAdv.addEventListener('click', () => {
+        if (!currentCharacter) return;
+        if (!Array.isArray(currentCharacter.advancementsList)) currentCharacter.advancementsList = [];
+        
+        const advType = document.getElementById('new-adv-type').value;
+        const advDesc = document.getElementById('new-adv-desc').value.trim() || `${advType} advancement`;
+        const nextIdx = currentCharacter.advancementsList.length;
+        const nextRank = getRankForAdvancementIndex(nextIdx);
+
+        currentCharacter.advancementsList.push({
+          id: `adv_${Date.now()}`,
+          rank: nextRank,
+          type: advType,
+          desc: advDesc
+        });
+
+        document.getElementById('new-adv-desc').value = '';
+        addAdvPanel.style.display = 'none';
+
+        SoundFX.success();
+        saveCharacters();
+        renderAll();
+      });
+    }
 
     // --- Add Boost UI Setup ---
     const addBoostPanel = document.getElementById('add-boost-panel');
@@ -2188,6 +2328,18 @@
         currentCharacter.hindrances.splice(parseInt(remHind.getAttribute('data-remove-hindrance'), 10), 1);
         saveCharacters();
         renderCharacterHindrances();
+        return;
+      }
+
+      const remAdv = e.target.closest('button[data-remove-advancement]');
+      if (remAdv) {
+        const idx = parseInt(remAdv.getAttribute('data-remove-advancement'), 10);
+        if (currentCharacter && Array.isArray(currentCharacter.advancementsList)) {
+          currentCharacter.advancementsList.splice(idx, 1);
+          SoundFX.toggle();
+          saveCharacters();
+          renderAll();
+        }
         return;
       }
 

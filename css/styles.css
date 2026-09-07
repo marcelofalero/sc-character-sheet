@@ -661,7 +661,42 @@ body.theme-light .form-input, body.theme-light .form-select { background: #fff; 
 }
 .skill-name { font-family: var(--font-sub); font-size: 0.9rem; font-weight: 700; color: #fff; }
 .core-badge { font-size: 0.62rem; font-family: var(--font-mono); background: rgba(0, 229, 255, 0.15); border: 1px solid var(--cyan); color: var(--cyan); padding: 1px 3px; border-radius: 3px; }
-.skill-die-badge { font-family: var(--font-hud); font-size: 0.95rem; font-weight: 800; color: var(--cyan); min-width: 42px; text-align: center; }
+/* Advancement Section */
+.adv-item {
+  background: rgba(14, 24, 42, 0.9);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.2s ease;
+}
+.adv-item:hover {
+  border-color: var(--cyan);
+  background: rgba(18, 30, 52, 0.95);
+}
+.adv-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.adv-item-title {
+  font-family: var(--font-hud);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.adv-item-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
 
 /* Tactical Tables */
 .tactical-table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.88rem; }

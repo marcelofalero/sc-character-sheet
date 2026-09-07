@@ -446,6 +446,52 @@
           </div>
         </div>
 
+        <!-- ADVANCEMENT LOG & CAREER PROGRESSION -->
+        <div class="hud-inner-card" style="margin-top:1.25rem; border:1px solid var(--border-cyan); background:rgba(12, 22, 38, 0.95);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem; border-bottom:1px solid var(--border-subtle); padding-bottom:0.5rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <span class="hud-card-title cyan-text">🏆 ADVANCEMENT LOG & CAREER PROGRESSION</span>
+              <span id="adv-count-badge" class="tag tag-cyan">4 Advancements</span>
+              <span id="adv-rank-badge" class="tag tag-amber">Seasoned Rank</span>
+            </div>
+            <div style="display:flex; gap:0.4rem; align-items:center;">
+              <button id="btn-toggle-add-adv" class="btn btn-sm btn-cyan" style="font-size:0.8rem; padding:3px 10px;">+ Add Advancement</button>
+            </div>
+          </div>
+
+          <!-- Add Advancement Inline Form (Collapsible) -->
+          <div id="add-advancement-panel" class="boost-panel-form" style="display:none; margin-bottom:0.75rem; padding:0.75rem; background:rgba(8, 16, 28, 0.9); border:1px solid var(--border-glow); border-radius:var(--radius-sm);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <strong style="color:var(--cyan); font-size:0.85rem;">Record New Advancement</strong>
+              <button id="btn-close-add-adv" class="btn btn-sm btn-outline" style="padding:1px 6px;">✕</button>
+            </div>
+            <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:0.6rem;">
+              <div class="form-group">
+                <label class="form-label">Benefit / Category</label>
+                <select id="new-adv-type" class="form-select">
+                  <option value="skills">🎯 Skills (+3 Skill Points)</option>
+                  <option value="attribute">⚡ Attribute (+1 Attribute Die Step)</option>
+                  <option value="edge">⭐ New Edge / Psionic Power / PL</option>
+                  <option value="other">📜 Other / Special Benefit</option>
+                </select>
+              </div>
+              <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label">Advancement Description / Selection</label>
+                <input type="text" id="new-adv-desc" class="form-input" placeholder="e.g., +1 Agility (d6->d8), or Psychic Discipline Focus (Energy)">
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.6rem;">
+              <button id="btn-cancel-add-adv" class="btn btn-sm btn-outline">Cancel</button>
+              <button id="btn-confirm-add-adv" class="btn btn-sm btn-cyan">Save Advancement</button>
+            </div>
+          </div>
+
+          <!-- Advancements List -->
+          <div id="char-advancements-list" class="sheet-list">
+            <!-- Dynamically populated advancements -->
+          </div>
+        </div>
+
       </section>
 
       <!-- CHAPTER 1: CHARACTER CREATION -->
