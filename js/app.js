@@ -682,8 +682,27 @@
 
     // Ensure activeBoosts array, advancementsList, wounds/fatigue, and rank auto-sync
     characters.forEach(char => {
-      if (!char.activeBoosts || !Array.isArray(char.activeBoosts)) {
+      if (!char.activeBoosts || !Array.isArray(char.activeBoosts) || char.activeBoosts.length === 0) {
         char.activeBoosts = getDefaultActiveBoosts();
+      } else {
+        // Ensure Hostile Environment Suit is present in activeBoosts if character wears HES armor
+        const hasHesInBoosts = char.activeBoosts.some(b => b.type === 'hes-suit' || b.id === 'boost_hes_suit' || (b.name && b.name.toLowerCase().includes('environment suit')));
+        if (!hasHesInBoosts && char.armor && (char.armor.name || '').toLowerCase().includes('environment suit')) {
+          char.activeBoosts.unshift({
+            id: "boost_hes_suit",
+            name: "Hostile Environment Suit",
+            category: "Gear",
+            type: "hes-suit",
+            targetAttr: "strength",
+            state: "active",
+            hasRaise: false,
+            desc: "Hermetic Ghost suit granting Str+ and +8 Armor to Toughness.",
+            mutations: {
+              attrSteps: { strength: 1 },
+              armor: 8
+            }
+          });
+        }
       }
       if (char.credits === undefined || char.credits === 3325) {
         char.credits = 11325;
@@ -1374,23 +1393,26 @@
 
   function updateQuickTelemetry() {
     if (!currentCharacter) return;
-    const dName = document.getElementById('dossier-name');
-    if (dName) dName.textContent = currentCharacter.name || 'Operative';
-    const dCode = document.getElementById('dossier-codename');
-    if (dCode) dCode.textContent = currentCharacter.codename || 'Ghost Unit';
-    const dConcept = document.getElementById('dossier-concept');
-    if (dConcept) dConcept.textContent = currentCharacter.concept || '';
+    const hName = document.getElementById('quick-hud-name');
+    if (hName) hName.textContent = currentCharacter.name || 'Operative';
 
     const state = computeEffectiveCharacterState(currentCharacter);
 
-    const tDef = document.getElementById('telemetry-defense');
+    const tDef = document.getElementById('quick-hud-defense');
     if (tDef) tDef.textContent = state.defense;
-    const tTough = document.getElementById('telemetry-toughness');
+    const tTough = document.getElementById('quick-hud-toughness');
     if (tTough) tTough.textContent = state.armor > 0 ? `${state.totalToughness} (${state.armor})` : `${state.totalToughness}`;
-    const tDisc = document.getElementById('telemetry-discipline');
+    const tDisc = document.getElementById('quick-hud-discipline');
     if (tDisc) tDisc.textContent = state.discipline;
-    const tRes = document.getElementById('telemetry-resolve');
+    const tRes = document.getElementById('quick-hud-resolve');
     if (tRes) tRes.textContent = state.resolve;
+    const tWounds = document.getElementById('quick-hud-wounds');
+    if (tWounds) tWounds.textContent = `${currentCharacter.currentWounds || 0}/${state.maxWounds || 3}`;
+    const tPsi = document.getElementById('quick-hud-psi');
+    if (tPsi) {
+      const plInfo = computeEffectivePsiRating(currentCharacter);
+      tPsi.textContent = plInfo.effectivePL;
+    }
   }
 
   function updateCharacterSelector() {
