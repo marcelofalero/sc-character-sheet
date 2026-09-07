@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && cp -r dist/assets .",
+    "build": "tsc && vite build && cp -r dist/assets . && node -e \"const fs=require('fs'); let h=fs.readFileSync('index.html','utf8'); h=h.replace(/\\?t=\\d+/g, '?t='+Date.now()); fs.writeFileSync('index.html', h);\"",
     "preview": "vite preview"
   },
   "dependencies": {
