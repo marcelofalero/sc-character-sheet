@@ -302,49 +302,37 @@
         <div class="stat-tiles-grid">
           <div class="stat-card">
             <span class="stat-card-title">DEFENSE</span>
-            <span id="derived-defense" class="stat-card-val cyan">7</span>
+            <span id="stat-defense" class="stat-card-val cyan">7</span>
             <span class="stat-formula">½ Agility + ½ Instinct</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">DISCIPLINE</span>
-            <span id="derived-discipline" class="stat-card-val cyan">9</span>
+            <span id="stat-discipline" class="stat-card-val cyan">9</span>
             <span class="stat-formula">½ Spirit + ½ Intelligence</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">TOUGHNESS</span>
-            <span id="derived-toughness" class="stat-card-val amber">15 (8)</span>
+            <span id="stat-toughness" class="stat-card-val amber">15 (8)</span>
             <span class="stat-formula">½ Vigor + ½ Str + Armor (8)</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">RESOLVE</span>
-            <span id="derived-resolve" class="stat-card-val violet">10</span>
+            <span id="stat-resolve" class="stat-card-val violet">10</span>
             <span class="stat-formula">½ Spirit + ½ Instinct + Psi (5)</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">SPEED</span>
-            <span id="derived-speed" class="stat-card-val emerald">6″</span>
+            <span id="stat-speed" class="stat-card-val emerald">6″</span>
             <span class="stat-formula">Base 6″ + Mods</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">WOUNDS</span>
-            <div class="wound-fatigue-bar">
-              <span id="wound-count-display" class="stat-card-val crimson" style="font-size:1.4rem;">0 / 3</span>
-              <div style="display:flex; gap:0.2rem; margin-top:0.2rem;">
-                <button id="wound-minus-btn" class="btn btn-sm btn-crimson" style="padding:2px 8px;">-</button>
-                <button id="wound-plus-btn" class="btn btn-sm btn-crimson" style="padding:2px 8px;">+</button>
-              </div>
-            </div>
+            <div id="wounds-pips-wrap" class="pips-row"></div>
             <span class="stat-formula">1/3 Strength + 1</span>
           </div>
           <div class="stat-card">
             <span class="stat-card-title">FATIGUE</span>
-            <div class="wound-fatigue-bar">
-              <span id="fatigue-count-display" class="stat-card-val amber" style="font-size:1.4rem;">2 / 2</span>
-              <div style="display:flex; gap:0.2rem; margin-top:0.2rem;">
-                <button id="fatigue-minus-btn" class="btn btn-sm btn-amber" style="padding:2px 8px;">-</button>
-                <button id="fatigue-plus-btn" class="btn btn-sm btn-amber" style="padding:2px 8px;">+</button>
-              </div>
-            </div>
+            <div id="fatigue-pips-wrap" class="pips-row"></div>
             <span class="stat-formula">1/3 Vigor</span>
           </div>
         </div>
@@ -358,9 +346,7 @@
               <span class="hud-card-title">⚡ ATTRIBUTES (9 Creation Points)</span>
               <span id="attr-points-badge" class="tag tag-cyan">Points: 0 / 9</span>
             </div>
-            <div id="attributes-list" class="sheet-list">
-              <!-- Dynamically generated attributes -->
-            </div>
+            <div id="attributes-grid" class="attributes-grid"></div>
           </div>
 
           <!-- SKILLS PANEL -->
@@ -369,9 +355,7 @@
               <span class="hud-card-title">🎯 SKILLS (13 Creation + Intel Extra)</span>
               <span id="skill-points-badge" class="tag tag-emerald">Points: 0 / 15</span>
             </div>
-            <div id="skills-list" class="sheet-list">
-              <!-- Dynamically generated skills with dice roller triggers -->
-            </div>
+            <div id="skills-container" class="skills-grid"></div>
           </div>
         </div>
 
@@ -389,14 +373,12 @@
                   <th>Range</th>
                   <th>Damage</th>
                   <th>AP</th>
-                  <th>RoF</th>
-                  <th>Shots</th>
-                  <th>Min Str</th>
                   <th>Special Notes</th>
+                  <th>Attack Roll</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="sheet-weapons-tbody">
+              <tbody id="char-weapons-table-body">
                 <!-- Dynamically populated from character profile -->
               </tbody>
             </table>
@@ -409,7 +391,7 @@
             <span class="hud-card-title">🔮 KNOWN PSIONIC POWERS & SPECIAL ABILITIES</span>
             <span class="tag tag-violet">Psi Level 5 Operative</span>
           </div>
-          <div id="sheet-powers-grid" class="compendium-grid" style="margin-top:0.75rem;">
+          <div id="char-powers-list" class="compendium-grid" style="margin-top:0.75rem;">
             <!-- Dynamically populated powers -->
           </div>
         </div>
@@ -419,7 +401,7 @@
           <div class="hud-card-header">
             <span class="hud-card-title">🎒 FIELD GEAR & INVENTORY</span>
           </div>
-          <div id="sheet-gear-grid" class="compendium-grid" style="margin-top:0.75rem;">
+          <div id="char-gear-list" class="compendium-grid" style="margin-top:0.75rem;">
             <!-- Dynamically populated gear -->
           </div>
         </div>
@@ -431,7 +413,7 @@
               <span class="hud-card-title">⚠️ HINDRANCES (Max 4 Points)</span>
               <span id="hindrance-points-badge" class="tag tag-crimson">4 Pts</span>
             </div>
-            <div id="sheet-hindrances-list" class="sheet-list" style="margin-top:0.5rem;">
+            <div id="char-hindrances-list" class="sheet-list" style="margin-top:0.5rem;">
               <!-- Dynamically populated hindrances -->
             </div>
           </div>
@@ -440,7 +422,7 @@
               <span class="hud-card-title">⭐ EDGES & C.O.T. TRAINING</span>
               <span class="tag tag-amber">Edges Loaded</span>
             </div>
-            <div id="sheet-edges-list" class="sheet-list" style="margin-top:0.5rem;">
+            <div id="char-edges-list" class="sheet-list" style="margin-top:0.5rem;">
               <!-- Dynamically populated edges -->
             </div>
           </div>
