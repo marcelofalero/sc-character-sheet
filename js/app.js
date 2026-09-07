@@ -163,9 +163,9 @@
         { "name": "Combat Knife", "range": "Melee", "damage": "Str+d4", "rof": "1", "ap": 1, "notes": "Close-quarters military blade" }
       ],
       "armor": {
-        "name": "Hostile Environment Suit (HES Mk-VI)",
+        "name": "Hostile Environment Suit",
         "value": 8,
-        "notes": "Hermetic full-body pressure suit (+8 Armor, life-support, +1 Agility die step)"
+        "notes": "Hermetic full-body pressure suit (+8 Armor, life-support, +1 Strength die step, Cloaking integration)"
       },
       "gear": [
         { "name": "Digital Uplink II", "count": 1, "notes": "+2 Tactics/Pilot/Leadership, +1 Ranged, Athletics, Computers, Med, Lore, Percep, Sci, Stealth" },

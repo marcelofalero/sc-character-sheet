@@ -407,10 +407,19 @@ body.theme-light .btn:hover { background: #e0f2fe; color: #0284c7; }
   .doc-main { padding: 1rem 0.75rem 4rem 0.75rem; }
 }
 
-/* Document Sections */
+/* Document Sections & Smooth Navigation Anchors */
+.doc-section,
+.discipline-section,
+.homeworld-card,
+.hud-inner-card,
+[id^="sec-"],
+[id^="hw-"],
+[id^="psi-"] {
+  scroll-margin-top: 85px;
+}
+
 .doc-section {
   margin-bottom: 3.5rem;
-  scroll-margin-top: 70px;
 }
 
 .doc-h2 {
