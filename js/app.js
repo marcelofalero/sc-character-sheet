@@ -401,6 +401,33 @@
       if (m.speedMod) totalSpeedMod += m.speedMod;
     });
 
+    // 2b. Training Path Inherent Mutations & Bonuses
+    const psiRating = parseInt(char.psiRating, 10) || 5;
+    const trainingPath = char.trainingPath || 'ghost';
+    const isWearingHES = activeBoosts.some(b => 
+      (b.type === 'hes-suit' || b.id === 'boost_hes_suit' || (b.name && b.name.toLowerCase().includes('environment suit'))) && 
+      b.state !== 'off'
+    );
+
+    if (trainingPath === 'ghost') {
+      // Covert Ops Training: Gain +1 to Stealth, Perception, and Ranged or Melee rolls
+      skillRollMods.stealth = (skillRollMods.stealth || 0) + 1;
+      skillRollMods.perception = (skillRollMods.perception || 0) + 1;
+      skillRollMods.ranged = (skillRollMods.ranged || 0) + 1;
+      skillRollMods.melee = (skillRollMods.melee || 0) + 1;
+
+      // Psionic Reflexes & Absorption Field (while wearing HES Suit)
+      if (isWearingHES) {
+        attrSteps.agility = (attrSteps.agility || 0) + 1;
+        totalArmor += Math.floor(psiRating / 2);
+      }
+    } else if (trainingPath === 'shadowguard') {
+      // Espionage Training: Gain +1 to Insight, Influence, and Stealth rolls
+      skillRollMods.insight = (skillRollMods.insight || 0) + 1;
+      skillRollMods.influence = (skillRollMods.influence || 0) + 1;
+      skillRollMods.stealth = (skillRollMods.stealth || 0) + 1;
+    }
+
     // 3. Stepped Effective Attributes
     const effectiveAttr = {
       agility: getSteppedDie(baseAttr.agility, attrSteps.agility),
@@ -422,8 +449,6 @@
     }
 
     // 5. Derived Stats
-    const psiRating = parseInt(char.psiRating, 10) || 5;
-
     const rawDefense = Math.floor(effectiveAttr.agility / 2) + Math.floor(effectiveAttr.instinct / 2) + totalDefMod;
     const defense = Math.max(1, rawDefense);
 
@@ -500,7 +525,8 @@
 
     const advBonus = (char.advancements || 0) * 3;
     const hindranceSkillBonus = (char.hindranceConversions && char.hindranceConversions.skillPoints) || 0;
-    const totalSkillPointsPool = 13 + intBonus + advBonus + hindranceSkillBonus;
+    const baseSkillPoints = 13;
+    const totalSkillPointsPool = baseSkillPoints + intBonus + advBonus + hindranceSkillBonus;
 
     let spentSkillPoints = 0;
     if (window.SC_DATA && window.SC_DATA.skills) {
@@ -535,7 +561,10 @@
       totalAttrPointsPool,
       spentAttrPoints,
       remAttrPoints: totalAttrPointsPool - spentAttrPoints,
+      baseSkillPoints,
       intBonus,
+      advBonus,
+      hindranceSkillBonus,
       totalSkillPointsPool,
       spentSkillPoints,
       remSkillPoints: totalSkillPointsPool - spentSkillPoints
@@ -856,6 +885,18 @@
     if (vulnerableBox) vulnerableBox.checked = !!currentCharacter.isVulnerable;
     const psiEnergy = document.getElementById('tracker-psi-energy');
     if (psiEnergy) psiEnergy.value = currentCharacter.currentEnergy || 15;
+
+    // Derived Stats
+    setElText('stat-defense', state.defense);
+    setElText('stat-discipline', state.discipline);
+    setElText('stat-toughness', `${state.baseToughness} (${state.totalToughness})`);
+    setElText('stat-armor-val', state.armor);
+    setElText('stat-resolve', state.resolve);
+    setElText('stat-speed', state.speed);
+
+    // Trackers
+    setElText('wound-max-badge', `Max: ${state.maxWounds}`);
+    setElText('fatigue-max-badge', `Max: ${state.maxFatigue}`);
   }
 
   function renderSkillsList() {
@@ -935,16 +976,22 @@
       const skillName = isRanged ? 'Ranged' : 'Melee';
       const skillBonus = state.effectiveSkillBonuses[isRanged ? 'ranged' : 'melee'] || 0;
 
+      let apBonus = 0;
+      if ((currentCharacter.trainingPath || 'ghost') === 'ghost') {
+        apBonus = (w.name && w.name.toLowerCase().includes('c-10')) ? 4 : 2;
+      }
+      const totalAp = (w.ap || 0) + apBonus;
+
       tr.innerHTML = `
         <td style="font-weight:bold; color:#fff;">${w.name}</td>
         <td><span class="tag tag-cyan">${w.range}</span></td>
         <td><span class="tag tag-amber">${w.damage}</span></td>
-        <td><span class="tag tag-emerald">AP ${w.ap || 0}</span></td>
+        <td><span class="tag tag-emerald">AP ${totalAp}${apBonus > 0 ? ` (+${apBonus} Ghost)` : ''}</span></td>
         <td style="font-size:0.8rem; color:var(--text-muted);">${w.notes || ''}</td>
         <td>
           <div style="display:flex; gap:0.35rem;">
             <button class="roll-btn" data-roll-type="skill" data-name="${skillName} (${w.name})" data-die="${attackSkillDie}" data-mod="${skillBonus}">Attack${skillBonus > 0 ? `+${skillBonus}` : ''}</button>
-            <button class="roll-btn" data-roll-type="damage" data-name="${w.name} Damage" data-damage="${w.damage}" data-ap="${w.ap || 0}">Dmg</button>
+            <button class="roll-btn" data-roll-type="damage" data-name="${w.name} Damage" data-damage="${w.damage}" data-ap="${totalAp}">Dmg</button>
             <button class="btn btn-crimson btn-sm" data-remove-weapon="${idx}">✕</button>
           </div>
         </td>
@@ -961,12 +1008,13 @@
       const hasActiveArmorBoost = state.armor > 0;
 
       if (arm && arm.value && arm.name !== 'Unarmored' && arm.name !== 'None') {
+        const bonusArmor = state.armor - (arm.value || 0);
         armorWrap.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
             <div>
               <strong style="color:#fff; font-size:0.95rem;">${arm.name}</strong>
               <span class="tag tag-amber" style="margin-left:6px;">${arm.class || 'Armor'}</span>
-              <span class="tag tag-emerald" style="margin-left:4px;">+${arm.value} Armor</span>
+              <span class="tag tag-emerald" style="margin-left:4px;">+${state.armor} Armor${bonusArmor > 0 ? ` (+${bonusArmor} Field)` : ''}</span>
               ${arm.boost ? `<span class="tag tag-cyan" style="margin-left:4px; font-weight:bold;">${arm.boost}</span>` : ''}
               ${arm.defMod ? `<span class="tag tag-crimson" style="margin-left:4px;">Def ${arm.defMod}</span>` : ''}
               ${!hasActiveArmorBoost ? `<span class="tag tag-crimson" style="margin-left:4px;">(Boost Deactivated / Removed)</span>` : ''}
@@ -1921,6 +1969,10 @@
       }
     });
   }
+
+  // Expose calculation pipeline to window for testing / extensions
+  window.computeEffectiveCharacterState = computeEffectiveCharacterState;
+  window.calculatePoints = calculatePoints;
 
   document.addEventListener('DOMContentLoaded', () => {
     loadCharacters();
