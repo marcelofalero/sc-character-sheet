@@ -218,6 +218,11 @@
       "concept": "Psionic Human operative from Moria (Kel-Morian Combine) channeling Void energy.",
       "psiRating": 5,
       "advancements": 4,
+      "advancementAllocation": {
+        "skills": 1,
+        "attributes": 1,
+        "edges": 2
+      },
       "credits": 3325,
       "attributes": {
         "agility": 8,
@@ -506,8 +511,19 @@
   }
 
   function calculatePoints(char) {
+    const advAlloc = char.advancementAllocation || {
+      skills: 1,
+      attributes: 1,
+      edges: Math.max(0, (char.advancements || 4) - 2)
+    };
+
+    const advSkillCount = advAlloc.skills !== undefined ? advAlloc.skills : 0;
+    const advAttrCount = advAlloc.attributes !== undefined ? advAlloc.attributes : 0;
+    const advEdgeCount = advAlloc.edges !== undefined ? advAlloc.edges : 0;
+
     const hindranceAttrBonus = (char.hindranceConversions && char.hindranceConversions.attributeSteps) || 0;
-    const totalAttrPointsPool = 9 + hindranceAttrBonus;
+    const advAttrBonus = advAttrCount * 1;
+    const totalAttrPointsPool = 9 + hindranceAttrBonus + advAttrBonus;
 
     let spentAttrPoints = 0;
     for (let key in char.attributes) {
@@ -523,10 +539,10 @@
     else if (intel === 10) intBonus = 3;
     else if (intel >= 12) intBonus = 4;
 
-    const advBonus = (char.advancements || 0) * 3;
+    const advSkillBonus = advSkillCount * 3;
     const hindranceSkillBonus = (char.hindranceConversions && char.hindranceConversions.skillPoints) || 0;
     const baseSkillPoints = 13;
-    const totalSkillPointsPool = baseSkillPoints + intBonus + advBonus + hindranceSkillBonus;
+    const totalSkillPointsPool = baseSkillPoints + intBonus + advSkillBonus + hindranceSkillBonus;
 
     let spentSkillPoints = 0;
     if (window.SC_DATA && window.SC_DATA.skills) {
@@ -561,9 +577,14 @@
       totalAttrPointsPool,
       spentAttrPoints,
       remAttrPoints: totalAttrPointsPool - spentAttrPoints,
+      hindranceAttrBonus,
+      advAttrBonus,
       baseSkillPoints,
       intBonus,
-      advBonus,
+      advSkillBonus,
+      advSkillCount,
+      advAttrCount,
+      advEdgeCount,
       hindranceSkillBonus,
       totalSkillPointsPool,
       spentSkillPoints,
@@ -630,6 +651,15 @@
     document.getElementById('char-training-select').value = currentCharacter.trainingPath || 'ghost';
     document.getElementById('char-psi-input').value = currentCharacter.psiRating || 5;
     document.getElementById('char-adv-input').value = currentCharacter.advancements || 4;
+
+    const alloc = currentCharacter.advancementAllocation || { skills: 1, attributes: 1, edges: 2 };
+    const advSkillsEl = document.getElementById('char-adv-skills-input');
+    if (advSkillsEl) advSkillsEl.value = alloc.skills !== undefined ? alloc.skills : 1;
+    const advAttrEl = document.getElementById('char-adv-attr-input');
+    if (advAttrEl) advAttrEl.value = alloc.attributes !== undefined ? alloc.attributes : 1;
+    const advEdgesEl = document.getElementById('char-adv-edges-input');
+    if (advEdgesEl) advEdgesEl.value = alloc.edges !== undefined ? alloc.edges : 2;
+
     document.getElementById('char-credits-input').value = currentCharacter.credits || 3325;
     document.getElementById('char-concept-input').value = currentCharacter.concept || '';
   }
@@ -751,13 +781,22 @@
     // Points Badges
     const attrBadge = document.getElementById('attr-points-badge');
     if (attrBadge) {
-      attrBadge.textContent = `${points.spentAttrPoints} / ${points.totalAttrPointsPool} pts (${points.remAttrPoints} left)`;
+      const attrParts = ['Base 9'];
+      if (points.hindranceAttrBonus > 0) attrParts.push(`Hind +${points.hindranceAttrBonus}`);
+      if (points.advAttrBonus > 0) attrParts.push(`Adv +${points.advAttrBonus}`);
+      const attrFormula = attrParts.join(' + ');
+      attrBadge.textContent = `${points.spentAttrPoints} / ${points.totalAttrPointsPool} pts (${attrFormula}) (${points.remAttrPoints} left)`;
       attrBadge.className = points.remAttrPoints < 0 ? 'point-tracker-badge warning' : 'point-tracker-badge';
     }
 
     const skillBadge = document.getElementById('skill-points-badge');
     if (skillBadge) {
-      skillBadge.textContent = `${points.spentSkillPoints} / ${points.totalSkillPointsPool} pts (Int +${points.intBonus}) (${points.remSkillPoints} left)`;
+      const parts = ['Base 13'];
+      if (points.intBonus > 0) parts.push(`Int +${points.intBonus}`);
+      if (points.advSkillBonus > 0) parts.push(`AdvSkills (${points.advSkillCount}x3) +${points.advSkillBonus}`);
+      if (points.hindranceSkillBonus > 0) parts.push(`Hind +${points.hindranceSkillBonus}`);
+      const formulaStr = parts.join(' + ');
+      skillBadge.textContent = `${points.spentSkillPoints} / ${points.totalSkillPointsPool} pts (${formulaStr}) (${points.remSkillPoints} left)`;
       skillBadge.className = points.remSkillPoints < 0 ? 'point-tracker-badge warning' : 'point-tracker-badge';
     }
 
@@ -1470,6 +1509,26 @@
     bindInput('char-training-select', 'trainingPath', true);
     bindInput('char-psi-input', 'psiRating', true);
     bindInput('char-adv-input', 'advancements', true);
+
+    const bindNestedInput = (id, parentProp, childProp, reCalc = false) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const handler = (e) => {
+        if (!currentCharacter) return;
+        if (!currentCharacter[parentProp]) currentCharacter[parentProp] = {};
+        const val = e.target.type === 'number' ? (parseInt(e.target.value, 10) || 0) : e.target.value;
+        currentCharacter[parentProp][childProp] = val;
+        saveCharacters();
+        if (reCalc) renderAll();
+      };
+      el.addEventListener('input', handler);
+      el.addEventListener('change', handler);
+    };
+
+    bindNestedInput('char-adv-skills-input', 'advancementAllocation', 'skills', true);
+    bindNestedInput('char-adv-attr-input', 'advancementAllocation', 'attributes', true);
+    bindNestedInput('char-adv-edges-input', 'advancementAllocation', 'edges', true);
+
     bindInput('char-credits-input', 'credits');
     bindInput('char-concept-input', 'concept');
 

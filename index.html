@@ -189,20 +189,35 @@
           </div>
         </div>
 
-        <div class="profile-row" style="margin-bottom:1.25rem;">
+        <div class="profile-row" style="margin-bottom:0.75rem;">
           <div class="form-group">
             <label class="form-label">Psi Rating</label>
             <input type="number" id="char-psi-input" class="form-input" min="1" max="10" value="5">
           </div>
           <div class="form-group">
-            <label class="form-label">Advancements</label>
+            <label class="form-label">Advancements (Total)</label>
             <input type="number" id="char-adv-input" class="form-input" min="0" value="4">
+          </div>
+          <div class="form-group">
+            <label class="form-label" title="Each advancement allocated to skills grants +3 skill points">Adv on Skills (+3 pts)</label>
+            <input type="number" id="char-adv-skills-input" class="form-input" min="0" value="1" title="Number of advancements spent on skills (each adds 3 skill points)">
+          </div>
+          <div class="form-group">
+            <label class="form-label" title="Each advancement allocated to attributes grants +1 attribute die step">Adv on Attr (+1 pt)</label>
+            <input type="number" id="char-adv-attr-input" class="form-input" min="0" value="1" title="Number of advancements spent on attributes (each adds 1 attribute step)">
+          </div>
+          <div class="form-group">
+            <label class="form-label" title="Advancements spent on Edges, Powers, or Psi rating">Adv on Edges / Psi</label>
+            <input type="number" id="char-adv-edges-input" class="form-input" min="0" value="2" title="Number of advancements spent on Edges, Powers, or Psi rating">
           </div>
           <div class="form-group">
             <label class="form-label">Credits (₢)</label>
             <input type="number" id="char-credits-input" class="form-input" value="3325">
           </div>
-          <div class="form-group" style="grid-column: span 2;">
+        </div>
+
+        <div class="profile-row" style="margin-bottom:1.25rem;">
+          <div class="form-group" style="grid-column: 1 / -1;">
             <label class="form-label">Operative Concept & Background</label>
             <input type="text" id="char-concept-input" class="form-input" value="Psionic Human from Moria (Kel-Morian Combine) - C.O.T. Ghost Specialist">
           </div>
