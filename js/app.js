@@ -277,7 +277,7 @@
     const armor = char.armor;
     const activeBoosts = char.activeBoosts || [];
     const hesBoost = activeBoosts.find(b => b.type === 'hes-suit');
-    const hesIsActive = hesBoost ? (hesBoost.state !== 'off') : true;
+    const hesIsActive = hesBoost ? (hesBoost.state !== 'off') : false;
 
     if (!armor || !armor.name || armor.name === 'Unarmored' || armor.name === 'None') {
       return { armorVal: 0, strStep: 0, agiStep: 0, defMod: 0, isHES: false, active: false };
@@ -312,8 +312,8 @@
     const activeBoosts = char.activeBoosts || [];
 
     let steps = {
-      agility: armorMods.agiStep + (tempMods.agility || 0),
-      strength: armorMods.strStep + (tempMods.strength || 0),
+      agility: (armorMods.active ? armorMods.agiStep : 0) + (tempMods.agility || 0),
+      strength: (armorMods.active ? armorMods.strStep : 0) + (tempMods.strength || 0),
       vigor: (tempMods.vigor || 0),
       instinct: (tempMods.instinct || 0),
       intelligence: (tempMods.intelligence || 0),
@@ -452,8 +452,8 @@
       }
     });
 
-    const armorVal = armorMods.armorVal;
-    const defMod = armorMods.defMod;
+    const armorVal = armorMods.active ? armorMods.armorVal : 0;
+    const defMod = armorMods.active ? armorMods.defMod : 0;
 
     const rawDefense = Math.floor(eff.agility / 2) + Math.floor(eff.instinct / 2) + defMod + customDef;
     const defense = Math.max(1, rawDefense);
@@ -1460,7 +1460,7 @@
           if (grpTargetAttr) grpTargetAttr.style.display = 'none';
           if (grpBoostLevel) grpBoostLevel.style.display = 'block';
           if (grpCustomFields) grpCustomFields.style.display = 'none';
-        } else if (val === 'stimpack' || val === 'digital-uplink') {
+        } else if (val === 'stimpack' || val === 'digital-uplink' || val === 'hes-suit') {
           if (grpTargetAttr) grpTargetAttr.style.display = 'none';
           if (grpBoostLevel) grpBoostLevel.style.display = 'none';
           if (grpCustomFields) grpCustomFields.style.display = 'none';
@@ -1535,6 +1535,17 @@
           state: 'active',
           hasRaise: false,
           desc: '+1 trait bonus to tech & tactical skills.'
+        };
+      } else if (template === 'hes-suit') {
+        newBoost = {
+          id: 'boost_hes_suit',
+          name: 'Hostile Environment Suit',
+          category: 'Gear',
+          type: 'hes-suit',
+          targetAttr: 'strength',
+          state: 'active',
+          hasRaise: false,
+          desc: 'Hermetic Ghost suit granting Str+ and +8 Armor to Toughness.'
         };
       } else if (template === 'custom') {
         const customName = document.getElementById('new-boost-custom-name')?.value.trim() || 'Custom Trait Boost';
