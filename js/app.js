@@ -663,22 +663,26 @@
         `;
       }
 
-      const isCore = ['boost_hes_suit', 'boost_digital_uplink'].includes(b.id);
-      const deleteBtn = !isCore ? `<button class="btn btn-crimson btn-sm" data-delete-boost-idx="${idx}" title="Remove Boost" style="padding:1px 6px; font-size:0.75rem; margin-left:auto;">✕</button>` : '';
+      const isCore = ['boost_hes_suit', 'boost_digital_uplink', 'boost_muscular_enh', 'boost_enhance_abilities_agi', 'boost_thought_block', 'boost_stimpack'].includes(b.id);
+      const deleteBtn = !isCore ? `<button class="btn btn-crimson btn-sm" data-delete-boost-idx="${idx}" title="Remove Boost" style="padding:1px 6px; font-size:0.75rem; line-height:1; height:20px;">✕</button>` : '';
 
       card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; width:100%;">
-          <div style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap;">
-            <span class="buff-title" style="font-weight:600; color:#fff;">${b.name}</span>
-            ${targetNotation}
-            ${categoryTag}
-            <span class="info-icon" title="${b.desc || ''}">ⓘ
-              <span class="tooltip-box">${b.desc || ''}</span>
-            </span>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.4rem; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:0.25rem;">
+            <div style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap;">
+              <span class="buff-title" style="font-weight:700; color:#fff; font-size:0.86rem; line-height:1.2;">${b.name}</span>
+              ${targetNotation}
+            </div>
+            <div style="display:flex; align-items:center; gap:0.35rem;">
+              ${categoryTag}
+              <span class="info-icon" title="${b.desc || ''}">ⓘ
+                <span class="tooltip-box">${b.desc || ''}</span>
+              </span>
+            </div>
           </div>
           ${deleteBtn}
         </div>
-        <div style="display:flex; justify-content:flex-end; width:100%;">
+        <div style="display:flex; justify-content:flex-end; width:100%; margin-top:0.35rem;">
           ${buttonsHtml}
         </div>
       `;
