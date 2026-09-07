@@ -277,19 +277,28 @@
               </div>
             </div>
 
-            <!-- Rush (3-STATE: Off / Success / Raise) -->
+            <!-- Enhance Abilities (3-STATE: Off / Success / Raise) -->
             <div class="buff-card-item">
               <div class="buff-header-row">
-                <span class="buff-name">⚡ Rush Power</span>
+                <span class="buff-name">✨ Enhance Abilities</span>
                 <div class="info-icon" tabindex="0">ⓘ
                   <div class="tooltip-box">
-                    <strong>Rush (Psi Power):</strong><br>
-                    • <strong>Success:</strong> +Speed equal to Psi Level (+5″), 1 free movement action / round<br>
-                    • <strong>Raise:</strong> +Speed equal to Psi Level (+5″), <code>Agi++</code> (+2 die steps), free movement
+                    <strong>Enhance Abilities (Augmentation, PL 4, SP 3):</strong><br>
+                    Increases a chosen physical attribute and all linked skills by +1 die step (+2 on a Raise).<br>
+                    • <strong>Success:</strong> +1 die step to target Attribute & linked skills.<br>
+                    • <strong>Raise:</strong> +2 die steps to target Attribute & linked skills.<br>
+                    <em>Lasts 1 min/PL (5 min at PL 5). (At PL 6 affects 2 attributes, at PL 8 affects all 3).</em>
                   </div>
                 </div>
               </div>
-              <div class="tri-state-group" data-buff-group="rush">
+              <div style="display:flex; align-items:center; gap:0.35rem; margin-top:0.25rem; margin-bottom:0.35rem;">
+                <select id="enhance-abilities-target" class="form-select" style="padding:2px 6px; font-size:0.75rem; height:24px; flex:1; background:rgba(10,18,32,0.9); border:1px solid rgba(0,229,255,0.4); color:var(--cyan); border-radius:4px;">
+                  <option value="agility" selected>Target: Agility</option>
+                  <option value="instinct">Target: Instinct</option>
+                  <option value="strength">Target: Strength</option>
+                </select>
+              </div>
+              <div class="tri-state-group" data-buff-group="enhanceAbilities">
                 <button class="tri-btn active" data-val="off">Off</button>
                 <button class="tri-btn" data-val="success">Success</button>
                 <button class="tri-btn" data-val="raise">Raise</button>

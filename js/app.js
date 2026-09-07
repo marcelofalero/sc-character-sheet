@@ -121,8 +121,9 @@
         "digitalUplink": true,
         "muscularEnhancement": false,
         "muscularEnhancementRaise": false,
-        "rush": false,
-        "rushRaise": false,
+        "enhanceAbilities": false,
+        "enhanceAbilitiesRaise": false,
+        "enhanceAbilitiesTarget": "agility",
         "thoughtBlock": false,
         "thoughtBlockRaise": false,
         "stimpack": false
@@ -155,7 +156,7 @@
         { "name": "Compulsion", "discipline": "Telepathy", "desc": "Places a hypnotic suggestion forcing a single mental command vs Discipline | 2 SP" },
         { "name": "Muscular Enhancement", "discipline": "Augmentation", "desc": "+1 Athletics, Stealth, and Vigor tests against Fatigue/Poison (+2 on Raise) | 2 SP" },
         { "name": "Regeneration", "discipline": "Augmentation", "desc": "Heals 1 Wound per round for ½ PL minutes | 4 SP" },
-        { "name": "Rush", "discipline": "Augmentation", "desc": "Speed increases by PL, move at ¼ Speed without Free Attacks | 2 SP" },
+        { "name": "Enhanced Attributes", "discipline": "Augmentation", "desc": "Increases chosen physical attribute (Agility, Instinct, or Strength) and all linked skills by +1 die step (+2 on Raise) | 3 SP" },
         { "name": "Light Orb (Minor)", "discipline": "Energy", "desc": "Floating orb providing bright light within 2xPL squares | 1 PP/min" },
         { "name": "Light Panels (Minor)", "discipline": "Energy", "desc": "Projects flat light panels on surfaces for inspection | Touch" },
         { "name": "Backup Battery (Minor)", "discipline": "Technomancy", "desc": "Acts as a tier 1 power cell for devices for 1 min per PL | 2 SP" },
@@ -238,15 +239,21 @@
     const tempMods = char.tempAttributeMods || {};
     const armorMods = getArmorStatModifiers(char);
 
-    let agiRushStep = 0;
-    if (buffs.rush) {
-      agiRushStep = buffs.rushRaise ? 2 : 1;
+    let enhanceAgi = 0;
+    let enhanceStr = 0;
+    let enhanceInst = 0;
+    if (buffs.enhanceAbilities) {
+      const step = buffs.enhanceAbilitiesRaise ? 2 : 1;
+      const target = buffs.enhanceAbilitiesTarget || 'agility';
+      if (target === 'agility') enhanceAgi = step;
+      else if (target === 'strength') enhanceStr = step;
+      else if (target === 'instinct') enhanceInst = step;
     }
 
-    let strStep = armorMods.strStep + (tempMods.strength || 0);
-    let agiStep = armorMods.agiStep + agiRushStep + (tempMods.agility || 0);
+    let strStep = armorMods.strStep + enhanceStr + (tempMods.strength || 0);
+    let agiStep = armorMods.agiStep + enhanceAgi + (tempMods.agility || 0);
     let vigStep = (tempMods.vigor || 0);
-    let instStep = (tempMods.instinct || 0);
+    let instStep = enhanceInst + (tempMods.instinct || 0);
     let intStep = (tempMods.intelligence || 0);
     let spiStep = (tempMods.spirit || 0);
 
@@ -291,6 +298,13 @@
     if (buffs.muscularEnhancement && ['athletics', 'stealth'].includes(skillId)) {
       bonus += buffs.muscularEnhancementRaise ? 2 : 1;
     }
+    if (buffs.enhanceAbilities) {
+      const target = buffs.enhanceAbilitiesTarget || 'agility';
+      const skData = window.SC_DATA?.skills?.find(s => s.id === skillId);
+      if (skData && skData.attr.toLowerCase() === target) {
+        bonus += buffs.enhanceAbilitiesRaise ? 2 : 1;
+      }
+    }
     return bonus;
   }
 
@@ -318,7 +332,6 @@
     const maxFatigue = Math.floor(eff.vigor / 3);
 
     let speed = 6;
-    if (buffs.rush) speed += psi;
     if (buffs.stimpack) speed += 2;
 
     return {
@@ -492,8 +505,12 @@
     syncTriGroup('digitalUplink', b.digitalUplink ? 'active' : 'off');
     const muscVal = b.muscularEnhancement ? (b.muscularEnhancementRaise ? 'raise' : 'success') : 'off';
     syncTriGroup('muscularEnhancement', muscVal);
-    const rushVal = b.rush ? (b.rushRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('rush', rushVal);
+    const eaVal = b.enhanceAbilities ? (b.enhanceAbilitiesRaise ? 'raise' : 'success') : 'off';
+    syncTriGroup('enhanceAbilities', eaVal);
+    const eaSelect = document.getElementById('enhance-abilities-target');
+    if (eaSelect && b.enhanceAbilitiesTarget) {
+      eaSelect.value = b.enhanceAbilitiesTarget;
+    }
     const tbVal = b.thoughtBlock ? (b.thoughtBlockRaise ? 'raise' : 'success') : 'off';
     syncTriGroup('thoughtBlock', tbVal);
     syncTriGroup('stimpack', b.stimpack ? 'active' : 'off');
@@ -1209,9 +1226,9 @@
         } else if (groupName === 'muscularEnhancement') {
           currentCharacter.activeBuffs.muscularEnhancement = (val !== 'off');
           currentCharacter.activeBuffs.muscularEnhancementRaise = (val === 'raise');
-        } else if (groupName === 'rush') {
-          currentCharacter.activeBuffs.rush = (val !== 'off');
-          currentCharacter.activeBuffs.rushRaise = (val === 'raise');
+        } else if (groupName === 'enhanceAbilities') {
+          currentCharacter.activeBuffs.enhanceAbilities = (val !== 'off');
+          currentCharacter.activeBuffs.enhanceAbilitiesRaise = (val === 'raise');
         } else if (groupName === 'thoughtBlock') {
           currentCharacter.activeBuffs.thoughtBlock = (val !== 'off');
           currentCharacter.activeBuffs.thoughtBlockRaise = (val === 'raise');
@@ -1439,6 +1456,18 @@
         saveCharacters();
         renderCharacterCybernetics();
         return;
+      }
+    });
+
+    document.addEventListener('change', e => {
+      if (e.target && e.target.id === 'enhance-abilities-target') {
+        if (!currentCharacter.activeBuffs) currentCharacter.activeBuffs = {};
+        currentCharacter.activeBuffs.enhanceAbilitiesTarget = e.target.value;
+        SoundFX.toggle();
+        saveCharacters();
+        renderAttributesAndStats();
+        renderSkillsList();
+        updateQuickTelemetry();
       }
     });
   }
