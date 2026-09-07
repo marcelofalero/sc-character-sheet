@@ -621,6 +621,19 @@
     container.innerHTML = '';
     let activeCount = 0;
 
+    if (currentCharacter.activeBoosts.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column:1/-1; padding:0.85rem; text-align:center; color:var(--text-dim); font-size:0.85rem; border:1px dashed var(--border-subtle); border-radius:var(--radius-sm); background:rgba(10, 18, 32, 0.5);">
+          No active boosts or combat modifiers applied. Click <strong style="color:var(--cyan);">+ Add Boost / Modifier</strong> above to apply powers, gear buffs, or ally stance bonuses.
+        </div>
+      `;
+      if (counter) {
+        counter.textContent = '0 Active';
+        counter.className = 'tag tag-amber';
+      }
+      return;
+    }
+
     const shortCodes = { agility: 'Agi', strength: 'Str', vigor: 'Vig', instinct: 'Inst', intelligence: 'Int', spirit: 'Spi' };
 
     currentCharacter.activeBoosts.forEach((b, idx) => {
@@ -663,8 +676,7 @@
         `;
       }
 
-      const isCore = ['boost_hes_suit', 'boost_digital_uplink', 'boost_muscular_enh', 'boost_enhance_abilities_agi', 'boost_thought_block', 'boost_stimpack'].includes(b.id);
-      const deleteBtn = !isCore ? `<button class="btn btn-crimson btn-sm" data-delete-boost-idx="${idx}" title="Remove Boost" style="padding:1px 6px; font-size:0.75rem; line-height:1; height:20px;">✕</button>` : '';
+      const deleteBtn = `<button class="btn btn-crimson btn-sm" data-delete-boost-idx="${idx}" title="Remove Boost" style="padding:1px 6px; font-size:0.75rem; line-height:1; height:20px;">✕</button>`;
 
       card.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.4rem; width:100%;">
