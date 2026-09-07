@@ -82,11 +82,11 @@ export const App: React.FC = () => {
               {/* Derived Combat Stats & Clickable Damage Pips */}
               <DerivedStatsGrid />
 
-              {/* Attributes & Skills Grids */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
-                <AttributesGrid />
-                <SkillsGrid />
-              </div>
+              {/* Attributes (Full width side-to-side) */}
+              <AttributesGrid />
+
+              {/* Skills Grid */}
+              <SkillsGrid />
 
               {/* Equipped Arsenal */}
               <WeaponsTable />

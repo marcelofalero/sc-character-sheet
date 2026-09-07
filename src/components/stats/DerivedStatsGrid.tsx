@@ -55,6 +55,19 @@ export const DerivedStatsGrid: React.FC = () => {
         </span>
       </div>
 
+      {/* RESOLVE */}
+      <div className="hud-inner-card" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontFamily: 'var(--font-hud)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--amber)', letterSpacing: '1px' }}>
+          RESOLVE
+        </span>
+        <span style={{ fontFamily: 'var(--font-hud)', fontSize: '1.6rem', fontWeight: 900, color: 'var(--violet)', textShadow: '0 0 10px var(--violet-glow)' }}>
+          {effectiveState.resolve}
+        </span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-dim)' }}>
+          ½ Spi + ½ Inst + Psi ({effectiveState.resolve - Math.floor(effectiveState.effectiveAttributes.spirit/2) - Math.floor(effectiveState.effectiveAttributes.instinct/2)})
+        </span>
+      </div>
+
       {/* TOUGHNESS */}
       <div className="hud-inner-card" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontFamily: 'var(--font-hud)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--amber)', letterSpacing: '1px' }}>
@@ -68,19 +81,6 @@ export const DerivedStatsGrid: React.FC = () => {
             ? `½ Vig (${Math.floor(effectiveState.effectiveAttributes.vigor/2)}) + ½ Str (${Math.floor(effectiveState.effectiveAttributes.strength/2)}) + Armor (${effectiveState.armor})`
             : `½ Vig (${Math.floor(effectiveState.effectiveAttributes.vigor/2)}) + ½ Str (${Math.floor(effectiveState.effectiveAttributes.strength/2)})`
           }
-        </span>
-      </div>
-
-      {/* RESOLVE */}
-      <div className="hud-inner-card" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--font-hud)', fontSize: '0.72rem', fontWeight: 700, color: 'var(--amber)', letterSpacing: '1px' }}>
-          RESOLVE
-        </span>
-        <span style={{ fontFamily: 'var(--font-hud)', fontSize: '1.6rem', fontWeight: 900, color: 'var(--violet)', textShadow: '0 0 10px var(--violet-glow)' }}>
-          {effectiveState.resolve}
-        </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-dim)' }}>
-          ½ Spi + ½ Inst + Psi ({effectiveState.resolve - Math.floor(effectiveState.effectiveAttributes.spirit/2) - Math.floor(effectiveState.effectiveAttributes.instinct/2)})
         </span>
       </div>
 

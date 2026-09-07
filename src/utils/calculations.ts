@@ -155,7 +155,6 @@ export function computeEffectiveCharacterState(char: Character): EffectiveCharac
     // Psionic Reflexes & Absorption Field (while wearing HES Suit)
     if (isWearingHES) {
       attrSteps.agility = (attrSteps.agility || 0) + 1;
-      totalArmor += Math.floor(psiRating / 2);
     }
   } else if (trainingPath === 'shadowguard') {
     // Espionage Training: Gain +1 to Insight, Influence, and Stealth rolls

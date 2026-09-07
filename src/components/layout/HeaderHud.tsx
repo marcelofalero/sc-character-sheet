@@ -102,15 +102,15 @@ export const HeaderHud: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: '0.65rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>RESOLVE</span>
+            <strong style={{ fontSize: '0.88rem', color: 'var(--violet)', fontFamily: 'var(--font-hud)' }}>{effectiveState.resolve}</strong>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ fontSize: '0.65rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>TOUGHNESS</span>
             <strong style={{ fontSize: '0.88rem', color: 'var(--amber)', fontFamily: 'var(--font-hud)' }}>
               {effectiveState.armor > 0 ? `${effectiveState.totalToughness} (${effectiveState.armor})` : `${effectiveState.totalToughness}`}
             </strong>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: '0.65rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>RESOLVE</span>
-            <strong style={{ fontSize: '0.88rem', color: 'var(--violet)', fontFamily: 'var(--font-hud)' }}>{effectiveState.resolve}</strong>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -49,8 +49,9 @@ export const AttributesGrid: React.FC = () => {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-        gap: '0.6rem'
+        gridTemplateColumns: 'repeat(6, minmax(110px, 1fr))',
+        gap: '0.6rem',
+        overflowX: 'auto'
       }}>
         {attributesList.map(attr => {
           const baseDie = activeCharacter.attributes[attr.id] || 4;
