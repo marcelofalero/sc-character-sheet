@@ -872,6 +872,98 @@ body.theme-light .buff-name { color: #0f172a; }
   box-shadow: var(--amber-glow);
 }
 
+/* Information Tooltip Icon */
+.info-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: help;
+  user-select: none;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.info-icon:hover, .info-icon:focus {
+  background: var(--cyan);
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+  border-color: #fff;
+}
+
+.info-icon .tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  width: 250px;
+  background: rgba(10, 18, 32, 0.98);
+  color: var(--text-main);
+  text-align: left;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  position: absolute;
+  z-index: 1000;
+  bottom: calc(100% + 8px);
+  right: -6px;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 229, 255, 0.25);
+  border: 1px solid var(--cyan);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: normal;
+  line-height: 1.4;
+  pointer-events: none;
+  white-space: normal;
+}
+
+.info-icon .tooltip-box::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--cyan) transparent transparent transparent;
+}
+
+.info-icon:hover .tooltip-box,
+.info-icon:focus .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.theme-light .info-icon {
+  background: rgba(2, 132, 199, 0.1);
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+body.theme-light .info-icon:hover {
+  background: #0284c7;
+  color: #fff;
+}
+
+body.theme-light .info-icon .tooltip-box {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #0284c7;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-light .info-icon .tooltip-box::after {
+  border-color: #0284c7 transparent transparent transparent;
+}
+
 /* 3-State Segmented Radio Control Component */
 .buff-header-row {
   display: flex;

@@ -224,11 +224,18 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">🪖 Hostile Environment Suit</span>
-                <span id="label-hes-suit" class="buff-effect">Str+, +8 Armor</span>
+                <div class="info-icon" tabindex="0">ⓘ
+                  <div class="tooltip-box">
+                    <strong>Hostile Environment Suit:</strong><br>
+                    • <code>Str+</code> (+1 die step to Strength)<br>
+                    • <code>+8 Armor</code> (Heavy Body Protection)<br>
+                    • Unlocks Personal Cloaking & Tactical Mask zoom
+                  </div>
+                </div>
               </div>
               <div class="tri-state-group" data-buff-group="hesSuit">
                 <button class="tri-btn" data-val="off">Off</button>
-                <button class="tri-btn active" data-val="active">Equipped (Str+)</button>
+                <button class="tri-btn active" data-val="active">Equipped</button>
               </div>
             </div>
 
@@ -236,11 +243,17 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">📡 Digital Uplink II</span>
-                <span id="label-digital-uplink" class="buff-effect">+1 to 8 Skills</span>
+                <div class="info-icon" tabindex="0">ⓘ
+                  <div class="tooltip-box">
+                    <strong>Digital Uplink II:</strong><br>
+                    • <code>+1 trait bonus</code> to 8 skills:<br>
+                    Academics, Athletics, Driving, Engineering, Piloting, Research, Science, Shooting
+                  </div>
+                </div>
               </div>
               <div class="tri-state-group" data-buff-group="digitalUplink">
                 <button class="tri-btn" data-val="off">Off</button>
-                <button class="tri-btn active" data-val="active">Active (+1)</button>
+                <button class="tri-btn active" data-val="active">Active</button>
               </div>
             </div>
 
@@ -248,12 +261,18 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">💪 Muscular Enhancement</span>
-                <span id="label-muscular-enh" class="buff-effect">Str+, +1 Ath/Stl</span>
+                <div class="info-icon" tabindex="0">ⓘ
+                  <div class="tooltip-box">
+                    <strong>Muscular Enhancement (Psi Power):</strong><br>
+                    • <strong>Success:</strong> <code>Str+</code> (+1 die step), +1 to Athletics & Stealth rolls<br>
+                    • <strong>Raise:</strong> <code>Str++</code> (+2 die steps), +2 to Athletics & Stealth rolls
+                  </div>
+                </div>
               </div>
               <div class="tri-state-group" data-buff-group="muscularEnhancement">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success (Str+)</button>
-                <button class="tri-btn" data-val="raise">Raise (Str++)</button>
+                <button class="tri-btn" data-val="success">Success</button>
+                <button class="tri-btn" data-val="raise">Raise</button>
               </div>
             </div>
 
@@ -261,12 +280,18 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">⚡ Rush Power</span>
-                <span id="label-rush" class="buff-effect">+Speed (=PL), Free Move</span>
+                <div class="info-icon" tabindex="0">ⓘ
+                  <div class="tooltip-box">
+                    <strong>Rush (Psi Power):</strong><br>
+                    • <strong>Success:</strong> +Speed equal to Psi Level (+5″), 1 free movement action / round<br>
+                    • <strong>Raise:</strong> +Speed equal to Psi Level (+5″), <code>Agi++</code> (+2 die steps), free movement
+                  </div>
+                </div>
               </div>
               <div class="tri-state-group" data-buff-group="rush">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success (+PL)</button>
-                <button class="tri-btn" data-val="raise">Raise (PL + Agi++)</button>
+                <button class="tri-btn" data-val="success">Success</button>
+                <button class="tri-btn" data-val="raise">Raise</button>
               </div>
             </div>
 
@@ -274,12 +299,18 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">🧠 Thought Blocking</span>
-                <span id="label-thought-block" class="buff-effect">+1 Disp & Res</span>
+                <div class="info-icon" tabindex="0">ⓘ
+                  <div class="tooltip-box">
+                    <strong>Thought Blocking (Psi Power):</strong><br>
+                    • <strong>Success:</strong> +1 to Discipline & Resolve defense scores<br>
+                    • <strong>Raise:</strong> +3 to Discipline & Resolve defense scores, immune to telepathic intrusion
+                  </div>
+                </div>
               </div>
               <div class="tri-state-group" data-buff-group="thoughtBlock">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="success">Success (+1)</button>
-                <button class="tri-btn" data-val="raise">Raise (+3 ★)</button>
+                <button class="tri-btn" data-val="success">Success</button>
+                <button class="tri-btn" data-val="raise">Raise</button>
               </div>
             </div>
 
@@ -287,11 +318,18 @@
             <div class="buff-card-item">
               <div class="buff-header-row">
                 <span class="buff-name">💉 Military Stimpack</span>
-                <span id="label-stimpack" class="buff-effect">+2 Speed, Agi+, 1 Fatigue</span>
+                <div class="info-icon" tabindex="0">ⓘ
+                  <div class="tooltip-box">
+                    <strong>Military Stimpack (Chemical):</strong><br>
+                    • <code>+2″ Speed</code>, <code>Agi+</code> (+1 die step)<br>
+                    • +2 on Vigor checks to resist knockout<br>
+                    • Inflicts 1 Fatigue level when duration expires
+                  </div>
+                </div>
               </div>
               <div class="tri-state-group" data-buff-group="stimpack">
                 <button class="tri-btn active" data-val="off">Off</button>
-                <button class="tri-btn" data-val="active">Injected (Agi+)</button>
+                <button class="tri-btn" data-val="active">Injected</button>
               </div>
             </div>
 

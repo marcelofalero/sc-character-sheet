@@ -423,7 +423,7 @@
     const attrData = stats.attrData;
 
     // Sync 3-State Segmented Controls
-    const syncTriGroup = (groupName, activeVal, labelId, labelMap) => {
+    const syncTriGroup = (groupName, activeVal) => {
       const group = document.querySelector(`.tri-state-group[data-buff-group="${groupName}"]`);
       if (group) {
         group.querySelectorAll('.tri-btn').forEach(btn => {
@@ -437,22 +437,18 @@
           }
         });
       }
-      const lbl = document.getElementById(labelId);
-      if (lbl && labelMap && labelMap[activeVal]) {
-        lbl.textContent = labelMap[activeVal];
-      }
     };
 
     const b = currentCharacter.activeBuffs || {};
-    syncTriGroup('hesSuit', b.hesSuit ? 'active' : 'off', 'label-hes-suit', { off: 'Off', active: 'Str+, +8 Armor' });
-    syncTriGroup('digitalUplink', b.digitalUplink ? 'active' : 'off', 'label-digital-uplink', { off: 'Off', active: '+1 to 8 Skills' });
+    syncTriGroup('hesSuit', b.hesSuit ? 'active' : 'off');
+    syncTriGroup('digitalUplink', b.digitalUplink ? 'active' : 'off');
     const muscVal = b.muscularEnhancement ? (b.muscularEnhancementRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('muscularEnhancement', muscVal, 'label-muscular-enh', { off: 'Off', success: 'Str+, +1 Ath/Stl', raise: 'Str++, +2 Ath/Stl (★)' });
+    syncTriGroup('muscularEnhancement', muscVal);
     const rushVal = b.rush ? (b.rushRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('rush', rushVal, 'label-rush', { off: 'Off', success: '+5 Speed, Free Move', raise: '+5 Speed, Agi++, Free Move (★)' });
+    syncTriGroup('rush', rushVal);
     const tbVal = b.thoughtBlock ? (b.thoughtBlockRaise ? 'raise' : 'success') : 'off';
-    syncTriGroup('thoughtBlock', tbVal, 'label-thought-block', { off: 'Off', success: '+1 Disp & Res', raise: '+3 Disp & Res (★)' });
-    syncTriGroup('stimpack', b.stimpack ? 'active' : 'off', 'label-stimpack', { off: 'Off', active: '+2 Speed, Agi+, 1 Fatigue' });
+    syncTriGroup('thoughtBlock', tbVal);
+    syncTriGroup('stimpack', b.stimpack ? 'active' : 'off');
 
     // Points Badges
     const attrBadge = document.getElementById('attr-points-badge');
