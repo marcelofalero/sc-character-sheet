@@ -324,8 +324,58 @@
     };
   }
 
-  let characters = [];
-  let currentCharacter = null;
+  /**
+   * C.O.T. (Continuous Operative Training) & Rank Progression Map
+   * Novice: Base PL 2
+   * Seasoned: +1 PL (Operative)
+   * Veteran: +2 PL (Specialist)
+   * Heroic: +3 PL (Lieutenant)
+   * Legendary: +4 PL (Captain)
+   */
+  const RANK_COT_MAP = {
+    'Novice': { cotLevel: 'Recruit', cotPlBonus: 0, maxPl: 3, advMin: 0, advMax: 3 },
+    'Seasoned': { cotLevel: 'Operative', cotPlBonus: 1, maxPl: 5, advMin: 4, advMax: 7 },
+    'Veteran': { cotLevel: 'Specialist', cotPlBonus: 2, maxPl: 7, advMin: 8, advMax: 11 },
+    'Heroic': { cotLevel: 'Lieutenant', cotPlBonus: 3, maxPl: 9, advMin: 12, advMax: 15 },
+    'Legendary': { cotLevel: 'Captain', cotPlBonus: 4, maxPl: 10, advMin: 16, advMax: 99 }
+  };
+
+  /**
+   * Calculates effective PL from:
+   * 1. Base Ghost Novice PL = 2
+   * 2. C.O.T. Rank Change Bonus (+1 Seasoned, +2 Veteran, +3 Heroic, +4 Legendary)
+   * 3. 'Psionic Level +1' Edges taken
+   */
+  function computeEffectivePsiRating(char) {
+    if (!char) return { basePL: 2, cotBonus: 1, plEdgeCount: 2, calculatedPL: 5, effectivePL: 5, maxPlForRank: 5, cotLevel: 'Operative' };
+    const basePL = 2; // Novice Ghost C.O.T. base Psi Level
+    const rank = char.rank || 'Seasoned';
+    const rankInfo = RANK_COT_MAP[rank] || RANK_COT_MAP['Seasoned'];
+    const cotBonus = rankInfo.cotPlBonus;
+
+    // Count edges granting +1 PL
+    const edges = Array.isArray(char.edges) ? char.edges : [];
+    let plEdgeCount = 0;
+    edges.forEach(e => {
+      const name = (e.name || '').toLowerCase();
+      if (name.includes('psionic level') || name.includes('psi level') || name.includes('pl increase') || name.includes('psi rating')) {
+        plEdgeCount++;
+      }
+    });
+
+    const calculatedPL = basePL + cotBonus + plEdgeCount;
+    const effectivePL = char.psiRating !== undefined ? parseInt(char.psiRating, 10) : calculatedPL;
+
+    return {
+      basePL,
+      cotBonus,
+      plEdgeCount,
+      calculatedPL,
+      effectivePL,
+      maxPlForRank: rankInfo.maxPl,
+      cotLevel: rankInfo.cotLevel
+    };
+  }
 
   /**
    * PURE FUNCTIONAL STATE PIPELINE
@@ -407,7 +457,8 @@
     });
 
     // 2b. Training Path Inherent Mutations & Bonuses
-    const psiRating = parseInt(char.psiRating, 10) || 5;
+    const plInfo = computeEffectivePsiRating(char);
+    const psiRating = plInfo.effectivePL;
     const trainingPath = char.trainingPath || 'ghost';
     const isWearingHES = activeBoosts.some(b => 
       (b.type === 'hes-suit' || b.id === 'boost_hes_suit' || (b.name && b.name.toLowerCase().includes('environment suit'))) && 
@@ -637,6 +688,8 @@
     renderCharacterWeapons();
     renderCharacterArmorGear();
     renderCharacterCybernetics();
+    renderCharacterHindrances();
+    renderCharacterEdges();
     updateCharacterSelector();
     updateQuickTelemetry();
   }
@@ -649,7 +702,18 @@
     document.getElementById('char-rank-select').value = currentCharacter.rank || 'Seasoned';
     document.getElementById('char-cot-select').value = currentCharacter.cotLevel || 'Operative';
     document.getElementById('char-training-select').value = currentCharacter.trainingPath || 'ghost';
-    document.getElementById('char-psi-input').value = currentCharacter.psiRating || 5;
+
+    const plInfo = computeEffectivePsiRating(currentCharacter);
+    const psiInput = document.getElementById('char-psi-input');
+    if (psiInput) {
+      psiInput.value = currentCharacter.psiRating || plInfo.calculatedPL;
+    }
+    const psiTag = document.getElementById('psi-breakdown-tag');
+    if (psiTag) {
+      psiTag.textContent = `PL ${plInfo.effectivePL}`;
+      psiTag.title = `Base PL: ${plInfo.basePL} + C.O.T. Rank (${currentCharacter.rank || 'Seasoned'}): +${plInfo.cotBonus} + PL Edges: +${plInfo.plEdgeCount} (Max Rank PL: ${plInfo.maxPlForRank})`;
+    }
+
     document.getElementById('char-adv-input').value = currentCharacter.advancements || 4;
 
     const alloc = currentCharacter.advancementAllocation || { skills: 1, attributes: 1, edges: 2 };
@@ -1131,6 +1195,69 @@
     }
   }
 
+  function renderCharacterHindrances() {
+    const list = document.getElementById('char-hindrances-list');
+    if (!list || !currentCharacter) return;
+    list.innerHTML = '';
+    const hindrances = currentCharacter.hindrances || [];
+    let totalPoints = 0;
+
+    hindrances.forEach((h, idx) => {
+      const pts = (h.type === 'Major' || h.type === 'major') ? 2 : 1;
+      totalPoints += pts;
+      const div = document.createElement('div');
+      div.className = 'compendium-card';
+      div.style.padding = '0.6rem';
+      div.style.marginBottom = '0.4rem';
+      div.innerHTML = `
+        <div class="card-top">
+          <strong style="color:#fff; font-size:0.9rem;">${h.name}</strong>
+          <span class="tag tag-crimson">${h.type || 'Minor'} (${pts} pt)</span>
+        </div>
+        <div class="card-desc" style="font-size:0.8rem; margin-top:0.25rem;">${h.desc || ''}</div>
+        <div style="display:flex; justify-content:flex-end; margin-top:0.35rem;">
+          <button class="btn btn-crimson btn-sm" data-remove-hindrance="${idx}" style="padding:1px 6px; font-size:0.75rem;">Remove</button>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+
+    const badge = document.getElementById('hindrance-points-badge');
+    if (badge) {
+      badge.textContent = `${totalPoints} / 4 Pts`;
+      badge.className = totalPoints > 4 ? 'tag tag-crimson' : 'tag tag-amber';
+    }
+  }
+
+  function renderCharacterEdges() {
+    const list = document.getElementById('char-edges-list');
+    if (!list || !currentCharacter) return;
+    list.innerHTML = '';
+    const edges = currentCharacter.edges || [];
+
+    edges.forEach((e, idx) => {
+      const isPlEdge = (e.name || '').toLowerCase().includes('psionic level') || (e.name || '').toLowerCase().includes('psi level') || (e.name || '').toLowerCase().includes('pl increase');
+      const div = document.createElement('div');
+      div.className = 'compendium-card';
+      div.style.padding = '0.6rem';
+      div.style.marginBottom = '0.4rem';
+      div.innerHTML = `
+        <div class="card-top">
+          <strong style="color:#fff; font-size:0.9rem;">${e.name}</strong>
+          <div>
+            ${isPlEdge ? '<span class="tag tag-violet" style="margin-right:4px;">+1 PL Edge</span>' : ''}
+            <span class="tag tag-amber">${e.req || 'Edge'}</span>
+          </div>
+        </div>
+        <div class="card-desc" style="font-size:0.8rem; margin-top:0.25rem;">${e.desc || ''}</div>
+        <div style="display:flex; justify-content:flex-end; margin-top:0.35rem;">
+          <button class="btn btn-crimson btn-sm" data-remove-edge="${idx}" style="padding:1px 6px; font-size:0.75rem;">Remove</button>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
   function updateQuickTelemetry() {
     if (!currentCharacter) return;
     const dName = document.getElementById('dossier-name');
@@ -1504,7 +1631,26 @@
     bindInput('char-name-input', 'name');
     bindInput('char-codename-input', 'codename');
     bindInput('char-homeworld-select', 'homeworld', true);
-    bindInput('char-rank-select', 'rank', true);
+
+    const rankSelect = document.getElementById('char-rank-select');
+    if (rankSelect) {
+      rankSelect.addEventListener('change', (e) => {
+        if (!currentCharacter) return;
+        const newRank = e.target.value;
+        currentCharacter.rank = newRank;
+        const info = RANK_COT_MAP[newRank];
+        if (info) {
+          currentCharacter.cotLevel = info.cotLevel;
+          const cotSelect = document.getElementById('char-cot-select');
+          if (cotSelect) cotSelect.value = info.cotLevel;
+          const newPlInfo = computeEffectivePsiRating(currentCharacter);
+          currentCharacter.psiRating = newPlInfo.calculatedPL;
+        }
+        saveCharacters();
+        renderAll();
+      });
+    }
+
     bindInput('char-cot-select', 'cotLevel', true);
     bindInput('char-training-select', 'trainingPath', true);
     bindInput('char-psi-input', 'psiRating', true);
@@ -1994,7 +2140,64 @@
         return;
       }
 
+      // Toggle Edge from Compendium
+      const toggleEdge = e.target.closest('button[data-toggle-edge]');
+      if (toggleEdge) {
+        const name = toggleEdge.getAttribute('data-toggle-edge');
+        const data = window.SC_DATA?.edges?.find(ed => ed.name === name);
+        if (data) {
+          if (!currentCharacter.edges) currentCharacter.edges = [];
+          const exIdx = currentCharacter.edges.findIndex(ed => ed.name === name);
+          if (exIdx >= 0) currentCharacter.edges.splice(exIdx, 1);
+          else currentCharacter.edges.push({ name: data.name, req: data.req, desc: data.desc });
+          
+          const newPl = computeEffectivePsiRating(currentCharacter).calculatedPL;
+          currentCharacter.psiRating = newPl;
+          SoundFX.success();
+          saveCharacters();
+          renderAll();
+          alert(`Updated Edge "${data.name}" on character sheet.`);
+        }
+        return;
+      }
+
+      // Toggle Hindrance from Compendium
+      const toggleHind = e.target.closest('button[data-toggle-hindrance]');
+      if (toggleHind) {
+        const name = toggleHind.getAttribute('data-toggle-hindrance');
+        const data = window.SC_DATA?.hindrances?.find(h => h.name === name);
+        if (data) {
+          if (!currentCharacter.hindrances) currentCharacter.hindrances = [];
+          const exIdx = currentCharacter.hindrances.findIndex(h => h.name === name);
+          if (exIdx >= 0) currentCharacter.hindrances.splice(exIdx, 1);
+          else currentCharacter.hindrances.push({ name: data.name, type: data.type, desc: data.desc });
+          SoundFX.toggle();
+          saveCharacters();
+          renderCharacterHindrances();
+          alert(`Updated Hindrance "${data.name}" on character sheet.`);
+        }
+        return;
+      }
+
       // Removal Handlers
+      const remEdge = e.target.closest('button[data-remove-edge]');
+      if (remEdge) {
+        currentCharacter.edges.splice(parseInt(remEdge.getAttribute('data-remove-edge'), 10), 1);
+        const newPl = computeEffectivePsiRating(currentCharacter).calculatedPL;
+        currentCharacter.psiRating = newPl;
+        saveCharacters();
+        renderAll();
+        return;
+      }
+
+      const remHind = e.target.closest('button[data-remove-hindrance]');
+      if (remHind) {
+        currentCharacter.hindrances.splice(parseInt(remHind.getAttribute('data-remove-hindrance'), 10), 1);
+        saveCharacters();
+        renderCharacterHindrances();
+        return;
+      }
+
       const remWep = e.target.closest('button[data-remove-weapon]');
       if (remWep) {
         currentCharacter.weapons.splice(parseInt(remWep.getAttribute('data-remove-weapon'), 10), 1);
