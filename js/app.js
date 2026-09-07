@@ -655,6 +655,14 @@
     };
   }
 
+  function getRankForAdvancementIndex(idx) {
+    if (idx >= 16) return 'Legendary';
+    if (idx >= 12) return 'Heroic';
+    if (idx >= 8) return 'Veteran';
+    if (idx >= 4) return 'Seasoned';
+    return 'Novice';
+  }
+
   function loadCharacters() {
     try {
       const stored = localStorage.getItem('sc_rpg_characters');
@@ -672,16 +680,27 @@
       saveCharacters();
     }
 
-    // Ensure activeBoosts array and wounds/fatigue exist on all characters
+    // Ensure activeBoosts array, advancementsList, wounds/fatigue, and rank auto-sync
     characters.forEach(char => {
       if (!char.activeBoosts || !Array.isArray(char.activeBoosts)) {
         char.activeBoosts = getDefaultActiveBoosts();
       }
-      if (char.credits === 3325) {
+      if (char.credits === undefined || char.credits === 3325) {
         char.credits = 11325;
       }
       if (char.currentWounds === undefined) char.currentWounds = 0;
       if (char.currentFatigue === undefined) char.currentFatigue = 0;
+      if (!Array.isArray(char.advancementsList)) {
+        char.advancementsList = getDefaultCharacter().advancementsList;
+      }
+      const totalAdv = char.advancementsList.length;
+      char.advancements = totalAdv;
+      const autoRank = getRankForAdvancementIndex(totalAdv);
+      if (!char.rank || (totalAdv >= 4 && char.rank === 'Novice')) {
+        char.rank = autoRank;
+        const rankToCot = { 'Novice': 'Recruit', 'Seasoned': 'Operative', 'Veteran': 'Specialist', 'Heroic': 'Lieutenant', 'Legendary': 'Captain' };
+        char.cotLevel = rankToCot[autoRank] || 'Operative';
+      }
     });
 
     const activeId = localStorage.getItem('sc_rpg_active_char_id');
@@ -698,6 +717,7 @@
   }
 
   function renderAll() {
+    renderCharacterAdvancements();
     renderDossier();
     renderAttributesAndStats();
     renderSkillsList();
@@ -707,19 +727,24 @@
     renderCharacterCybernetics();
     renderCharacterHindrances();
     renderCharacterEdges();
-    renderCharacterAdvancements();
     updateCharacterSelector();
     updateQuickTelemetry();
   }
 
   function renderDossier() {
     if (!currentCharacter) return;
-    document.getElementById('char-name-input').value = currentCharacter.name || '';
-    document.getElementById('char-codename-input').value = currentCharacter.codename || '';
-    document.getElementById('char-homeworld-select').value = currentCharacter.homeworld || 'moria';
-    document.getElementById('char-rank-select').value = currentCharacter.rank || 'Seasoned';
-    document.getElementById('char-cot-select').value = currentCharacter.cotLevel || 'Operative';
-    document.getElementById('char-training-select').value = currentCharacter.trainingPath || 'ghost';
+    const nameEl = document.getElementById('char-name-input');
+    if (nameEl) nameEl.value = currentCharacter.name || '';
+    const codeEl = document.getElementById('char-codename-input');
+    if (codeEl) codeEl.value = currentCharacter.codename || '';
+    const hwEl = document.getElementById('char-homeworld-select');
+    if (hwEl) hwEl.value = currentCharacter.homeworld || 'moria';
+    const rankEl = document.getElementById('char-rank-select');
+    if (rankEl) rankEl.value = currentCharacter.rank || 'Seasoned';
+    const cotEl = document.getElementById('char-cot-select');
+    if (cotEl) cotEl.value = currentCharacter.cotLevel || 'Operative';
+    const trainEl = document.getElementById('char-training-select');
+    if (trainEl) trainEl.value = currentCharacter.trainingPath || 'ghost';
 
     const plInfo = computeEffectivePsiRating(currentCharacter);
     const psiInput = document.getElementById('char-psi-input');
@@ -732,18 +757,14 @@
       psiTag.title = `Base PL: ${plInfo.basePL} + C.O.T. Rank (${currentCharacter.rank || 'Seasoned'}): +${plInfo.cotBonus} + PL Edges: +${plInfo.plEdgeCount} (Max Rank PL: ${plInfo.maxPlForRank})`;
     }
 
-    document.getElementById('char-adv-input').value = currentCharacter.advancements || 4;
+    const totalAdv = (currentCharacter.advancementsList && currentCharacter.advancementsList.length) !== undefined ? currentCharacter.advancementsList.length : (currentCharacter.advancements || 4);
+    const advInput = document.getElementById('char-adv-input');
+    if (advInput) advInput.value = totalAdv;
 
-    const alloc = currentCharacter.advancementAllocation || { skills: 1, attributes: 1, edges: 2 };
-    const advSkillsEl = document.getElementById('char-adv-skills-input');
-    if (advSkillsEl) advSkillsEl.value = alloc.skills !== undefined ? alloc.skills : 1;
-    const advAttrEl = document.getElementById('char-adv-attr-input');
-    if (advAttrEl) advAttrEl.value = alloc.attributes !== undefined ? alloc.attributes : 1;
-    const advEdgesEl = document.getElementById('char-adv-edges-input');
-    if (advEdgesEl) advEdgesEl.value = alloc.edges !== undefined ? alloc.edges : 2;
-
-    document.getElementById('char-credits-input').value = currentCharacter.credits !== undefined ? currentCharacter.credits : 11325;
-    document.getElementById('char-concept-input').value = currentCharacter.concept || '';
+    const credInput = document.getElementById('char-credits-input');
+    if (credInput) credInput.value = currentCharacter.credits !== undefined ? currentCharacter.credits : 11325;
+    const conceptInput = document.getElementById('char-concept-input');
+    if (conceptInput) conceptInput.value = currentCharacter.concept || '';
   }
 
   function renderActiveBoosts() {
@@ -966,10 +987,12 @@
     const woundsWrap = document.getElementById('wounds-pips-wrap');
     if (woundsWrap) {
       woundsWrap.innerHTML = '';
-      for (let i = 1; i <= state.maxWounds; i++) {
+      const maxW = Math.max(1, state.maxWounds || 3);
+      for (let i = 1; i <= maxW; i++) {
         const pip = document.createElement('div');
         pip.className = `pip-box ${i <= (currentCharacter.currentWounds || 0) ? 'checked-wound' : ''}`;
         pip.textContent = i;
+        pip.title = `Wound ${i} (Click to toggle)`;
         pip.onclick = () => {
           SoundFX.toggle();
           currentCharacter.currentWounds = (currentCharacter.currentWounds === i) ? i - 1 : i;
@@ -984,10 +1007,12 @@
     const fatigueWrap = document.getElementById('fatigue-pips-wrap');
     if (fatigueWrap) {
       fatigueWrap.innerHTML = '';
-      for (let i = 1; i <= state.maxFatigue; i++) {
+      const maxF = Math.max(1, state.maxFatigue || 2);
+      for (let i = 1; i <= maxF; i++) {
         const pip = document.createElement('div');
         pip.className = `pip-box ${i <= (currentCharacter.currentFatigue || 0) ? 'checked-fatigue' : ''}`;
         pip.textContent = i;
+        pip.title = `Fatigue ${i} (Click to toggle)`;
         pip.onclick = () => {
           SoundFX.toggle();
           currentCharacter.currentFatigue = (currentCharacter.currentFatigue === i) ? i - 1 : i;
